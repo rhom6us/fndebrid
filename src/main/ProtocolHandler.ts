@@ -6,6 +6,7 @@ import * as actionCreators from './actions';
 interface IDispatch{
     (action: AnyAction):void;
 }
+export default ProtocolHandler;
 export class ProtocolHandler {
     public static readonly protocol = 'magnet';
     public static findProtocolArg(argv:string[]): string | undefined {
@@ -16,15 +17,16 @@ export class ProtocolHandler {
         return matches[0];
     }
     constructor(private dispatch:IDispatch){
+        
+        this.init();
 
-    }
-
-    init(){
         let protocolUrl = ProtocolHandler.findProtocolArg(process.argv);
         if(protocolUrl){
             this.handle(protocolUrl);
         }
+    }
 
+    init(){
         const singleInstanceLock = app.requestSingleInstanceLock();
         if(!singleInstanceLock){
         // logger.info(`main: got the lock hence closing the new instance`, { gotTheLock });
