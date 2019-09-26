@@ -2,6 +2,8 @@
     "extends": "./node_modules/electron-webpack/tsconfig-base.json",
     "compilerOptions": {
         "noUnusedLocals": false,
-        "jsx": "react"
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     }
   }

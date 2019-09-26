@@ -1,48 +1,58 @@
 
 import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects'
-import { TorrentsActionTypes, Torrent } from './types'
-import { fetchTorrents} from './actions'
-import RealDebrid from '../../real-debrid/RealDebrid'
-import { Authorizor } from "../../real-debrid/Authorizor"
+import { fetchTorrents, addMagnet} from './actions'
 import { shell } from 'electron'
+import { RealDebrid, Authorizor } from '../../real-debrid'
+import { getType, ActionType } from 'typesafe-actions'
+import {Yield, Memoize} from '../../../common/utils';
 
-const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT || ''
 
-async function getApi(){
-    if(!getApi.token)
-        getApi.token = Authorizor.getToken(url => shell.openExternal(url));
-    return new RealDebrid(await getApi.token);
+@Memoize
+function getToken(){
+    return Authorizor.getToken((url:string) => shell.openExternal(url));
 }
-module getApi{
-    export let token: Promise<string>;
-}
-
-
-
 function* watchFetchRequest() {
-    let token: string;
-    yield takeLatest(TorrentsActionTypes.FETCH_REQUEST, function* () {
+    yield takeLatest(getType(fetchTorrents.request), function* () {
         try {
-
-            if(!token){
-                token = yield call(Authorizor.getToken, (url:string) => shell.openExternal(url));
-            }
-            const api = new RealDebrid(token);
-            const torrents:Torrent[] = yield call([api, api.torrents]);
+            const api = new RealDebrid(yield call(getToken));
+            const torrents: Yield<typeof api.torrents> = yield call([api, api.torrents]);
             yield put(fetchTorrents.success(torrents));
     
         } catch (err) {
             if (err instanceof Error) {
-                yield put(fetchTorrents.failure(err.stack!));
-            } else {
+                yield put(fetchTorrents.failure(err));
+            } else if (typeof err === 'string') {
+                yield put(fetchTorrents.failure(err));
+            } else {}
                 yield put(fetchTorrents.failure('An unknown error occured.'));
             }
         }
     });
 }
 
-// Export our root saga.
-// We can also use `fork()` here to split our saga into multiple watchers.
-export function* torrentsSaga() {
-  yield all([fork(watchFetchRequest)])
+function* watchAddMagnet(){
+    yield takeEvery(getType(addMagnet.request), function* ({payload:{magnetLink}}:ActionType<typeof addMagnet.request>) {
+        try {
+            const token: Yield<typeof getToken> = yield call(getToken);
+            const api = new RealDebrid(token);
+            const {torrentId}: Yield<typeof api.addMagnet> = yield call([api, api.addMagnet], magnetLink);
+            yield put(addMagnet.success({torrentId}));
+    
+        } catch (err) {
+            if (err instanceof Error) {
+                yield put(addMagnet.failure(err));
+            } else if (typeof err === 'string') {
+                yield put(addMagnet.failure(err));
+            } else {
+                yield put(addMagnet.failure('An unknown error occured.'));
+            }
+        }
+    });
+}
+
+export default function* () {
+  yield all([
+      fork(watchFetchRequest),
+      fork(watchAddMagnet),
+    ])
 }

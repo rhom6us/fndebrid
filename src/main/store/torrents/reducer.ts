@@ -1,33 +1,22 @@
 
-import { Reducer } from 'redux'
-import { TorrentsState, TorrentsActionTypes } from './types'
+import { createReducer } from 'typesafe-actions'
+import RootAction, { fetchTorrents } from './actions'
+import  RootState from './types';
 
-// Type-safe initialState!
-const initialState: TorrentsState = {
-  data: [],
+const initialState: RootState = {
+  torrents: [],
   errors: undefined,
-  loading: false
+  loading: false,
+  
 }
-
-// Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
-// everything will remain type-safe.
-const reducer: Reducer<TorrentsState> = (state = initialState, action) => {
-  switch (action.type) {
-    case TorrentsActionTypes.FETCH_REQUEST: {
-      return { ...state, loading: true }
-    }
-    case TorrentsActionTypes.FETCH_SUCCESS: {
-      return { ...state, loading: false, data: action.payload }
-    }
-    case TorrentsActionTypes.FETCH_ERROR: {
-      return { ...state, loading: false, errors: action.payload }
-    }
-    default: {
-      return state
-    }
-  }
-}
-
-// Instead of using default export, we use named exports. That way we can group these exports
-// inside the `index.js` folder.
-export { reducer as torrentsReducer }
+// declare module 'typesafe-actions' {
+//   interface Types {
+//     RootAction: RootAction;
+//   }
+// }
+export default createReducer<RootState, RootAction>(initialState)
+  .handleAction(fetchTorrents.request, (state,{}) => ({...state, loading: true}))
+  .handleAction(fetchTorrents.success, (state,{payload:data}) => ({...state, loading: false, data}))
+  .handleAction(fetchTorrents.failure, (state,{payload:errors}) => ({...state, loading: false, errors}))
+  
+// export { reducer as torrentsReducer }

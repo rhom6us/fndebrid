@@ -1,30 +1,9 @@
 
 import {Action, Reducer, Store, AnyAction, Unsubscribe, Observable, Observer,StoreCreator} from 'redux';
-import {ipcRenderer, ipcMain} from 'electron';
+import {ipcRenderer} from 'electron';
 import * as uuid from 'uuid/v4';
 
-class StoreForward {
-    constructor(store: Store<any>){
-        ipcMain.on('dispatch', (event, [action])=> {
-            event.returnValue = store.dispatch(action);
-        });
-        ipcMain.on('getState', (event, args)=> {
-            event.returnValue = store.getState();
-        });
-        // let subscribers: [WebContents, string][] = [];
-        let listeners: Listener[] = [];
-        ipcMain.on('subscribe', (event, [guid]:[string]) => {
-            listeners.push(()=>event.reply(`subscription-${guid}`));
-            // subscribers.push([event.sender, guid]);
-        });
-        store.subscribe(()=>{
-            listeners.forEach(p => p());
-            // subscribers.forEach(([webContents, guid]) => webContents.send(`subscription-${guid}`));
-        });
-    }
 
-}
-new StoreForward(null as any);
 interface Listener {
     ():void;
 }

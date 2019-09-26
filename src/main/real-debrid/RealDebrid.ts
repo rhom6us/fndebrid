@@ -1,59 +1,10 @@
 import * as fs from 'fs';
 import { makeUrl } from "./util";
-export type TorrentId = string;
-export interface Torrent {
-    id: TorrentId;
-    filename: string;
-    hash: string;
-    bytes: number;
-    host: string;
-    split: number;
-    progress: number;
-    status: Status;
-    added: Date;
-    files: File[];
-    links: string[];
-    ended?: Date;
-    speed?: number;
-    seeders?: number;
-}
-
-export interface File {
-    id:       number;
-    path:     string;
-    bytes:    number;
-    selected: number;
-}
+import { Torrent } from '../store/torrents/types';
+import { TorrentId, LinkInfo } from './types';
 
 
-export enum Status {
-    magnet_error = "magnet_error",
-    magnet_conversion = "magnet_conversion",
-    waiting_files_selection = "waiting_files_selection",
-    queued = "queued",
-    downloading = "downloading",
-    downloaded = "downloaded",
-    error = "error",
-    virus = "virus",
-    compressing = "compressing",
-    uploading = "uploading",
-    dead = "dead",
-}
-export interface LinkInfo {
-    id:         string;
-    filename:   string;
-    mimeType:   string;
-    filesize:   number;
-    link:       string;
-    host:       string;
-    host_icon:  string;
-    chunks:     number;
-
-    download:   string;
-    streamable: number;
-}
-
-export default class RealDebrid {
+export class RealDebrid {
     constructor(private access_token: string, private base = new URL('https://api.real-debrid.com/rest/1.0/')) {
     }
 

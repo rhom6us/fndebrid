@@ -13,6 +13,7 @@
     "react-dom": "^16.9.0",
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
+    "reflect-metadata": "^0.1.13",
     "typesafe-actions": "^4.4.2",
     "uuid": "^3.3.3"
   },

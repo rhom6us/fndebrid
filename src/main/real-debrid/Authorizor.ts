@@ -1,11 +1,6 @@
 import { makeUrl } from "./util";
+import { AuthorizatioInfo } from ".";
 
-export interface AuthorizatioInfo {
-    client_id: string;
-    client_secret: string;
-    access_token: string;
-    refresh_token: string;
-}
 export class Authorizor {
     constructor(private base: URL = new URL('https://api.real-debrid.com/oauth/v2/')) { }
     async code({ client_id }: Pick<AuthorizatioInfo, 'client_id'>) {

@@ -1,21 +1,27 @@
 
-import { createAsyncAction, AsyncActionCreator } from 'typesafe-actions'
-import { TorrentsActionTypes, Torrent } from './types'
+import { createAsyncAction, ActionType, createAction } from 'typesafe-actions'
+import {  Torrent} from './types'
 
-// // Here we use the `action` helper function provided by `typesafe-actions`.
-// // This library provides really useful helpers for writing Redux actions in a type-safe manner.
-// // For more info: https://github.com/piotrwitek/typesafe-actions
-// export const fetchRequest = () => action(TorrentsActionTypes.FETCH_REQUEST)
 
-// // Remember, you can also pass parameters into an action creator. Make sure to
-// // type them properly as well.
-// export const fetchSuccess = (data: Torrent[]) => action(TorrentsActionTypes.FETCH_SUCCESS, data)
-// export const fetchError = (message: string) => action(TorrentsActionTypes.FETCH_ERROR, message)
 
 
 export const fetchTorrents = createAsyncAction(
-    TorrentsActionTypes.FETCH_REQUEST,
-    TorrentsActionTypes.FETCH_SUCCESS,
-    TorrentsActionTypes.FETCH_ERROR,
-)<undefined, Torrent[], string>();
+    '@@torrents/fetch/request',
+    '@@torrents/fetch/success',
+    '@@torrents/fetch/error',
+)<undefined, Array<Omit<Torrent, 'files'>>, Error | string>();
 
+export const addMagnet = createAsyncAction(
+    '@@torrents/addMagnet/request',
+    '@@torrents/addMagnet/success',
+    '@@torrents/addMagnet/error',
+)<{magnetLink:string}, {torrentId: string}, Error | string>();
+
+export const addTorrentFile = createAsyncAction(
+    '@@torrents/addTorrentFile/request',
+    '@@torrents/addTorrentFile/success',
+    '@@torrents/addTorrentFile/error',
+)<{filePath: string}, {id: string}, Error | string>();
+
+type RootAction = ActionType<typeof import('./actions')>;
+export default RootAction;
