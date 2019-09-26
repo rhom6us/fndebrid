@@ -15,7 +15,7 @@ import fs from 'fs';
 // Returns a {Promise} that will accept when complete.
 export default async function downloadFile(sourceUrl: string, targetFile: string, progressCallback?: ByteProgressCallback): Promise<void> {
   const request = new Request(sourceUrl, {
-    headers: new Headers({'Content-Type': 'application/octet-stream'})
+    headers: new Headers({ 'Content-Type': 'application/octet-stream' })
   });
 
   const response = await fetch(request);
@@ -66,11 +66,11 @@ async function streamWithProgress(length: number, reader: ReadableStreamReader, 
         bytesDone += chunk.byteLength;
         const percent = length === 0 ? undefined : Math.floor(bytesDone / length * 100);
         progressCallback(bytesDone, percent);
-       }
-     }
-   }
+      }
+    }
+  }
 }
 
 // Public: Progress callback function signature indicating the bytesDone and
 // optional percentage when length is known.
-export interface ByteProgressCallback {(bytesDone: number, percent?: number): void;}
+export interface ByteProgressCallback { (bytesDone: number, percent?: number): void; }

@@ -14,7 +14,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { ApplicationState, rootReducer, rootSaga, RootAction } from './store'
 
 export default function configureStore(
-//   history: History,
+  //   history: History,
   initialState: ApplicationState | null = null
 ): Store<ApplicationState, RootAction> {
   // create the composing function for our middlewares

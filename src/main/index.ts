@@ -1,7 +1,7 @@
 
 declare var __static: string;
 
-import { app, BrowserWindow,  dialog, Tray, Menu } from 'electron'
+import { app, BrowserWindow, dialog, Tray, Menu } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 
@@ -10,13 +10,13 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let appIcon: Tray | null = null;
 let mainWindow: BrowserWindow | null = null;
-  if(mainWindow){}
+if (mainWindow) { }
 
 
 
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
-    app.setAsDefaultProtocolClient('magnet', process.execPath, [path.resolve(process.argv[process.argv.length-1])]);
+    app.setAsDefaultProtocolClient('magnet', process.execPath, [path.resolve(process.argv[process.argv.length - 1])]);
   }
 } else {
   app.setAsDefaultProtocolClient('magnet');
@@ -24,7 +24,7 @@ if (process.defaultApp) {
 
 
 const singleInstanceLock = app.requestSingleInstanceLock();
-if(!singleInstanceLock){
+if (!singleInstanceLock) {
   // logger.info(`main: got the lock hence closing the new instance`, { gotTheLock });
   app.exit();
 } else {
@@ -35,24 +35,24 @@ if(!singleInstanceLock){
 }
 
 
-function createAppIcon(){
+function createAppIcon() {
   appIcon = new Tray(path.join(__static, 'favicon-16x16.png'));
   appIcon.setToolTip('real-debrid.com in the tray.');
   appIcon.setContextMenu(
     Menu.buildFromTemplate([{
       label: 'Show Main Window',
       click: createMainWindow
-    },{
+    }, {
       label: 'Exit',
       click: () => app.exit()
-      
+
     }])
   );
   return appIcon;
 }
 
 function createMainWindow() {
-  const window = new BrowserWindow({webPreferences: {nodeIntegration: true}});
+  const window = new BrowserWindow({ webPreferences: { nodeIntegration: true } });
 
   if (isDevelopment) {
     window.webContents.openDevTools();
@@ -101,10 +101,10 @@ app.on('ready', () => {
   appIcon = createAppIcon();
 })
 
-function alert(message:string){
-  dialog.showMessageBox({message});
+function alert(message: string) {
+  dialog.showMessageBox({ message });
 }
 
-function showArray(arr:string[]){
+function showArray(arr: string[]) {
   arr.forEach(alert);
 }
