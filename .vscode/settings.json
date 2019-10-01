@@ -4,7 +4,8 @@
     "dist/": true,
     "node_modules/": true,
     "package-lock.json": true,
-    "README.md": true
+    "README.md": true,
+    "yarn.lock": true
   },
   "editor.detectIndentation": false
 }

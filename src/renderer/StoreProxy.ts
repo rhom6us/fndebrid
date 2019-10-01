@@ -4,9 +4,6 @@ import { ipcRenderer } from 'electron';
 import * as uuid from 'uuid/v4';
 
 
-interface Listener {
-  (): void;
-}
 function newGuid() {
   return uuid();
 }

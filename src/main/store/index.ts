@@ -1,30 +1,27 @@
-
-import { combineReducers, Dispatch, Reducer, Action, AnyAction } from 'redux'
-// import { routerReducer, RouterState } from 'react-router-redux'
-
 import { all, fork } from 'redux-saga/effects';
-import { TorrentsAction, TorrentsState, torrentsSaga, torrentsReducer } from './torrents';
-import { PreferencesAction, PreferencesState, preferencesSaga, preferencesReducer } from './preferences';
 
+import { combineReducers } from 'redux';
+import { torrentsReducer, TorrentsAction, TorrentsState, torrentsSaga } from './torrents';
+import { preferencesReducer, PreferencesAction, PreferencesState, preferencesSaga } from './preferences';
+import * as actions from './actions';
 
-export type RootAction = TorrentsAction | PreferencesAction;
-
-// We `fork()` these tasks so they execute in the background.
-export function* rootSaga() {
-  yield all([
-    fork(torrentsSaga),
-    fork(preferencesSaga),
-  ])
-}
-
-// `connected-react-router` already injects the router state typings for us, so we can ignore them here.
-export interface ApplicationState {
+export interface State {
   torrents: TorrentsState,
   preferences: PreferencesState
 }
 
+export {actions};
+export type RootAction = TorrentsAction | PreferencesAction;
 
-export const rootReducer = combineReducers<ApplicationState>({
+export const rootReducer = combineReducers<State>({
   torrents: torrentsReducer,
   preferences: preferencesReducer,
 });
+
+
+export function* rootSaga () {
+  yield all([
+    fork(torrentsSaga),
+    fork(preferencesSaga),
+  ]);
+}

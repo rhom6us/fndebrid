@@ -14,10 +14,10 @@ export interface Torrent {
   bytes: number;
   host: string;
   split: number;
-  progress: number;
-  status: Status;
+  status: TorrentStatus;
   added: Date;
   files: File[];
+  progress: number;
   links: string[];
   ended?: Date;
   speed?: number;
@@ -31,20 +31,9 @@ export interface File {
   selected: number;
 }
 
+export type TorrentStatus = "magnet_error" | "magnet_conversion" | "waiting_files_selection" | "queued" | "downloading" | "downloaded" | "error" | "virus" | "compressing" | "uploading" | "dead";
 
-export enum Status {
-  magnet_error = "magnet_error",
-  magnet_conversion = "magnet_conversion",
-  waiting_files_selection = "waiting_files_selection",
-  queued = "queued",
-  downloading = "downloading",
-  downloaded = "downloaded",
-  error = "error",
-  virus = "virus",
-  compressing = "compressing",
-  uploading = "uploading",
-  dead = "dead",
-}
+
 export interface LinkInfo {
   id: string;
   filename: string;

@@ -1,21 +1,28 @@
-import * as fs from 'fs';
+import { createReadStream, ReadStream, statSync } from 'fs';
 import { makeUrl } from "./util";
-import { Torrent } from '../store/torrents/types';
+import { Torrent } from '../store/torrents/state';
 import { TorrentId, LinkInfo } from './types';
+import fetch from 'node-fetch';
 
+type fu = ReturnType<typeof fetch>;
 
 export class RealDebrid {
   constructor(private access_token: string, private base = new URL('https://api.real-debrid.com/rest/1.0/')) {
   }
 
-  async _get<T = any>(path: string, params: Record<string, string> = {}): Promise<T> {
+  async _get<T = any>(path: string): Promise<T>;
+  async _get<T = any>(path: string, params: Record<string, any>, includeMeta: false): Promise<T>;
+    async _get<T = any>(path: string, params: Record<string, any>, includeMeta: true): Promise<[T, Record<string,string[]>]>;
+      async _get<T = any>(path: string, params: Record<string, any> = {}, includeMeta: boolean = false): Promise<T | [T, Record<string,string[]>]> {
     let response = await fetch(makeUrl(this.base, path, params), {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${this.access_token}`
       }
     });
-    return await response.json();
+    if(!includeMeta)
+      return await response.json();
+    return [await response.json(), response.headers.raw()];
   }
   async _delete<T = void>(path: string, params: Record<string, string> = {}): Promise<T> {
     let response = await fetch(makeUrl(this.base, path, params), {
@@ -30,14 +37,15 @@ export class RealDebrid {
     let response = await fetch(makeUrl(this.base, path), {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        // 'Content-Type': 'application/json',
         Authorization: `Bearer ${this.access_token}`
       },
       body: new URLSearchParams(body)
     });
     return await response.json();
   }
-  async _put<T = void>(path: string, body: ReadableStream, extraHeaders: Record<string, string> = {}): Promise<T> {
+
+  async _put<T = void>(path: string, body: ReadStream, extraHeaders: Record<string, string> = {}): Promise<T> {
     let response = await fetch(makeUrl(this.base, path), {
       method: 'PUT',
       headers: {
@@ -49,8 +57,14 @@ export class RealDebrid {
     });
     return await response.json();
   }
-  torrents() {
-    return this._get<Omit<Torrent, 'files'>[]>('torrents');
+  async torrents(page = 1) : Promise<Omit<Torrent, 'files'>[]> {
+    const pageSize = 3;
+
+    let [data, headers] = await this._get<Omit<Torrent, 'files'>[]>('torrents', { page, limit: pageSize.toString() }, true);
+    if((headers['X-Total-Count'][0] || 0) > (page * pageSize)){
+      return [...data, ...(await this.torrents(page + 1))];
+    }
+    return data;
   }
   torrent(id: TorrentId) {
     return this._get<Torrent>(`torrents/${id}`);
@@ -63,10 +77,10 @@ export class RealDebrid {
   }
   addTorrent(filePath: string) {
 
-    const stats = fs.statSync(filePath);
+    const stats = statSync(filePath);
     const fileSizeInBytes = stats.size;
 
-    let readStream = fs.createReadStream(filePath);
+    let readStream = createReadStream(filePath);
     //var stringContent = fs.readFileSync('foo.txt', 'utf8');
     //var bufferContent = fs.readFileSync(filePath)
     return this._put<{ id: string }>('torrents/addTorrent', readStream as any, { "Content-length": fileSizeInBytes.toString() });

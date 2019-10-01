@@ -4,44 +4,51 @@ declare var __static: string;
 import { app, BrowserWindow, dialog, Tray, Menu } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
-
+import configureStore from './configureStore';
+// import * as myApp from './Application';
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let appIcon: Tray | null = null;
 let mainWindow: BrowserWindow | null = null;
-if (mainWindow) { }
+let debugWindow: BrowserWindow | null = null;
 
 
-
-if (process.defaultApp) {
-  if (process.argv.length >= 2) {
-    app.setAsDefaultProtocolClient('magnet', process.execPath, [path.resolve(process.argv[process.argv.length - 1])]);
-  }
-} else {
-  app.setAsDefaultProtocolClient('magnet');
-}
-
-
-const singleInstanceLock = app.requestSingleInstanceLock();
-if (!singleInstanceLock) {
-  // logger.info(`main: got the lock hence closing the new instance`, { gotTheLock });
-  app.exit();
-} else {
-  // logger.info(`main: Creating the first instance of the application`);
-  app.on('second-instance', (_event, argv) => {
-    showArray(argv);
-  });
-}
+// if (process.defaultApp) {
+//   if (process.argv.length >= 2) {
+//     app.setAsDefaultProtocolClient('magnet', process.execPath, [path.resolve(process.argv[process.argv.length - 1])]);
+//   }
+// } else {
+//   app.setAsDefaultProtocolClient('magnet');
+// }
 
 
+// const singleInstanceLock = app.requestSingleInstanceLock();
+// if (!singleInstanceLock) {
+//   // logger.info(`main: got the lock hence closing the new instance`, { gotTheLock });
+//   app.exit();
+// } else {
+//   // logger.info(`main: Creating the first instance of the application`);
+//   app.on('second-instance', (_event, argv) => {
+//     showArray(argv);
+//   });
+// }
+const store = configureStore();
+console.log(store);
 function createAppIcon() {
   appIcon = new Tray(path.join(__static, 'favicon-16x16.png'));
   appIcon.setToolTip('real-debrid.com in the tray.');
   appIcon.setContextMenu(
     Menu.buildFromTemplate([{
       label: 'Show Main Window',
-      click: createMainWindow
+      click() {
+        mainWindow = createMainWindow();
+      }
+    },{
+      label: 'Show Debug Window',
+      click() {
+        debugWindow = createDebugWindow();
+      }
     }, {
       label: 'Exit',
       click: () => app.exit()
@@ -60,6 +67,13 @@ function createMainWindow() {
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+    // window.loadURL(formatUrl({
+    //   protocol: 'http',
+    //   slashes: true,
+    //   host: 'localhost',
+    //   port: process.env.ELECTRON_WEBPACK_WDS_PORT,
+    //   // path: 'index.html'
+    // }));
   }
   else {
     window.loadURL(formatUrl({
@@ -73,11 +87,24 @@ function createMainWindow() {
     mainWindow = null;
   })
 
-  window.webContents.on('devtools-opened', () => {
-    window.focus();
-    setImmediate(() => {
-      window.focus();
-    })
+  return window;
+}
+function createDebugWindow() {
+  const window = new BrowserWindow({ webPreferences: { nodeIntegration: true } });
+
+  if (isDevelopment) {
+    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/debug.html`);
+  }
+  else {
+    window.loadURL(formatUrl({
+      pathname: path.join(__dirname, 'debug.html'),
+      protocol: 'file',
+      slashes: true,
+    }));
+  }
+
+  window.on('closed', () => {
+    debugWindow = null;
   })
 
   return window;
@@ -97,7 +124,8 @@ app.on('activate', () => {
 
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  showArray(process.argv);
+  // showArray(process.argv);
+  alert(process.argv0);
   appIcon = createAppIcon();
 })
 

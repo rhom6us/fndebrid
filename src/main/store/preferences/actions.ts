@@ -1,25 +1,31 @@
-import { createAction, ActionType } from "typesafe-actions";
-import State from './types';
+import { createAction, ActionType, createAsyncAction } from "typesafe-actions";
+import State from './state';
+// import { createBetterAsyncAction as createAsyncAction } from "../better-async-creator";
 
-export const setDownloadLocation = createAction('@@preferences/set-download-location', action =>
-  (downloadLocation: string) => action({ downloadLocation })
-);
-export const setPreferences = createAction('@@preferences/set-download-location', action =>
+
+export const setPreferences = createAction('@@preferences/set-preferences', action =>
   (preferences: Partial<Omit<State, 'associateTorrentFiles' | 'associateMagnetLinks' | 'autoSelectFiles' | 'fileWhiteList' | 'fileBlackList'>>) => action(preferences)
 );
-export const associateMagnetLinks_request = createAction('@@preferences/associateMagnetLinks/request', action =>
-  (associateMagnetLinks: boolean) => action({ associateMagnetLinks })
+
+export const setAutoSelectFilesPattern = createAction('@@preferences/set-autoselect-files', action =>
+  (autoSelectFilesPattern: string) => action({autoSelectFilesPattern})
 );
-export const associateMagnetLinks_complete = createAction('@@preferences/associateMagnetLinks/complete', action =>
-  (associateMagnetLinks: boolean) => action({ associateMagnetLinks })
-);
-export const associateTorrentFiles_request = createAction('@@preferences/associateTorrentFiles/request', action =>
-  (associateTorrentFiles: boolean) => action({ associateTorrentFiles })
-);
-export const associateTorrentFiles_complete = createAction('@@preferences/associateTorrentFiles/complete', action =>
-  (associateTorrentFiles: boolean) => action({ associateTorrentFiles })
+export const setAutoSelectFiles = createAction('@@preferences/set-autoselect-files', action =>
+  (autoSelectFiles: 'never' | 'all_files' | 'largest_files') => action({autoSelectFiles})
 );
 
+export const associateMagnetLinks = createAsyncAction(
+  '@@preferences/associate-magnet-links/request',
+  '@@preferences/associate-magnet-links/success',
+  '@@preferences/associate-magnet-links/failure',
+)<{associateMagnetLinks: boolean}, {magnetLinksAssociated: boolean}, undefined>();
+
+
+export const associateTorrentFiles = createAsyncAction(
+  '@@preferences/associate-torrent-files/request',
+  '@@preferences/associate-torrent-files/success',
+  '@@preferences/associate-torrent-files/failure'
+)<boolean, boolean, undefined>();
 
 
 type RootAction = ActionType<typeof import('./actions')>;

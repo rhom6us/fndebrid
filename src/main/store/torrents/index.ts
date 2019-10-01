@@ -1,4 +1,4 @@
-import TorrentsState from './types';
+import TorrentsState from './state';
 import TorrentsAction from './actions';
 import torrentsReducer from './reducer';
 import torrentsSaga from './sagas';

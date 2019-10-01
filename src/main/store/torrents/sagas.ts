@@ -4,13 +4,17 @@ import { fetchTorrents, addMagnet } from './actions'
 import { shell } from 'electron'
 import { RealDebrid, Authorizor } from '../../real-debrid'
 import { getType, ActionType } from 'typesafe-actions'
-import { Yield, Memoize } from '../../../common/utils';
+import { Yield, Memoize } from '../../../common/utils'
 
 
-@Memoize
-function getToken() {
-  return Authorizor.getToken((url: string) => shell.openExternal(url));
+class TokenContainer {
+  @Memoize()
+  static getToken() {
+    return Authorizor.getToken((url: string) => shell.openExternal(url));
+  }
 }
+const getToken = () => TokenContainer.getToken();
+
 function* watchFetchRequest() {
   yield takeLatest(getType(fetchTorrents.request), function* () {
     try {
@@ -23,11 +27,11 @@ function* watchFetchRequest() {
         yield put(fetchTorrents.failure(err));
       } else if (typeof err === 'string') {
         yield put(fetchTorrents.failure(err));
-      } else { }
-      yield put(fetchTorrents.failure('An unknown error occured.'));
+      } else {
+        yield put(fetchTorrents.failure('An unknown error occured.'));
+      }
     }
-  }
-    });
+  });
 }
 
 function* watchAddMagnet() {

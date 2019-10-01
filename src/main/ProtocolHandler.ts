@@ -1,6 +1,6 @@
 import { Action, AnyAction } from "redux";
 import { app } from "electron";
-import * as path from 'path';
+import path from 'path';
 import { addMagnet } from "./store/torrents";
 
 interface IDispatch {

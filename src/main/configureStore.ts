@@ -1,33 +1,30 @@
 
-import { Store, createStore, applyMiddleware } from 'redux'
+import { Store, createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
-// `react-router-redux` is deprecated, so we use `connected-react-router`.
-// This provides a Redux middleware which connects to our `react-router` instance.
-// import { connectRouter, routerMiddleware } from 'connected-react-router'
-// We'll be using Redux Devtools. We can use the `composeWithDevTools()`
-// directive so we can pass our middleware along with it
-import { composeWithDevTools } from 'redux-devtools-extension'
-// If you use react-router, don't forget to pass in your history type.
-// import { History } from 'history'
+import { electronEnhancer } from 'redux-electron-store';
+
 
 // Import the state interface and our combined reducers/sagas.
-import { ApplicationState, rootReducer, rootSaga, RootAction } from './store'
+import { State as ApplicationState, rootReducer, rootSaga, RootAction } from './store'
 
-export default function configureStore(
-  //   history: History,
-  initialState: ApplicationState | null = null
-): Store<ApplicationState, RootAction> {
-  // create the composing function for our middlewares
-  const composeEnhancers = composeWithDevTools({})
-  // create the redux-saga middleware
+export default function configureStore(/*history: History,*/ initialState?: ApplicationState): Store<ApplicationState, RootAction> {
+
   const sagaMiddleware = createSagaMiddleware()
 
-  // We'll create our store with the combined reducers/sagas, and the initial Redux state that
-  // we'll be passing from our entry point.
   const store = createStore(
     rootReducer,//connectRouter(history)(rootReducer),
-    composeEnhancers(applyMiddleware(/*routerMiddleware(history),*/ sagaMiddleware))
-  )
+    initialState,
+    compose(
+      applyMiddleware(
+        /*routerMiddleware(history),*/ 
+        sagaMiddleware
+      ),
+      electronEnhancer({
+        // Necessary for synched actions to pass through all enhancers
+        dispatchProxy: (p:any) => store.dispatch(p),
+      })
+    )
+  );
 
   // Don't forget to run the root saga, and return the store object.
   sagaMiddleware.run(rootSaga)

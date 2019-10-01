@@ -1,8 +1,12 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
+import {Router} from 'react-router-static';
+import Main from './Main';
+import configureStore from './configureStore';
+import DevTools from './containers/DevTools';
 
-const Index = () => {
-  return <div>Hello React!</div>;
-};
 
-ReactDOM.render(<Index />, document.getElementById('app'));
+const store = configureStore();
+
+
+ReactDOM.render(<Main store={store} />, document.getElementById('app'))

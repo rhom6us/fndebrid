@@ -1,9 +1,8 @@
 import { Action, AnyAction } from "redux";
-import { app } from "electron";
-import * as path from 'path';
-import * as fs from 'fs';
-import { addTorrentFile } from "./store/torrents/actions";
+import fs from 'fs';
+import { actions } from "./store";
 
+import path from 'path';
 interface IDispatch {
   (action: AnyAction): void;
 }
@@ -23,10 +22,10 @@ export default TorrentFileHandler;
 export class TorrentFileHandler {
   constructor(private dispatch: IDispatch) {
 
-    let filePath = findFilePath(process.argv);
-    if (filePath) {
-      this.handle(filePath);
-    }
+    // let filePath = findFilePath(process.argv);
+    // if (filePath) {
+    //   this.handle(filePath);
+    // }
   }
 
 
@@ -40,7 +39,7 @@ export class TorrentFileHandler {
     throw new Error('Not implemented');
   }
   handle(filePath: string) {
-    this.dispatch(addTorrentFile.request({ filePath }));
+    // this.dispatch(actions.addTorrentFile.request({ filePath }));
   }
 
 

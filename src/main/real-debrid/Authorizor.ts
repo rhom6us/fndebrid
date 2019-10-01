@@ -1,5 +1,6 @@
 import { makeUrl } from "./util";
 import { AuthorizatioInfo } from ".";
+import fetch, {Response} from 'node-fetch';
 
 export class Authorizor {
   constructor(private base: URL = new URL('https://api.real-debrid.com/oauth/v2/')) { }
@@ -33,6 +34,7 @@ export class Authorizor {
     const json: Pick<AuthorizatioInfo, 'access_token' | 'refresh_token'> = await response.json();
     return { ...json, client_id, client_secret };
   }
+
   static async getToken(callback: (url: string) => void) {
     const auth = new Authorizor();
     const client_id = 'X245A4XAIBGVM';

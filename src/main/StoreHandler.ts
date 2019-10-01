@@ -1,6 +1,7 @@
 import { Store, Unsubscribe } from "redux";
 
 import { ipcMain } from "electron";
+let a:string;
 
 interface Listener {
   (): void;
