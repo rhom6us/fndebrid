@@ -1,4 +1,4 @@
-import {app} from 'electron';
+// import {app} from 'electron';
 
 export default State;
 export type State = ({
@@ -20,7 +20,7 @@ export type State = ({
 }) 
 
 export const defaultState: State = {
-  downloadLocation: app.getPath('downloads'),
+  downloadLocation: '',// app.getPath('downloads'),
   torrentFilesAssociated: false,
   magnetLinksAssociated: false,
   autoDownloadTorrents: true,

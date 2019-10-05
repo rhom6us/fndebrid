@@ -47,7 +47,10 @@ function createAppIcon() {
     },{
       label: 'Show Debug Window',
       click() {
-        debugWindow = createDebugWindow();
+        if(!debugWindow){
+          debugWindow = createDebugWindow();
+        }
+        debugWindow.focus();
       }
     }, {
       label: 'Exit',
@@ -93,11 +96,14 @@ function createDebugWindow() {
   const window = new BrowserWindow({ webPreferences: { nodeIntegration: true } });
 
   if (isDevelopment) {
-    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/debug.html`);
+    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/?route=debug`);
   }
   else {
     window.loadURL(formatUrl({
-      pathname: path.join(__dirname, 'debug.html'),
+      pathname: path.join(__dirname, 'index.html'),
+      query:{
+        route: 'debug'
+      },
       protocol: 'file',
       slashes: true,
     }));

@@ -1,23 +1,47 @@
-import { createStore, applyMiddleware, compose, Reducer } from 'redux';
+import { createStore, applyMiddleware, compose, Reducer, Store, combineReducers, StoreEnhancer, StoreEnhancerStoreCreator } from 'redux';
 import { electronEnhancer } from 'redux-electron-store';
+import DevTools from './debug/DevTools';
 
-import DevTools from './containers/DevTools';
-import { State, RootAction } from '../main/store';
 
-const rootReducer:Reducer<State, RootAction> = (state, action) => state!;
+// const enhance: StoreEnhancer = (next:StoreEnhancerStoreCreator) => (reducer, initialstate) => {
+//   const str = next(reducer, initialstate)
+//   str.dispatch
+// };
 
-export default function configureStore(initialState?:State) {
-  const store = createStore(
-    rootReducer, // all reducers are in the main process
+namespace preferences {
+  const dlReducer = function (state: any = {}, { payload }: any) {
+    return { ...state, ...payload };
+  }
+
+  export const torrentsReducer = function (state = { files: [] }, action: any) {
+    return dlReducer(state, action);
+  }
+  export const preferencesReducer = function (state = { downloadLocation: 'default' }, action: any) {
+
+    switch (action.type) {
+      case 'INCREMENT':
+      case 'DECREMENT':
+      default:
+        return dlReducer(state, action);
+    }
+  }
+}
+
+// const rootReducer: Reducer<State, RootAction> = (state, action) => state!;
+let store: any;//Store<State>;
+export default function configureStore(initialState?: any): Store<any> {
+  return store || (store = createStore(
+    combineReducers({
+      preferences: preferences.preferencesReducer,
+      torrents: preferences.torrentsReducer
+    }), // all reducers are in the main process
     initialState,
     compose(
       // applyMiddleware(d1, d2, d3),
       electronEnhancer({
-        dispatchProxy: (a:any) => store.dispatch(a),
+        dispatchProxy: (a: any) => store.dispatch(a),
       }),
       DevTools.instrument()
     )
-  );
-
-  return store;
+  ));
 }
