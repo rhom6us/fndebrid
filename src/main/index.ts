@@ -5,6 +5,8 @@ import { app, BrowserWindow, dialog, Tray, Menu } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 import configureStore from './configureStore';
+import StoreHandler from './StoreHandler';
+import {alert, showArray} from './utils';
 // import * as myApp from './Application';
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -34,6 +36,7 @@ let debugWindow: BrowserWindow | null = null;
 //   });
 // }
 const store = configureStore();
+const handler = new StoreHandler(store);
 console.log(store);
 function createAppIcon() {
   appIcon = new Tray(path.join(__static, 'favicon-16x16.png'));
@@ -134,11 +137,3 @@ app.on('ready', () => {
   alert(process.argv0);
   appIcon = createAppIcon();
 })
-
-function alert(message: string) {
-  dialog.showMessageBox({ message });
-}
-
-function showArray(arr: string[]) {
-  arr.forEach(alert);
-}

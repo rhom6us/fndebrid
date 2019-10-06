@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose, Reducer, Store, combineReducers, StoreEnhancer, StoreEnhancerStoreCreator } from 'redux';
 import { electronEnhancer } from 'redux-electron-store';
 import DevTools from './debug/DevTools';
+import StoreProxy from './StoreProxy';
 
 
 // const enhance: StoreEnhancer = (next:StoreEnhancerStoreCreator) => (reducer, initialstate) => {
@@ -29,6 +30,7 @@ namespace preferences {
 
 // const rootReducer: Reducer<State, RootAction> = (state, action) => state!;
 let store: any;//Store<State>;
+store = new StoreProxy();
 export default function configureStore(initialState?: any): Store<any> {
   return store || (store = createStore(
     combineReducers({

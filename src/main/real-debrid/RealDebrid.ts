@@ -3,6 +3,7 @@ import { makeUrl } from "./util";
 import { Torrent } from '../store/torrents/state';
 import { TorrentId, LinkInfo } from './types';
 import fetch from 'node-fetch';
+import {alert} from '../utils';
 
 type fu = ReturnType<typeof fetch>;
 
@@ -58,10 +59,10 @@ export class RealDebrid {
     return await response.json();
   }
   async torrents(page = 1) : Promise<Omit<Torrent, 'files'>[]> {
-    const pageSize = 3;
+    const pageSize = 50;
 
     let [data, headers] = await this._get<Omit<Torrent, 'files'>[]>('torrents', { page, limit: pageSize.toString() }, true);
-    if((headers['X-Total-Count'][0] || 0) > (page * pageSize)){
+    if(((headers['x-total-count'] && headers['x-total-count'][0]) || 0) > (page * pageSize)){
       return [...data, ...(await this.torrents(page + 1))];
     }
     return data;

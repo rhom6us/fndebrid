@@ -5,12 +5,13 @@ import { shell } from 'electron'
 import { RealDebrid, Authorizor } from '../../real-debrid'
 import { getType, ActionType } from 'typesafe-actions'
 import { Yield, Memoize } from '../../../common/utils'
-
+import {alert} from '../../utils';
 
 class TokenContainer {
   @Memoize()
-  static getToken() {
-    return Authorizor.getToken((url: string) => shell.openExternal(url));
+  static async getToken() {
+    const result = await Authorizor.getToken((url: string) => shell.openExternal(url));
+    return result;
   }
 }
 const getToken = () => TokenContainer.getToken();
@@ -18,8 +19,11 @@ const getToken = () => TokenContainer.getToken();
 function* watchFetchRequest() {
   yield takeLatest(getType(fetchTorrents.request), function* () {
     try {
-      const api = new RealDebrid(yield call(getToken));
+      const token = yield call(getToken);
+
+      const api = new RealDebrid(token);
       const torrents: Yield<typeof api.torrents> = yield call([api, api.torrents]);
+
       yield put(fetchTorrents.success(torrents));
 
     } catch (err) {

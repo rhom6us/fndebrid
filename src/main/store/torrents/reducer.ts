@@ -11,7 +11,7 @@ import {State, defaultState } from './state';
 // }
 export default createReducer<State, ActionType<typeof actions>>(defaultState)
   .handleAction(actions.fetchTorrents.request, (state) => ({ ...state, loading: true }))
-  .handleAction(actions.fetchTorrents.success, (state, { payload: data }) => ({ ...state, loading: false, data }))
+  .handleAction(actions.fetchTorrents.success, (state, { payload: torrents }) => ({ ...state, loading: false, torrents }))
   .handleAction(actions.fetchTorrents.failure, (state, { payload: errors }) => ({ ...state, loading: false, errors }))
   // .handleAction(actions.fetchTorrents.cancel, () => { throw 'not supported'; })
   //.handleAction(actions.addMagnet.request, (state, { payload }) => ({ ...state }))

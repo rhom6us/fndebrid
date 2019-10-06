@@ -1,6 +1,7 @@
 import { makeUrl } from "./util";
 import { AuthorizatioInfo } from ".";
 import fetch, {Response} from 'node-fetch';
+import {alert} from '../utils';
 
 export class Authorizor {
   constructor(private base: URL = new URL('https://api.real-debrid.com/oauth/v2/')) { }
@@ -29,7 +30,7 @@ export class Authorizor {
     const response = await fetch(makeUrl(this.base, 'token'), {
       method: 'POST',
       headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ client_id, client_secret, code: device_code, crant_type: 'http://oauth.net/grant_type/device/1.0' })
+      body: new URLSearchParams({ client_id, client_secret, code: device_code, grant_type: 'http://oauth.net/grant_type/device/1.0' })
     });
     const json: Pick<AuthorizatioInfo, 'access_token' | 'refresh_token'> = await response.json();
     return { ...json, client_id, client_secret };
