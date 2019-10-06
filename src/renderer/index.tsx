@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {Router} from 'react-router-static';
 import Main from './main';
 import Debug from './debug';
+import { ThemeProvider } from './ThemeContext';
 // import configureStore from './configureStore';
 // import DevTools from './containers/DevTools';
 // import 'reset-css';
@@ -19,4 +20,4 @@ const routes = {
 
 
 
-ReactDOM.render(<Router routes={routes} />, document.getElementById('app'))
+ReactDOM.render(<ThemeProvider><Router routes={routes} /></ThemeProvider>, document.getElementById('app'))
