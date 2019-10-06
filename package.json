@@ -30,6 +30,7 @@
     "@types/redux-saga": "^0.10.5",
     "@types/uuid": "^3.4.5",
     "abort-controller": "^3.0.0",
+    "csp-html-webpack-plugin": "^3.0.3",
     "electron": "^6.0.10",
     "electron-builder": "^21.2.0",
     "electron-webpack": "^2.7.4",

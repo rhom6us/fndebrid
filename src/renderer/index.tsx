@@ -12,5 +12,11 @@ const routes = {
   debug: Debug,
 };
 
+// const meta = document.createElement('meta');
+// meta.httpEquiv = "ContentSecurityPolicy";
+// meta.content="default-src 'self'";
+// document.head.appendChild(meta);
+
+
 
 ReactDOM.render(<Router routes={routes} />, document.getElementById('app'))

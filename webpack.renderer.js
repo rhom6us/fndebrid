@@ -1,6 +1,6 @@
-
+const util = require('util');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const CspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 
 function addChunk(configuration, entry, renderer, addHtmlFile)  {
   configuration.entry[entry] = [
@@ -38,7 +38,6 @@ function addChunk(configuration, entry, renderer, addHtmlFile)  {
 // addChunk("login", "login.tsx", true);
 
 // module.exports = configuration;
-
 module.exports = function(context) {
   // Fix filename clash in MiniCssExtractPlugin
   context.plugins.forEach((plugin) => {
@@ -50,9 +49,18 @@ module.exports = function(context) {
       }
   });
 
+  context.plugins.push(
+    new CspHtmlWebpackPlugin({
+      "default-src":"'self'", 
+      "script-src":["'self'", "'unsafe-eval'"]
+    })
+  );
+
   // Add entrypoint for second renderer
   //context.entry.secondRenderer = ['./src/renderer/second-renderer.js'];
   //addChunk(context, 'debug', 'debug.tsx', false);
+  // console.log('\n\n\n\n\n', util.inspect(context, {colors:true}),'\n\n\n\n\n\n;')
+  // console.log('\n\n\n\n\n', JSON.stringify(context),'\n\n\n\n\n\n;')
   return context;
 };
 //
