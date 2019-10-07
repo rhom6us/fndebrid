@@ -6,7 +6,7 @@ import * as path from 'path'
 import { format as formatUrl } from 'url'
 import configureStore from './configureStore';
 import StoreHandler from './StoreHandler';
-import {alert, showArray} from './utils';
+import { alert, showArray } from './utils';
 // import * as myApp from './Application';
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -47,10 +47,10 @@ function createAppIcon() {
       click() {
         mainWindow = createMainWindow();
       }
-    },{
+    }, {
       label: 'Show Debug Window',
       click() {
-        if(!debugWindow){
+        if (!debugWindow) {
           debugWindow = createDebugWindow();
         }
         debugWindow.focus();
@@ -104,7 +104,7 @@ function createDebugWindow() {
   else {
     window.loadURL(formatUrl({
       pathname: path.join(__dirname, 'index.html'),
-      query:{
+      query: {
         route: 'debug'
       },
       protocol: 'file',
