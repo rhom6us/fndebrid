@@ -18,8 +18,6 @@ export class StoreProxy<S = any, A extends Action = AnyAction> implements Store<
   constructor() {
 
     ipcRenderer.on('store-update', () => {
-      
-      console.log(`replying to ${this.guid}`);
       this.listeners.forEach(listener => listener());
     });
     ipcRenderer.send('subscribe', this.guid);
@@ -37,10 +35,17 @@ export class StoreProxy<S = any, A extends Action = AnyAction> implements Store<
     }
   }
   dispatch<T extends A>(action: T) {
-    return ipcRenderer.sendSync('dispatch', (action));
+    return ipcRenderer.sendSync('dispatch', {action});
   }
   getState(): S {
     return ipcRenderer.sendSync('getState');
+  }
+  getStateAsync(){
+    return new Promise((resolve, reject) => {
+      const replyTo = uuid();
+      ipcRenderer.once(`getStateAsync-${replyTo}`, (event, {store})=> resolve(store));
+      ipcRenderer.send('getStateAsync', {replyTo});
+    });
   }
   replaceReducer(nextReducer: Reducer<S, A>): void {
     throw new Error("Method not supported.");
