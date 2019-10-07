@@ -28,7 +28,6 @@ const Wrapper = styled("div")`
 // `
 export default ({  }) => {
   const themeState = useTheme();
-  console.log({themeState});
   return (<>
   
     <Wrapper>

@@ -37,7 +37,6 @@ let debugWindow: BrowserWindow | null = null;
 // }
 const store = configureStore();
 const handler = new StoreHandler(store);
-console.log(store);
 function createAppIcon() {
   appIcon = new Tray(path.join(__static, 'favicon-16x16.png'));
   appIcon.setToolTip('real-debrid.com in the tray.');
