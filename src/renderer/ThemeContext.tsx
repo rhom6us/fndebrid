@@ -3,24 +3,17 @@ import { ThemeProvider as EmotionThemeProvider } from "emotion-theming";
 import styledInternal, { CreateStyled } from "@emotion/styled";
 import theme, { Theme } from "./theme";
 
-export interface ThemeContextProps {
-  dark: boolean;
-  toggle(): void;
-}
-export const ThemeContext = React.createContext<ThemeContextProps>({ dark: false, toggle:()=> { } });
+
+export const ThemeContext = React.createContext({ dark: false, toggle: () => { } });
 export const useTheme = () => React.useContext(ThemeContext);
 
-interface ThemeState {
-  dark: boolean;
-  hasThemeMounted: boolean;
-}
 
 function useThemeState() {
-  const [themeState, setThemeState] = React.useState<ThemeState>({ dark: false, hasThemeMounted: false });
+  const [themeState, setThemeState] = React.useState({ isDark: false, hasThemeMounted: false });
 
   React.useEffect(() => {
     setThemeState({
-      dark: JSON.parse(localStorage.getItem("dark")!),
+      isDark: JSON.parse(localStorage.getItem("dark")!),
       hasThemeMounted: true
     });
   }, []);
@@ -37,17 +30,16 @@ export const ThemeProvider: React.FC = ({ children }) => {
     return <div />;
   }
 
-  const computedTheme = themeState.dark ? theme("dark") : theme("light");
-  const toggle= () => {
-    const dark = !themeState.dark;
-    console.log({dark});
+  const computedTheme = themeState.isDark ? theme("dark") : theme("light");
+  const toggle = () => {
+    const dark = !themeState.isDark;
     localStorage.setItem("dark", JSON.stringify(dark));
-    setThemeState({ ...themeState, dark });
+    setThemeState({ ...themeState, isDark: dark });
   }
- 
+
   return (
     <EmotionThemeProvider theme={computedTheme}>
-      <ThemeContext.Provider value={{dark:themeState.dark, toggle}} >
+      <ThemeContext.Provider value={{ dark: themeState.isDark, toggle }} >
         {children}
       </ThemeContext.Provider>
     </EmotionThemeProvider>
