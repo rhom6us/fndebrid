@@ -1,11 +1,8 @@
-import { Store } from 'redux'
-import React from "react"
-import { Provider } from 'react-redux';
-import { useTheme, styled } from "../ThemeContext";
+import React from "react";
 import configureStore from '../configureStore';
-import Demo from './Demo';
 import DevTools from '../debug/DevTools';
-import { Theme } from '../theme';
+import { styled, useTheme } from "../ThemeContext";
+import Demo from './Demo';
 
 
 const store = configureStore();
@@ -26,22 +23,20 @@ const Wrapper = styled("div")`
 //   ${reset}
 //   /* other styles */
 // `
-export default ({  }) => {
+export default ({ }) => {
   const themeState = useTheme();
-  return (<>
-  
+  return (
+
     <Wrapper>
-      <Provider store={store}>
-        <h1>yee haw</h1>
-        <section><Demo />
-          <pre>{JSON.stringify(store.getState())}</pre></section>
-        <section><DevTools /></section>
-        <footer>
+      <h1>yee haw</h1>
+      <section><Demo />
+        <pre>{JSON.stringify(store.getState())}</pre></section>
+      <section><DevTools /></section>
+      <footer>
         <button onClick={() => themeState.toggle()}>
           {themeState.dark ? "Switch to Light Mode" : "Switch to Dark Mode"}
         </button>
-        </footer>
-      </Provider>
+      </footer>
     </Wrapper>
-  </>);
+  );
 }

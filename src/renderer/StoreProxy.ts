@@ -18,6 +18,7 @@ export class StoreProxy<S = any, A extends Action = AnyAction> implements Store<
   constructor() {
 
     ipcRenderer.on('store-update', () => {
+      console.log('store-update');
       this.listeners.forEach(listener => listener());
     });
     ipcRenderer.send('subscribe', this.guid);
@@ -35,10 +36,13 @@ export class StoreProxy<S = any, A extends Action = AnyAction> implements Store<
     }
   }
   dispatch<T extends A>(action: T) {
+    console.log({dispatch:action});
     return ipcRenderer.sendSync('dispatch', {action});
   }
   getState(): S {
-    return ipcRenderer.sendSync('getState');
+    const result = ipcRenderer.sendSync('getState');
+    console.log({getState: result});
+    return result;
   }
   getStateAsync(){
     return new Promise((resolve, reject) => {
