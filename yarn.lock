@@ -7602,8 +7602,9 @@ webpack-log@^2.0.0:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
 
-"webpack-match-plugin@file:../webpack-match-plugin":
-  version "1.0.0"
+webpack-match-plugin@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/webpack-match-plugin/-/webpack-match-plugin-1.0.3.tgz#bd7dcda04cfde86569bfb15f2b79901461a02efe"
   dependencies:
     webpack "^4.41.0"
 

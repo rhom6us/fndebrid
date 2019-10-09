@@ -74,6 +74,6 @@
     "url-loader": "^2.2.0",
     "webpack": "^4.41.0",
     "webpack-dev-server": "^3.8.2",
-    "webpack-match-plugin": "file:../webpack-match-plugin"
+    "webpack-match-plugin": "^1.0.3"
   }
 }
