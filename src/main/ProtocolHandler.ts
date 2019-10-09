@@ -3,6 +3,7 @@ import { app } from "electron";
 import path from 'path';
 import { addMagnet } from "./store/torrents";
 
+import {Dispatcher, dispatcher} from './dispatcher';
 interface IDispatch {
   (action: AnyAction): void;
 }
@@ -25,9 +26,8 @@ function findProtocolArg(argv: string[]): string | undefined {
 }
 
 
-export default ProtocolHandler;
 export class ProtocolHandler {
-  constructor(private dispatch: IDispatch) {
+  constructor(private dispatcher: Dispatcher) {
 
     this.init();
 
@@ -84,8 +84,10 @@ export class ProtocolHandler {
     return app.isDefaultProtocolClient(protocol);
   }
   handle(magnetLink: string) {
-    this.dispatch(addMagnet.request({ magnetLink }));
+    this.dispatcher.addMagnet.request({ magnetLink });
   }
 
 
 }
+
+export default ProtocolHandler;

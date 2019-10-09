@@ -1,8 +1,12 @@
 import { createAction, ActionType, createAsyncAction } from "typesafe-actions";
 import State from './state';
+import {AsyncActionCreator, createBetterAsyncAction} from '../better-async-creator';
 // import { createBetterAsyncAction as createAsyncAction } from "../better-async-creator";
 
-
+export const chooseDownloadLocation = createAction(  'preferences/choose-download-location/request', action =>
+  () => action()
+);
+  
 export const setPreferences = createAction('preferences/set-preferences', action =>
   (preferences: Partial<Omit<State, 'associateTorrentFiles' | 'associateMagnetLinks' | 'autoSelectFiles' | 'fileWhiteList' | 'fileBlackList'>>) => action(preferences)
 );

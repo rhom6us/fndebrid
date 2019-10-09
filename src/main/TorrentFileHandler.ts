@@ -1,4 +1,5 @@
 import { Action, AnyAction } from "redux";
+import {Dispatcher, dispatcher} from './dispatcher';
 import fs from 'fs';
 
 import path from 'path';
@@ -17,9 +18,8 @@ function findFilePath(argv: string[]): string | undefined {
 }
 
 
-export default TorrentFileHandler;
 export class TorrentFileHandler {
-  constructor(private dispatch: IDispatch) {
+  constructor(private dispatcher: Dispatcher) {
 
     // let filePath = findFilePath(process.argv);
     // if (filePath) {
@@ -29,17 +29,18 @@ export class TorrentFileHandler {
 
 
   get isAssociated(): boolean {
-    throw new Error('Not implemented');
+    return false;
   }
-  associate(): boolean {
-    throw new Error('Not implemented');
+  associate(): void {
   }
-  disassociate(): boolean {
-    throw new Error('Not implemented');
+  disassociate(): void {
   }
   handle(filePath: string) {
-    // this.dispatch(actions.addTorrentFile.request({ filePath }));
+    this.dispatcher.addTorrentFile.request({ filePath });
   }
 
 
 }
+
+
+export default TorrentFileHandler;

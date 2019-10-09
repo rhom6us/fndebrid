@@ -5,6 +5,7 @@
     "noUnusedParameters": false,
     "jsx": "react",
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "suppressImplicitAnyIndexErrors": false
   }
 }
