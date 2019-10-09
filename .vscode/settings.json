@@ -1,6 +1,6 @@
 {
   "files.exclude": {
-    ".gitignore": true,
+    ".gitignore": false,
     "dist/": true,
     "node_modules/": true,
     "package-lock.json": true,

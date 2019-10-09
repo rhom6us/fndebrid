@@ -16,7 +16,8 @@
       "outFiles": [
           "${workspaceRoot}/dist/**/*.js"
       ],
-      "skipFiles": ["node_modules/**", "<node_internals>/Events.js"]
+      "skipFiles": ["node_modules/**", "<node_internals>/Events.js"],
+      "postDebugTask": "killzor"
   },
   {
     "name": "Electron: Renderer",
