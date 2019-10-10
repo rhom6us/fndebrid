@@ -8,7 +8,7 @@
       "command": "powershell.exe -encodedCommand dwBtAGkAYwAgAFAAYQB0AGgAIAB3AGkAbgAzADIAXwBwAHIAbwBjAGUAcwBzACAAVwBoAGUAcgBlACAAIgBDAG8AbQBtAGEAbgBkAEwAaQBuAGUAIABMAGkAawBlACAAJwAlAHcAZQBiAHAAYQBjAGsALQBkAGUAdgAtAHMAZQByAHYAZQByACUAJwAiACAAQwBhAGwAbAAgAFQAZQByAG0AaQBuAGEAdABlAA==",
       "type": "shell",
       "group": "build",
-      "isBackground": true
+      "isBackground": false
     },
     {
       "type": "npm",

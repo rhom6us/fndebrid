@@ -3,7 +3,7 @@ import dispatcher from '../../dispatcher';
 import ProtocolHandler from '../../ProtocolHandler';
 import TorrentFileHandler from '../../TorrentFileHandler';
 import { app, dialog, BrowserWindow } from 'electron';
-import { Yield } from '../../../common/utils';
+import { Yield } from '../../../common';
 // import { protocolHandler, torrentFileHandler } from '../../Application';
 
 function* watch_chooseDownloadLocation_request() {
@@ -29,7 +29,7 @@ function* watchAssociateTorrentsRequest() {
   });
 }
 function* watchAssociateMagnetRequest() {
-  const protocolHandler = new ProtocolHandler(dispatcher);
+  const protocolHandler = new ProtocolHandler();
   yield takeLatest(dispatcher.associateMagnetLinks.request, function* ({ payload: { associateMagnetLinks } }) {
     if (associateMagnetLinks && !protocolHandler.isAssociated) {
       protocolHandler.associate();

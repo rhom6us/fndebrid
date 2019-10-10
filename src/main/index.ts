@@ -5,7 +5,8 @@ import * as path from 'path'
 import { format as formatUrl } from 'url'
 import configureStore from './configureStore';
 import StoreHandler from './StoreHandler';
-import { alert, killElectronWebpackDevServer } from './utils';
+import { alert, killElectronWebpackDevServer, showArray } from './utils';
+import dispatcher from './dispatcher';
 // import * as myApp from './Application';
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -21,18 +22,22 @@ const windows: { [route: string]: BrowserWindow } = {};
 // }
 
 
-// const singleInstanceLock = app.requestSingleInstanceLock();
-// if (!singleInstanceLock) {
-//   // logger.info(`main: got the lock hence closing the new instance`, { gotTheLock });
-//   app.exit();
-// } else {
-//   // logger.info(`main: Creating the first instance of the application`);
-//   app.on('second-instance', (_event, argv) => {
-//     showArray(argv);
-//   });
-// }
 const store = configureStore();
 const handler = new StoreHandler(store);
+const singleInstanceLock = app.requestSingleInstanceLock();
+if (!singleInstanceLock) {
+  // logger.info(`main: got the lock hence closing the new instance`, { gotTheLock });
+  app.exit();
+} else {
+  // logger.info(`main: Creating the first instance of the application`);
+  app.on('second-instance', (_event, argv) => {
+    const magnetLink = argv.filter(p => p.startsWith('magnet:'))[0];
+    if(magnetLink){
+      
+      store.dispatch(dispatcher.addMagnet.request({ magnetLink }));
+    }
+  });
+}
 function createAppIcon() {
   appIcon = new Tray(path.join(__static, 'favicon-16x16.png'));
   appIcon.setToolTip('real-debrid.com in the tray.');

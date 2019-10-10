@@ -17,7 +17,8 @@
           "${workspaceRoot}/dist/**/*.js"
       ],
       "skipFiles": ["node_modules/**", "<node_internals>/Events.js"],
-      "postDebugTask": "killzor"
+      "postDebugTask": "killzor",
+      "timeout": 1000000
   },
   {
     "name": "Electron: Renderer",

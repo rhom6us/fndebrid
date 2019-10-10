@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import configureStore from './configureStore';
 import { useTheme, ThemeProvider } from './ThemeContext';
 
-
 const store = configureStore();
 
 

@@ -8,7 +8,7 @@
 
   "renderer": {
     "sourceDirectory": "src/renderer",
-    "webpackConfig": "webpack.renderer.js"
+    "webpackConfig": "config/webpack.renderer.js"
   },
   "whiteListedModules": ["react-redux"]
 }
