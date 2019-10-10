@@ -1,8 +1,9 @@
 import { Action, AnyAction } from "redux";
-import {Dispatcher, dispatcher} from './dispatcher';
+import { Dispatcher, dispatcher } from './dispatcher';
 import fs from 'fs';
-
+import Registry from 'winreg';
 import path from 'path';
+
 interface IDispatch {
   (action: AnyAction): void;
 }
@@ -15,6 +16,24 @@ function findFilePath(argv: string[]): string | undefined {
     throw new Error('multiple protocol matches found in argv. Don\'t know what to do...');
   }
   return matches[0];
+}
+
+function setDefaultReg(key: string, value: string) {
+  return new Promise((resolve, reject) => {
+    new Registry({
+      hive: Registry.HKCU,
+      key: key.replace('/', '\\')
+    }).set(
+      Registry.DEFAULT_VALUE, Registry.REG_SZ, 'value',
+      error => error ? reject(error) : resolve()
+    );
+  });
+}
+
+async function setReg(ns: string, ext: string, execPath: string) {
+
+  await setDefaultReg(`/Software/Classes/${ns}/shell/open/command`, `${execPath} "%1"`);
+  await setDefaultReg(`/Software/Classes/.${ext.replace(/^\./, '')}`, ns);
 }
 
 
@@ -31,7 +50,8 @@ export class TorrentFileHandler {
   get isAssociated(): boolean {
     return false;
   }
-  associate(): void {
+  associate() {
+    return setReg(`butlersoftware.fn-debrid.v1`, '.torrent', process.execPath);
   }
   disassociate(): void {
   }
