@@ -1,11 +1,12 @@
 // import {app} from 'electron';
 
 export default State;
+export type AutoDeleteTorrentFileOption = 'never' | 'torrent_added' | 'torrent_completed' | 'download_completed';
 export type State = ({
   readonly torrentFilesAssociated: boolean,
   readonly magnetLinksAssociated: boolean,
   readonly autoDeleteServer: boolean,
-  readonly autoDeleteTorrentFile: 'never' | 'torrent_added' | 'torrent_completed' | 'download_completed',
+  readonly autoDeleteTorrentFile: AutoDeleteTorrentFileOption,
   readonly fileWhiteList: readonly string[],
   readonly fileBlackList: readonly string[],
   readonly autoDownloadTorrents: boolean,
