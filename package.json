@@ -11,10 +11,13 @@
     "build": "webpack"
   },
   "dependencies": {
+    "@blueprintjs/core": "^3.19.1",
+    "@blueprintjs/icons": "^3.11.0",
     "@emotion/core": "^10.0.21",
     "@emotion/styled": "^10.0.17",
     "emotion-theming": "^10.0.19",
     "lodash": "^4.17.15",
+    "normalize.css": "^8.0.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-redux": "^7.1.1",
@@ -60,6 +63,7 @@
     "node-loader": "^0.6.0",
     "node-powershell": "^4.0.0",
     "node-sass": "^4.12.0",
+    "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "redux-devtools": "^3.5.0",
     "redux-devtools-dock-monitor": "^1.1.3",

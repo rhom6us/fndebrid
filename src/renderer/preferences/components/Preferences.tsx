@@ -69,10 +69,7 @@ const mapStateToProps: MapStateToProps<IStateProps, IOwnProps, State> = function
   };
 }
 const mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IOwnProps> = function (dispatch, ownProps) {
-  let fu:Promisified<typeof dispatcher.associateMagnetLinks.request> = ({associateMagnetLinks}) => dispatch(dispatcher.associateMagnetLinks.request({associateMagnetLinks}));
-  if(fu){
-    console.log(fu())
-  }
+
   return {
     setDownloadLocation() {
       dispatch(dispatcher.chooseDownloadLocation());
