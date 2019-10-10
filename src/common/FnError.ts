@@ -12,3 +12,4 @@ export class FnError extends Error {
 
 export class OperationFailedError extends FnError {}
 export class InvalidOperationError extends FnError {}
+export class UnexpectedStateError extends FnError {}

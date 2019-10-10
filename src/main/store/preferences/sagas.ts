@@ -1,7 +1,7 @@
-import { all, fork, takeLatest, put } from "redux-saga/effects";
+import { all, fork, takeLatest, put, call } from "redux-saga/effects";
 import dispatcher from '../../dispatcher';
 import ProtocolHandler from '../../ProtocolHandler';
-import TorrentFileHandler from '../../TorrentFileHandler';
+import torrentFileHandler from '../../torrent-file-associator';
 import { app, dialog, BrowserWindow } from 'electron';
 import { Yield } from '../../../common';
 // import { protocolHandler, torrentFileHandler } from '../../Application';
@@ -17,15 +17,15 @@ function* watch_chooseDownloadLocation_request() {
 
 
 function* watchAssociateTorrentsRequest() {
-  const torrentFileHandler = new TorrentFileHandler(dispatcher);
   yield takeLatest(dispatcher.associateTorrentFiles.request, function* ({ payload: associateTorrentFiles }) {
-    if (associateTorrentFiles && !torrentFileHandler.isAssociated) {
-      torrentFileHandler.associate();
+    if (associateTorrentFiles) {
+      yield call([torrentFileHandler, torrentFileHandler.associate]);
     }
-    if (!associateTorrentFiles && torrentFileHandler.isAssociated) {
-      torrentFileHandler.disassociate();
+    if (!associateTorrentFiles) {
+      yield call([torrentFileHandler, torrentFileHandler.disassociate]);
     }
-    yield put(dispatcher.associateTorrentFiles.success(torrentFileHandler.isAssociated));
+    const worked: Yield<typeof torrentFileHandler.isAssociated> = yield call([torrentFileHandler, torrentFileHandler.isAssociated]);
+    yield put(dispatcher.associateTorrentFiles.success(worked));
   });
 }
 function* watchAssociateMagnetRequest() {
