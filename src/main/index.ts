@@ -62,11 +62,11 @@ function createAppIcon() {
   return appIcon;
 }
 
-function createWindow(route: 'Main' | 'Debug' | 'Preferences', devTools: boolean = isDev): void {
+function createWindow(route: 'Main' | 'Debug' | 'Preferences' | 'FileSelect', options: Electron.BrowserWindowConstructorOptions = {}, devTools: boolean = isDev): void {
   if (windows[route]) {
     return windows[route].focus();
   }
-  const window = new BrowserWindow({ webPreferences: { nodeIntegration: true } });
+  const window = new BrowserWindow({ webPreferences: { nodeIntegration: true }, ...options });
 
   if (devTools) {
     window.webContents.openDevTools();

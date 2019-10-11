@@ -6,6 +6,7 @@ import Main from './main';
 import { Preferences } from './preferences';
 import Root from './Root';
 import './global.scss';
+import FileSelect from './select-files';
 // function addStyle(url: string) {
 //   const style1 = document.createElement(('link'));
 //   style1.href = url;
@@ -15,4 +16,4 @@ import './global.scss';
 // addStyle("https://unpkg.com/normalize.css@^7.0.0");
 // addStyle("https://unpkg.com/@blueprintjs/icons@^3.4.0/lib/css/blueprint-icons.css" );
 // addStyle("https://unpkg.com/@blueprintjs/core@^3.10.0/lib/css/blueprint.css");
-ReactDOM.render(<Root><Router routes={{ Main, Preferences, Debug }} /></Root>, document.getElementById('app'));
+ReactDOM.render(<Root><Router routes={{ Main, Preferences, Debug, FileSelect }} /></Root>, document.getElementById('app'));
