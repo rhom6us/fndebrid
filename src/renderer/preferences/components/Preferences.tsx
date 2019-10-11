@@ -1,42 +1,29 @@
 import { remote } from 'electron';
 import React, { useEffect } from 'react';
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import dispatcher from "../../../main/dispatcher";
 import { State } from '../../../main/store';
 import { PreferencesState } from '../../../main/store/preferences';
-import { RadioGroup, Radio, Switch, TagInput, Button } from '@blueprintjs/core';
+import { RadioGroup, Radio, Switch, TagInput, Button, Classes, FormGroup, ControlGroup, InputGroup } from '@blueprintjs/core';
 import { handleStringChange, handleBooleanChange } from '../../helpers';
+import { ActionCreator, TypeConstant } from 'typesafe-actions';
+import { getDispatcher } from '../../../main/dispatcher';
 const app = remote.app;
 interface IOwnProps { }
 type IStateProps = PreferencesState;
 interface IDispatchProps {
-  setDownloadLocation(): void;
+  chooseDownloadLocation(): void;
   setDefaultDownloadLocation(): void;
   associateMagnetLinks(associate: boolean): void;
   associateTorrentFiles(associate: boolean): void;
   setAutoDeleteServer(autoDeleteServer: boolean): void;
   setAutoDownloadTorrents(autoDownloadTorrents: boolean): void;
   setAutoSubmitAutoSelectedFiles(autoSubmitAutoSelectedFiles: boolean): void;
-  addWhiteListFile(file: string): void;
-  removeWhiteListFile(file: string): void;
-  addBlackListFile(file: string): void;
-  removeBlackListFile(file: string): void;
+  setWhiteList(files: string[]): void;
+  setBlackList(files: string[]): void;
   setAutoDeleteTorrentFile(autoDeleteTorrentFile: 'never' | 'torrent_added' | 'torrent_completed' | 'download_completed'): void;
   setAutoSelectFiles(autoSelectFiles: 'none' | 'all_files' | 'largest_files' | 'pattern', pattern?: string): void;
 
 }
-
-// type Parameters<T> = T extends (... args: infer T) => any ? T : never; 
-type Promisified<T extends (...args: any[]) => void> = (...args: Parameters<T>) => void;
-
-
-export type Mapped<U extends { [key: string]: (...args: any[]) => any }> = {
-  [N in keyof U]: Promisified<U[N]>
-}
-let acts = {
-  a: (b: string) => ({ type: 'asdf' })
-}
-let bar!: Mapped<typeof acts>;
 
 export type Props = IOwnProps & IStateProps & IDispatchProps;
 export const Preferences: React.FC<Props> = (props) => {
@@ -48,25 +35,14 @@ export const Preferences: React.FC<Props> = (props) => {
   });
   return (
     <section>
-      <div>
-        <label>
-          DownloadLocation
-        <input type="input" readOnly value={props.downloadLocation} />
-          <button onClick={props.setDownloadLocation}>Choose</button>
-        </label>
-      </div>
-      <div>
-        <label>
-          Associate Magnet Links
-        <input type="checkbox" checked={props.magnetLinksAssociated} onChange={(e) => props.associateMagnetLinks(e.target.checked)} />
-        </label>
-      </div>
-      <div>
-        <label>
-          Associate Torrent Files
-        <input type="checkbox" checked={props.torrentFilesAssociated} onChange={(e) => props.associateTorrentFiles(e.target.checked)} />
-        </label>
-      </div>
+      <FormGroup label="Download Location">
+        <ControlGroup fill={true} vertical={false}>
+          <InputGroup readOnly value={props.downloadLocation} />
+          <Button icon="filter" onClick={props.chooseDownloadLocation}>Choose</Button>
+        </ControlGroup>
+      </FormGroup>
+      <Switch checked={props.magnetLinksAssociated} label="Associate Magnet Links" onChange={handleBooleanChange(value => props.associateMagnetLinks(value))} />
+      <Switch checked={props.torrentFilesAssociated} label="Associate Torrent Files" onChange={handleBooleanChange(value => props.associateTorrentFiles(value))} />
       <RadioGroup
         label="Delete torrent file"
         onChange={handleStringChange(value => props.setAutoDeleteTorrentFile(value as any))}
@@ -78,16 +54,32 @@ export const Preferences: React.FC<Props> = (props) => {
       </RadioGroup>
       <Switch checked={props.autoDownloadTorrents} label="Automatically download torrents as soon as they are complete" onChange={handleBooleanChange(value => props.setAutoDownloadTorrents(value))} />
       <Switch checked={props.autoDeleteServer} label="Delete torrent from real-debrid.com after download is complete" onChange={handleBooleanChange(value => props.setAutoDeleteServer(value))} />
-      <TagInput
-      addOnBlur={true}
-      addOnPaste={true}
-       rightElement={<Button
-                icon="cross"
-                minimal={true}
-            />}
-            values={props.fileWhiteList as any[]}
-            onChange={((values:string[]) => props.addWhiteListFile(values[values.length-1])) as any}
-            ></TagInput>
+
+      <FormGroup label="Always include files matching any of these patterns:" helperText="helper text" labelInfo="labelInfo">
+        <TagInput className={Classes.FILL}
+          addOnBlur={true}
+          addOnPaste={true}
+          rightElement={<Button
+            icon="cross"
+            minimal={true}
+          />}
+          values={[...props.fileWhiteList]}
+          onChange={((values: string[]) => props.setWhiteList(values)) as any}
+        />
+      </FormGroup>
+
+      <FormGroup label="Always exclude files matching any of these patterns:" helperText="helper text" labelInfo="labelInfo">
+        <TagInput className={Classes.FILL}
+          addOnBlur={true}
+          addOnPaste={true}
+          rightElement={<Button
+            icon="cross"
+            minimal={true}
+          />}
+          values={[...props.fileBlackList]}
+          onChange={props.setBlackList as any}
+        />
+      </FormGroup>
     </section>
   )
 }
@@ -100,51 +92,24 @@ const mapStateToProps: MapStateToProps<IStateProps, IOwnProps, State> = function
   // };
 }
 const mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IOwnProps> = function (dispatch, ownProps) {
-
+  const dispatcher = getDispatcher(dispatch);
   return {
-    setDownloadLocation() {
-      dispatch(dispatcher.chooseDownloadLocation());
-    },
-    setDefaultDownloadLocation() {
-      dispatch(dispatcher.setPreferences({ downloadLocation: app.getPath('downloads') }))
-    },
-    associateMagnetLinks(associateMagnetLinks) {
-      dispatch(dispatcher.associateMagnetLinks.request({ associateMagnetLinks }));
-    },
-    associateTorrentFiles(associate) {
-      dispatch(dispatcher.associateTorrentFiles.request(associate));
-    },
-    addBlackListFile(file) {
-      dispatch(dispatcher.blackListFile(file));
-    },
-    addWhiteListFile(file) {
-      dispatch(dispatcher.whiteListFile(file));
-    },
-    removeBlackListFile(file) {
-      dispatch(dispatcher.unBlackListFile(file));
-    },
-    removeWhiteListFile(file) {
-      dispatch(dispatcher.unWhiteListFile(file));
-    },
-    setAutoDeleteServer(autoDeleteServer) {
-      dispatch(dispatcher.setPreferences({ autoDeleteServer }));
-    },
-    setAutoDeleteTorrentFile(autoDeleteTorrentFile) {
-      dispatch(dispatcher.setPreferences({ autoDeleteTorrentFile }));
-    },
-    setAutoDownloadTorrents(autoDownloadTorrents) {
-      dispatch(dispatcher.setPreferences({ autoDownloadTorrents }));
-    },
+    chooseDownloadLocation: () => dispatcher.chooseDownloadLocation(),
+    setDefaultDownloadLocation: () => dispatcher.setPreferences({ downloadLocation: app.getPath('downloads') }),
+    associateMagnetLinks: (associateMagnetLinks) => dispatcher.associateMagnetLinks.request({ associateMagnetLinks }),
+    associateTorrentFiles: (associateTorrentFiles) => dispatcher.associateTorrentFiles.request(associateTorrentFiles),
+    setWhiteList: fileWhiteList => dispatcher.setPreferences({ fileWhiteList }),
+    setBlackList: fileBlackList => dispatcher.setPreferences({ fileBlackList }),
+    setAutoDeleteServer: (autoDeleteServer) => dispatcher.setPreferences({ autoDeleteServer }),
+    setAutoDeleteTorrentFile: (autoDeleteTorrentFile) => dispatcher.setPreferences({ autoDeleteTorrentFile }),
+    setAutoDownloadTorrents: (autoDownloadTorrents) => dispatcher.setPreferences({ autoDownloadTorrents }),
     setAutoSelectFiles(autoSelectFiles, pattern) {
       if (autoSelectFiles == 'pattern')
-        return dispatch(dispatcher.setAutoSelectFilesPattern(pattern!));
+        return dispatcher.setAutoSelectFilesPattern(pattern!);
 
-      return dispatch(dispatcher.setAutoSelectFiles(autoSelectFiles));
+      return dispatcher.setAutoSelectFiles(autoSelectFiles);
     },
-
-    setAutoSubmitAutoSelectedFiles(autoSubmitAutoSelectedFiles) {
-      dispatch(dispatcher.setPreferences({ autoSubmitAutoSelectedFiles }));
-    },
+    setAutoSubmitAutoSelectedFiles: autoSubmitAutoSelectedFiles => dispatcher.setPreferences({ autoSubmitAutoSelectedFiles }),
 
 
   }

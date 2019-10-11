@@ -8,7 +8,7 @@ export const chooseDownloadLocation = createAction(  'preferences/choose-downloa
 );
   
 export const setPreferences = createAction('preferences/set-preferences', action =>
-(preferences: Partial<Omit<State, 'associateTorrentFiles' | 'associateMagnetLinks' | 'autoSelectFiles' | 'fileWhiteList' | 'fileBlackList'>>) => action(preferences)
+(preferences: Partial<Omit<State, 'associateTorrentFiles' | 'associateMagnetLinks' | 'autoSelectFiles' /*| 'fileWhiteList' | 'fileBlackList'*/>>) => action(preferences)
 );
 export const whiteListFile = createAction('preferences/whitelist-file', action =>
   (file: string) => action({file})

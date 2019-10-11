@@ -6,6 +6,7 @@
     /** my settings */
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    
     "jsx": "react",
     "emitDecoratorMetadata": false,
     "skipLibCheck": true,

@@ -1,4 +1,4 @@
-import { State, RootAction } from "../../main/store";
+import { State, Action } from "../../main/store";
 import * as actions from "../../main/store/actions";
 import React, { useState } from "react";
 import { Dispatch } from "redux";

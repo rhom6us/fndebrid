@@ -1,23 +1,23 @@
 import { all, fork, takeLatest, put, call } from "redux-saga/effects";
-import dispatcher from '../../dispatcher';
 import ProtocolHandler from '../../ProtocolHandler';
 import torrentFileHandler from '../../torrent-file-associator';
 import { app, dialog, BrowserWindow } from 'electron';
 import { Yield } from '../../../common';
+import * as actions from './actions';
 // import { protocolHandler, torrentFileHandler } from '../../Application';
 
 function* watch_chooseDownloadLocation_request() {
-  yield takeLatest(dispatcher.chooseDownloadLocation, function* () {
+  yield takeLatest(actions.chooseDownloadLocation, function* () {
     const result: Yield<typeof dialog.showOpenDialog> = yield dialog.showOpenDialog(BrowserWindow.getFocusedWindow()!, { properties: ['openDirectory'] });
     if (!result.canceled && result.filePaths && result.filePaths.length) {
-      yield put(dispatcher.setPreferences({ downloadLocation: result.filePaths[0] }));
+      yield put(actions.setPreferences({ downloadLocation: result.filePaths[0] }));
     }
   })
 }
 
 
 function* watchAssociateTorrentsRequest() {
-  yield takeLatest(dispatcher.associateTorrentFiles.request, function* ({ payload: associateTorrentFiles }) {
+  yield takeLatest(actions.associateTorrentFiles.request, function* ({ payload: associateTorrentFiles }) {
     if (associateTorrentFiles) {
       yield call([torrentFileHandler, torrentFileHandler.associate]);
     }
@@ -25,19 +25,19 @@ function* watchAssociateTorrentsRequest() {
       yield call([torrentFileHandler, torrentFileHandler.disassociate]);
     }
     const worked: Yield<typeof torrentFileHandler.isAssociated> = yield call([torrentFileHandler, torrentFileHandler.isAssociated]);
-    yield put(dispatcher.associateTorrentFiles.success(worked));
+    yield put(actions.associateTorrentFiles.success(worked));
   });
 }
 function* watchAssociateMagnetRequest() {
   const protocolHandler = new ProtocolHandler();
-  yield takeLatest(dispatcher.associateMagnetLinks.request, function* ({ payload: { associateMagnetLinks } }) {
+  yield takeLatest(actions.associateMagnetLinks.request, function* ({ payload: { associateMagnetLinks } }) {
     if (associateMagnetLinks && !protocolHandler.isAssociated) {
       protocolHandler.associate();
     }
     if (!associateMagnetLinks && protocolHandler.isAssociated) {
       protocolHandler.disassociate();
     }
-    yield put(dispatcher.associateMagnetLinks.success({ magnetLinksAssociated: protocolHandler.isAssociated }));
+    yield put(actions.associateMagnetLinks.success({ magnetLinksAssociated: protocolHandler.isAssociated }));
   });
 }
 

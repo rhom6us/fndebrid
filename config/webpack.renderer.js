@@ -2,14 +2,16 @@ const util = require('util');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { cssLoader, postcssLoader, sassLoader, cssHotLoader, cssModuleLoader, cssHotModuleLoader, fontLoader, fileLoader } = require('./loaders');
+const Dotenv = require('dotenv-webpack');
 
+const { cssLoader, postcssLoader, sassLoader, cssHotLoader, cssModuleLoader, cssHotModuleLoader, fontLoader, fileLoader } = require('./loaders');
 
 
 const isDev = process.env.NODE_ENV === "development";
 
 // module.exports = configuration;
 module.exports = function (context) {
+  context.plugins.push(new Dotenv());
   // Fix filename clash in MiniCssExtractPlugin
   context.plugins.forEach((plugin) => {
     if (plugin.constructor.name === "MiniCssExtractPlugin") {

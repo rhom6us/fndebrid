@@ -2,11 +2,10 @@
 import { shell } from 'electron';
 import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { ActionType, getType } from 'typesafe-actions';
-
-import { Authorizor, RealDebrid } from '../../real-debrid';
-import { alert } from '../../utils';
-import { addMagnet, fetchTorrents } from './actions';
 import { Memoize, Yield } from '../../../common';
+import { Authorizor, RealDebrid } from '../../real-debrid';
+import { addMagnet, fetchTorrents } from './actions';
+
 
 class TokenContainer {
   @Memoize()

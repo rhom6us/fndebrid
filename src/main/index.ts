@@ -4,13 +4,13 @@ import { app, BrowserWindow, dialog, Tray, Menu, MenuItem } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 import configureStore from './configureStore';
-import StoreHandler from './StoreHandler';
 import { alert, killElectronWebpackDevServer, showArray } from './utils';
-import dispatcher from './dispatcher';
+import { getDispatcher } from './dispatcher';
 // import * as myApp from './Application';
-const isDevelopment = process.env.NODE_ENV !== 'production'
-
+const isDev = process.env.NODE_ENV !== 'production'
+const DEBUG = process.env.DEBUG;
 let appIcon: Tray | undefined;
+
 const windows: { [route: string]: BrowserWindow } = {};
 
 // if (process.defaultApp) {
@@ -23,21 +23,24 @@ const windows: { [route: string]: BrowserWindow } = {};
 
 
 const store = configureStore();
-const handler = new StoreHandler(store);
-const singleInstanceLock = app.requestSingleInstanceLock();
-if (!singleInstanceLock) {
-  // logger.info(`main: got the lock hence closing the new instance`, { gotTheLock });
-  app.exit();
-} else {
-  // logger.info(`main: Creating the first instance of the application`);
-  app.on('second-instance', (_event, argv) => {
-    const magnetLink = argv.filter(p => p.startsWith('magnet:'))[0];
-    if(magnetLink){
-      
-      store.dispatch(dispatcher.addMagnet.request({ magnetLink }));
-    }
-  });
-}
+const dispatcher = getDispatcher(store);
+(function handleSecondInstance() {
+  const singleInstanceLock = app.requestSingleInstanceLock();
+  if (!singleInstanceLock) {
+    // logger.info(`main: got the lock hence closing the new instance`, { gotTheLock });
+    app.exit();
+  } else {
+    // logger.info(`main: Creating the first instance of the application`);
+    app.on('second-instance', (_event, argv) => {
+      const magnetLink = argv.filter(p => p.startsWith('magnet:'))[0];
+      if (magnetLink) {
+
+        dispatcher.addMagnet.request({ magnetLink });
+      }
+    });
+  }
+}());
+
 function createAppIcon() {
   appIcon = new Tray(path.join(__static, 'favicon-16x16.png'));
   appIcon.setToolTip('real-debrid.com in the tray.');
@@ -59,7 +62,7 @@ function createAppIcon() {
   return appIcon;
 }
 
-function createWindow(route: string, devTools: boolean = isDevelopment): void {
+function createWindow(route: 'Main' | 'Debug' | 'Preferences', devTools: boolean = isDev): void {
   if (windows[route]) {
     return windows[route].focus();
   }
@@ -69,7 +72,7 @@ function createWindow(route: string, devTools: boolean = isDevelopment): void {
     window.webContents.openDevTools();
   }
 
-  if (isDevelopment) {
+  if (isDev) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}/?route=${route}`);
   }
   else {
@@ -90,7 +93,11 @@ function createWindow(route: string, devTools: boolean = isDevelopment): void {
 
 
 app.on('window-all-closed', () => {
-  // without this empty handler the app will default to quitting.
+  /* without this empty handler the app will default to quitting. */
+
+  if (DEBUG) {
+    app.quit();
+  }
 })
 
 app.on('activate', () => {
@@ -100,15 +107,9 @@ app.on('activate', () => {
   }
 })
 
-// create main BrowserWindow when electron is ready
 app.on('ready', () => {
-  // showArray(process.argv);
-  alert(process.argv0);
   appIcon = createAppIcon();
+  if (DEBUG) {
+    createWindow('Preferences');
+  }
 })
-// app.on('quit', async (e) => {
-//   if (isDevelopment) {
-//     await killElectronWebpackDevServer();
-//     console.log('XXXXXXXXXXX killed like a motherfucker XXXXXXXXXXXXXXXX');
-//   }
-// });

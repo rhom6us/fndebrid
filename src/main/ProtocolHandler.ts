@@ -1,12 +1,8 @@
-import fs from 'fs';
-import { Action, AnyAction } from "redux";
 import { app } from "electron";
 import path from 'path';
-import { addMagnet } from "./store/torrents";
-
-import { Dispatcher, dispatcher } from './dispatcher';
+import { AnyAction } from "redux";
 import { Associator } from './Associator';
-import { Memoize } from '../common';
+
 interface IDispatch {
   (action: AnyAction): void;
 }

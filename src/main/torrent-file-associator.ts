@@ -1,9 +1,6 @@
-import { Action, AnyAction } from "redux";
-import { Dispatcher, dispatcher } from './dispatcher';
-import fs from 'fs';
 // import Registry from 'winreg';
 import path from 'path';
-import { UnexpectedStateError } from '../common';
+import { AnyAction } from "redux";
 import { RegistryHive as Registry } from '../common/registry';
 
 interface IDispatch {
