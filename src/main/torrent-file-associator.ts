@@ -3,46 +3,9 @@ import path from 'path';
 import { AnyAction } from "redux";
 import { RegistryHive as Registry } from '../common/registry';
 
-interface IDispatch {
-  (action: AnyAction): void;
-}
-
-
-
-
-
-// function setReg(path: string, key: string, value: string) {
-//   return new Promise((resolve, reject) => {
-//     new Registry({
-//       hive: Registry.HKCU,
-//       key: path.replace('/', '\\')
-//     }).set(
-//       key, Registry.REG_SZ, value,
-//       error => error ? reject(error) : resolve()
-//     );
-//   });
-// }
-// function removeRegKey(path: string, key: string) {
-//   return new Promise((resolve, reject) => {
-//     new Registry({
-//       hive: Registry.HKCU,
-//       key: path.replace('/', '\\')
-//     })
-//       .remove(key, error => error ? reject(error) : resolve());
-//   });
-// }
-
-// function removeRegPath(path: string) {
-//   return new Promise((resolve, reject) => {
-//     new Registry({
-//       hive: Registry.HKCU,
-//       key: path.replace('/', '\\')
-//     }).destroy(error => error ? reject(error) : resolve());
-//   });
-// }
 
 async function setAssReg(ns: string, ext: string, execPath: string) {
-  const nsPath = await Registry.HKCU
+  const nsPath = Registry.HKCU
     .withPath('Software/Classes')
     .withPath(ns);
   const appPath = await nsPath.withPath('Application').ensure();
