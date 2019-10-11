@@ -41,9 +41,9 @@ function* watchFetchRequest() {
 function* watchAddMagnet() {
   yield takeEvery(getType(addMagnet.request), function* ({ payload: { magnetLink } }: ActionType<typeof addMagnet.request>) {
     try {
-      const token: Yield<typeof getToken> = yield call(getToken);
+      const token: string = (yield call(getToken)) as any;
       const api = new RealDebrid(token);
-      const { torrentId }: Yield<typeof api.addMagnet> = yield call([api, api.addMagnet], magnetLink);
+      const { torrentId }: Yield<typeof api.addMagnet> = (yield call([api, api.addMagnet], magnetLink)) as any;
       yield put(addMagnet.success({ torrentId }));
 
     } catch (err) {

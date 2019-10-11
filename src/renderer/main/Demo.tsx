@@ -1,5 +1,5 @@
 import { State, Action } from "../../main/store";
-import * as actions from "../../main/store/actions";
+import * as actions from '../../main/store/actions';
 import React, { useState } from "react";
 import { Dispatch } from "redux";
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";

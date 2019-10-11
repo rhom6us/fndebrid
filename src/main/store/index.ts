@@ -1,9 +1,8 @@
-import { all, fork } from 'redux-saga/effects';
-
 import { combineReducers, Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
-import { torrentsReducer, TorrentsAction, TorrentsState, torrentsSaga } from './torrents';
-import { preferencesReducer, PreferencesAction, PreferencesState, preferencesSaga } from './preferences';
+import { all, fork } from 'redux-saga/effects';
 import { ActionType } from 'typesafe-actions';
+import { preferencesReducer, preferencesSaga, PreferencesState } from './preferences';
+import { torrentsReducer, torrentsSaga, TorrentsState } from './torrents';
 
 export interface State {
   torrents: TorrentsState,

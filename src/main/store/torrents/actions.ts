@@ -23,5 +23,3 @@ export const addTorrentFile = createAsyncAction(
   'torrents/add-torrent-file/error',
 )<{ filePath: string }, { id: string }, Error | string>();
 
-type RootAction = ActionType<typeof import('./actions')>;
-export default RootAction;

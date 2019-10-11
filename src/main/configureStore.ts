@@ -1,6 +1,5 @@
 
 import { applyMiddleware, compose, createStore, Store } from 'redux';
-import { electronEnhancer } from 'redux-electron-store';
 import createSagaMiddleware from 'redux-saga';
 // Import the state interface and our combined reducers/sagas.
 import { Action, rootReducer, rootSaga, State as ApplicationState } from './store';
@@ -19,15 +18,12 @@ export default function configureStore(/*history: History,*/ initialState?: Appl
     rootReducer,//connectRouter(history)(rootReducer),
     initialState,
     compose(
+      proxyEnhancer,
       applyMiddleware(
         /*routerMiddleware(history),*/
         sagaMiddleware
-      ),
-      electronEnhancer({
-        // Necessary for synched actions to pass through all enhancers
-        dispatchProxy: (p: any) => store.dispatch(p),
-      }),
-      proxyEnhancer
+      )
+      
     )
   );
 

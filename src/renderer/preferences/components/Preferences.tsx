@@ -7,6 +7,7 @@ import { RadioGroup, Radio, Switch, TagInput, Button, Classes, FormGroup, Contro
 import { handleStringChange, handleBooleanChange } from '../../helpers';
 import { ActionCreator, TypeConstant } from 'typesafe-actions';
 import { getDispatcher } from '../../../main/dispatcher';
+import styled from '@emotion/styled';
 const app = remote.app;
 interface IOwnProps { }
 type IStateProps = PreferencesState;
@@ -33,6 +34,9 @@ export const Preferences: React.FC<Props> = (props) => {
       props.setDefaultDownloadLocation();
     }
   });
+  const SubOptions = styled('div')`
+    padding-left: 20px;
+  `
   return (
     <section>
       <FormGroup label="Download Location">
@@ -41,18 +45,25 @@ export const Preferences: React.FC<Props> = (props) => {
           <Button icon="filter" onClick={props.chooseDownloadLocation}>Choose</Button>
         </ControlGroup>
       </FormGroup>
-      <Switch checked={props.magnetLinksAssociated} label="Associate Magnet Links" onChange={handleBooleanChange(value => props.associateMagnetLinks(value))} />
+      <Switch checked={props.magnetLinksAssociated} label="Associate Magnet Links" onChange={handleBooleanChange(props.associateMagnetLinks)} />
       <Switch checked={props.torrentFilesAssociated} label="Associate Torrent Files" onChange={handleBooleanChange(value => props.associateTorrentFiles(value))} />
-      <RadioGroup
-        label="Delete torrent file"
-        onChange={handleStringChange(value => props.setAutoDeleteTorrentFile(value as any))}
-        selectedValue={props.autoDeleteTorrentFile} >
-        <Radio label="never" value="never" />
-        <Radio label="after the torrent has been added to real-debrid" value="torrent_added" />
-        <Radio label="after the torrent download is complete on real-debrid" value="torrent_completed" />
-        <Radio label="after the torrent has downloaded to this computer" value="download_completed" />
-      </RadioGroup>
-      <Switch checked={props.autoDownloadTorrents} label="Automatically download torrents as soon as they are complete" onChange={handleBooleanChange(value => props.setAutoDownloadTorrents(value))} />
+
+      <FormGroup >
+        <Switch label="Automatically delete torrent files..." checked={props.autoDeleteTorrentFile != 'never'} onChange={handleBooleanChange(value => props.setAutoDeleteTorrentFile(value ? 'torrent_added' : 'never'))} />
+        {(props.autoDeleteTorrentFile != 'never') &&
+        <SubOptions>
+          <RadioGroup
+            onChange={handleStringChange(value => props.setAutoDeleteTorrentFile(value as any))}
+            selectedValue={props.autoDeleteTorrentFile} >
+            <Radio label="...after the torrent has been added to real-debrid" value="torrent_added" />
+            <Radio label="...after the torrent download is complete on real-debrid" value="torrent_completed" />
+            <Radio label="...after the torrent has downloaded to this computer" value="download_completed" />
+          </RadioGroup>
+          </SubOptions>
+        }
+      </FormGroup>
+
+      <Switch checked={props.autoDownloadTorrents} label="Automatically download torrents as soon as they are complete" onChange={handleBooleanChange(props.setAutoDownloadTorrents)} />
       <Switch checked={props.autoDeleteServer} label="Delete torrent from real-debrid.com after download is complete" onChange={handleBooleanChange(value => props.setAutoDeleteServer(value))} />
 
       <FormGroup label="Always include files matching any of these patterns:" helperText="helper text" labelInfo="labelInfo">
@@ -85,19 +96,12 @@ export const Preferences: React.FC<Props> = (props) => {
 }
 const mapStateToProps: MapStateToProps<IStateProps, IOwnProps, State> = function (state, ownProps) {
   return state.preferences;
-  // return {
-  //   downloadLocation: state.preferences.downloadLocation,
-  //   magnetLinksAccociated: state.preferences.magnetLinksAssociated,
-  //   torrentFilesAssociated: state.preferences.torrentFilesAssociated
-  // };
 }
 const mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IOwnProps> = function (dispatch, ownProps) {
   const dispatcher = getDispatcher(dispatch);
   return {
-    chooseDownloadLocation: () => dispatcher.chooseDownloadLocation(),
+    ...dispatcher,
     setDefaultDownloadLocation: () => dispatcher.setPreferences({ downloadLocation: app.getPath('downloads') }),
-    associateMagnetLinks: (associateMagnetLinks) => dispatcher.associateMagnetLinks.request({ associateMagnetLinks }),
-    associateTorrentFiles: (associateTorrentFiles) => dispatcher.associateTorrentFiles.request(associateTorrentFiles),
     setWhiteList: fileWhiteList => dispatcher.setPreferences({ fileWhiteList }),
     setBlackList: fileBlackList => dispatcher.setPreferences({ fileBlackList }),
     setAutoDeleteServer: (autoDeleteServer) => dispatcher.setPreferences({ autoDeleteServer }),

@@ -1,6 +1,6 @@
-import TorrentsState from './state';
-import TorrentsAction from './actions';
+import * as torrentsActions from './actions';
 import torrentsReducer from './reducer';
 import torrentsSaga from './sagas';
-export { TorrentsState, TorrentsAction, torrentsReducer, torrentsSaga };
+import TorrentsState from './state';
 export * from './actions';
+export { TorrentsState, torrentsActions, torrentsReducer, torrentsSaga };

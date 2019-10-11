@@ -17,27 +17,27 @@ function* watch_chooseDownloadLocation_request() {
 
 
 function* watchAssociateTorrentsRequest() {
-  yield takeLatest(actions.associateTorrentFiles.request, function* ({ payload: associateTorrentFiles }) {
+  yield takeLatest(actions.associateTorrentFiles, function* ({ payload: associateTorrentFiles }) {
     if (associateTorrentFiles) {
       yield call([torrentFileHandler, torrentFileHandler.associate]);
     }
     if (!associateTorrentFiles) {
       yield call([torrentFileHandler, torrentFileHandler.disassociate]);
     }
-    const worked: Yield<typeof torrentFileHandler.isAssociated> = yield call([torrentFileHandler, torrentFileHandler.isAssociated]);
-    yield put(actions.associateTorrentFiles.success(worked));
+    const torrentFilesAssociated: Yield<typeof torrentFileHandler.isAssociated> = yield torrentFileHandler.isAssociated();
+    yield put(actions.setPreferences({torrentFilesAssociated}));
   });
 }
 function* watchAssociateMagnetRequest() {
   const protocolHandler = new ProtocolHandler();
-  yield takeLatest(actions.associateMagnetLinks.request, function* ({ payload: { associateMagnetLinks } }) {
+  yield takeLatest(actions.associateMagnetLinks, function* ({ payload: associateMagnetLinks  }) {
     if (associateMagnetLinks && !protocolHandler.isAssociated) {
       protocolHandler.associate();
     }
     if (!associateMagnetLinks && protocolHandler.isAssociated) {
       protocolHandler.disassociate();
     }
-    yield put(actions.associateMagnetLinks.success({ magnetLinksAssociated: protocolHandler.isAssociated }));
+    yield put(actions.setPreferences({ magnetLinksAssociated: protocolHandler.isAssociated }));
   });
 }
 

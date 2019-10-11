@@ -1,12 +1,10 @@
-import { createStore, applyMiddleware, compose, Reducer, Store, combineReducers, StoreEnhancer, StoreEnhancerStoreCreator } from 'redux';
-import { electronEnhancer } from 'redux-electron-store';
-import DevTools from './debug/DevTools';
+import { Store } from 'redux';
 import StoreProxy from './StoreProxy';
 
 
 // const enhance: StoreEnhancer = (next:StoreEnhancerStoreCreator) => (reducer, initialstate) => {
 //   const str = next(reducer, initialstate)
-//   str.dispatch
+//   str.dispatch5
 // };
 
 namespace preferences {
@@ -32,7 +30,7 @@ namespace preferences {
 let store: any;//Store<State>;
 store = new StoreProxy();
 export default function configureStore(initialState?: any): Store<any> {
-  return store || (store = createStore(
+  return store /*|| (store = createStore(
     combineReducers({
       preferences: preferences.preferencesReducer,
       torrents: preferences.torrentsReducer
@@ -40,10 +38,10 @@ export default function configureStore(initialState?: any): Store<any> {
     initialState,
     compose(
       // applyMiddleware(d1, d2, d3),
-      electronEnhancer({
-        dispatchProxy: (a: any) => store.dispatch(a),
-      }),
-      DevTools.instrument()
+      // electronEnhancer({
+      //   dispatchProxy: (a: any) => store.dispatch(a),
+      // }),
+      // DevTools.instrument()
     )
-  ));
+  ))*/;
 }
