@@ -33,7 +33,8 @@ export const ThemeProvider: React.FC = ({ children }) => {
 
   const computedTheme = themeState.isDark ? theme("dark") : theme("light");
   const themeClassName = themeState.isDark ? Classes.DARK: '';
-  console.log({themeClassName})
+
+  
   const toggle = () => {
     const dark = !themeState.isDark;
     localStorage.setItem("dark", JSON.stringify(dark));
