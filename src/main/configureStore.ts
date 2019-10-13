@@ -3,7 +3,7 @@ import { applyMiddleware, compose, createStore, Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 // Import the state interface and our combined reducers/sagas.
 import { Action, rootReducer, rootSaga, State as ApplicationState } from './store';
-import { proxyEnhancer } from './StoreHandler';
+import { proxyEnhancer } from 'electron-redux-proxy';
 
 
 

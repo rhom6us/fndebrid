@@ -20,6 +20,7 @@
     "@emotion/core": "^10.0.21",
     "@emotion/styled": "^10.0.17",
     "dotenv-webpack": "^1.7.0",
+    "electron-redux-proxy": "^1.0.2",
     "emotion-theming": "^10.0.19",
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
