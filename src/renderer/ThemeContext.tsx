@@ -42,7 +42,7 @@ export const ThemeProvider: React.FC = ({ children }) => {
 
   const TheRoot = styled('div')`
     background-color: ${themeState.isDark ? 'hsl(207, 23%, 25%)' : 'inherit'} ;
-    height: 100vh;
+    min-height: 100vh;
   `;
 
   return (
