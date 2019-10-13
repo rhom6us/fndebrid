@@ -31,7 +31,6 @@ export const ThemeProvider: React.FC = ({ children }) => {
     return <div />;
   }
 
-  const computedTheme = themeState.isDark ? theme("dark") : theme("light");
   const themeClassName = themeState.isDark ? Classes.DARK: '';
 
   
