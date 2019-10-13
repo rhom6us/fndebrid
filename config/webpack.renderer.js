@@ -48,6 +48,7 @@ module.exports = function (context) {
   })
 
   // context.entry.renderer = [`./src/renderer/index.tsx`];
+  context.entry.renderer.unshift('react-hot-loader/patch');
   //addChunk(context, 'debug', 'debug.tsx', false);
   return context;
 };

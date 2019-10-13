@@ -1,12 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { ReactNode } from 'react';
+import ReactDom from 'react-dom';
 import { Router } from 'react-router-static';
-import Debug from './debug';
-import Main from './main';
-import { Preferences } from './preferences';
 import Root from './Root';
 import './global.scss';
-import FileSelect from './select-files';
+import { AppContainer } from 'react-hot-loader';
 // function addStyle(url: string) {
 //   const style1 = document.createElement(('link'));
 //   style1.href = url;
@@ -16,4 +13,19 @@ import FileSelect from './select-files';
 // addStyle("https://unpkg.com/normalize.css@^7.0.0");
 // addStyle("https://unpkg.com/@blueprintjs/icons@^3.4.0/lib/css/blueprint-icons.css" );
 // addStyle("https://unpkg.com/@blueprintjs/core@^3.10.0/lib/css/blueprint.css");
-ReactDOM.render(<Root><Router routes={{ Main, Preferences, Debug, FileSelect }} /></Root>, document.getElementById('app'));
+
+const render = (Component: any) => {
+  ReactDom.render(
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    document.getElementById('app')
+  );
+}
+
+render(Root);
+
+
+if (module.hot) {
+  module.hot.accept('./Root', () => { render(Root); });
+}
