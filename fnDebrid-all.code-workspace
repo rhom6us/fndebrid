@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "C:\\dev\\electron-redux-proxy"
+		},
+		{
+			"path": "C:\\dev\\webpack-match-plugin"
+		}
+	],
+  "settings": {
+    "files.exclude": {
+      "dist": true,
+      "LICENSE": true
+    }
+  }
+}
