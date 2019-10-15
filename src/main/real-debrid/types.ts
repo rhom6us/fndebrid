@@ -1,5 +1,5 @@
 
-export interface AuthorizatioInfo {
+export interface  AuthorizatioInfo {
   client_id: string;
   client_secret: string;
   access_token: string;

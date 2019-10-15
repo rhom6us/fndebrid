@@ -1,11 +1,14 @@
 
 import { shell } from 'electron';
-import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { ActionType, getType } from 'typesafe-actions';
-import { Memoize, Yield } from '../../../common';
+import { all, call, fork, put, takeEvery, takeLatest, select, take, delay } from 'redux-saga/effects';
+import { ActionType } from 'typesafe-actions';
+import { Memoize, Unpack } from '../../../common';
 import { Authorizor, RealDebrid } from '../../real-debrid';
-import { addMagnet, fetchTorrents } from './actions';
+import { addMagnet, fetchTorrents, addTorrentFile, fetchTorrent, openFileSelect } from './actions';
+import { State } from '..';
+import { showFileSelect } from '../../windows';
 
+type Yield<T> = Unpack<T>;
 
 class TokenContainer {
   @Memoize()
@@ -14,53 +17,106 @@ class TokenContainer {
     return result;
   }
 }
-const getToken = () => TokenContainer.getToken();
-
+const getApi = async () => new RealDebrid(await TokenContainer.getToken());
+const getErrorMsg = (err: any) => err instanceof Error ? err.stack! : typeof err === 'string' ? err : 'An unknown error has occured';;
 function* watchFetchRequest() {
-  yield takeLatest(getType(fetchTorrents.request), function* () {
+  yield takeLatest(fetchTorrents.request, function* () {
     try {
-      const token = yield call(getToken);
 
-      const api = new RealDebrid(token);
+      const api: RealDebrid = yield getApi();
       const torrents: Yield<typeof api.torrents> = yield call([api, api.torrents]);
 
       yield put(fetchTorrents.success(torrents));
 
     } catch (err) {
-      if (err instanceof Error) {
-        yield put(fetchTorrents.failure(err));
-      } else if (typeof err === 'string') {
-        yield put(fetchTorrents.failure(err));
-      } else {
-        yield put(fetchTorrents.failure('An unknown error occured.'));
-      }
+        yield put(fetchTorrents.failure(getErrorMsg(err)));
     }
   });
 }
 
 function* watchAddMagnet() {
-  yield takeEvery(getType(addMagnet.request), function* ({ payload: { magnetLink } }: ActionType<typeof addMagnet.request>) {
+  yield takeEvery(addMagnet.request, function* ({ payload: { magnetLink } }) {
     try {
-      const token: string = (yield call(getToken)) as any;
-      const api = new RealDebrid(token);
+      const api: RealDebrid = yield getApi();;
       const { torrentId }: Yield<typeof api.addMagnet> = (yield call([api, api.addMagnet], magnetLink)) as any;
       yield put(addMagnet.success({ torrentId }));
 
     } catch (err) {
-      if (err instanceof Error) {
-        yield put(addMagnet.failure(err));
-      } else if (typeof err === 'string') {
-        yield put(addMagnet.failure(err));
-      } else {
-        yield put(addMagnet.failure('An unknown error occured.'));
+      yield put(addMagnet.failure(getErrorMsg(err)));
+    }
+  });
+}
+function* watchAddTorrentFile() {
+  yield takeEvery(addTorrentFile.request, function* ({ payload: { filePath } }) {
+    try {
+      const api: RealDebrid = yield getApi(); 
+      const { torrentId }: Yield<typeof api.addMagnet> = yield api.addTorrent(filePath)
+      yield put(addTorrentFile.success({ torrentId }));
+
+    } catch (err) {
+      yield put(addTorrentFile.failure(getErrorMsg(err)));
+    }
+  });
+}
+function* watchTorrentAdded() {
+  yield takeEvery([addMagnet.success, addTorrentFile.success], function* ({ payload: { torrentId } }) {
+    while (true) {
+      yield put(fetchTorrent.request({ torrentId }));
+      const { payload: torrent }: Yield<typeof fetchTorrent.success> = yield take(fetchTorrent.success);
+      switch (torrent.status) {
+        case 'magnet_conversion':
+          yield delay(1500);
+          continue;
+        case 'waiting_files_selection':
+          yield put(openFileSelect(torrentId));
+          return;
+        case 'compressing':
+        case 'dead':
+        case 'downloaded':
+        case 'downloading':
+        case 'error':
+        case 'magnet_error':
+        case 'queued':
+        case 'uploading':
+        case 'virus':
+        default:
+          return;
       }
     }
   });
+}
+function* watchTorrentRequest() {
+  yield takeLatest(fetchTorrent.request, function* ({ payload:{ torrentId }  }) {
+    try {
+      const api: RealDebrid = yield getApi();
+      const torrent: Yield<typeof api.torrent> = yield call([api, api.torrent], torrentId);
+
+      yield put(fetchTorrent.success(torrent));
+
+    } catch (err) {
+        yield put(fetchTorrent.failure(getErrorMsg(err)));
+    }
+  });
+}
+function* watch_openFileSelect() { 
+  yield takeEvery(openFileSelect, function* ({ payload: {torrentId} }) { 
+    const fileIds: Yield<typeof showFileSelect> = yield showFileSelect(torrentId);
+    const api: RealDebrid = yield getApi();
+    if(fileIds.length){
+      yield api.selectFiles(torrentId, fileIds);
+    } else {
+      yield api.delete(torrentId);
+    }
+  })
 }
 
 export default function* () {
   yield all([
     fork(watchFetchRequest),
     fork(watchAddMagnet),
+    fork(watchAddTorrentFile),
+    fork(watchTorrentAdded),
+    fork(watchTorrentRequest),
+    fork(watch_openFileSelect)
   ])
 }

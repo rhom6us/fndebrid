@@ -1,14 +1,20 @@
-import { all, fork, takeLatest, put, call } from "redux-saga/effects";
+import { all, fork, takeLatest, put, call, select } from "redux-saga/effects";
 import ProtocolHandler from '../../ProtocolHandler';
 import torrentFileHandler from '../../torrent-file-associator';
 import { app, dialog, BrowserWindow } from 'electron';
-import { Yield } from '../../../common';
 import * as actions from './actions';
+import {State} from '../index';
+import { Unpack } from '../../../common';
 // import { protocolHandler, torrentFileHandler } from '../../Application';
+
+type Yield<T> = Unpack<T>;
+
+
 
 function* watch_chooseDownloadLocation_request() {
   yield takeLatest(actions.chooseDownloadLocation, function* () {
-    const result: Yield<typeof dialog.showOpenDialog> = yield dialog.showOpenDialog(BrowserWindow.getFocusedWindow()!, { properties: ['openDirectory'] });
+    const dlLocation = yield select(state => state.preferences.downloadLocation);
+    const result: Yield<typeof dialog.showOpenDialog> = yield dialog.showOpenDialog(BrowserWindow.getFocusedWindow()!, {  defaultPath: dlLocation, properties: ['openDirectory'] });
     if (!result.canceled && result.filePaths && result.filePaths.length) {
       yield put(actions.setPreferences({ downloadLocation: result.filePaths[0] }));
     }

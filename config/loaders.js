@@ -9,23 +9,8 @@ module.exports = {
     options: {
       importLoaders: 2,
       modules: true,
-      camelCase: true,
-      sourceMap: isDev,
-      localIdentName: isDev
-        ? "[folder]__[name]__[local]__[hash:base64:5]"
-        : "[hash:base64:5]"
-    }
-  },
-  cssModuleLoader: {
-    loader: "css-loader",
-    options: {
-      importLoaders: 2,
-      modules: true,
-      camelCase: true,
-      sourceMap: isDev,
-      localIdentName: isDev
-        ? "[folder]__[name]__[local]__[hash:base64:5]"
-        : "[hash:base64:5]"
+      import: true,
+      sourceMap: isDev
     }
   },
   cssHotLoader: {
@@ -71,12 +56,34 @@ module.exports = {
       cacheDirectory: true
     }
   },
+  electronMainBabelLoader: {
+    loader: 'babel-loader',
+    options: {
+      presets: [
+        [ "@babel/preset-env", {
+          debug: isDev,
+          modules: false,
+          targets: {
+            electron: "6.0.12"
+          }
+        }]
+      ],
+    }
+  },
   fontLoader: {
     loader: 'url-loader',
     options: {
       name: 'fonts/[hash].[ext]',
       limit: 5000,
       mimetype: 'application/font-woff'
+    }
+  },
+  tsLoader: {
+    loader: "ts-loader",
+    options: {
+      transpileOnly: true,
+      // appendTsSuffixTo: [{}],
+      // configFile: "C:\\dev\\fndebrid\\tsconfig.json"
     }
   }
 }

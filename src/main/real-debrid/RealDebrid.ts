@@ -1,9 +1,8 @@
 import { createReadStream, ReadStream, statSync } from 'fs';
-import { makeUrl } from "./util";
-import { Torrent } from '../store/torrents/state';
-import { TorrentId, LinkInfo } from './types';
 import fetch from 'node-fetch';
-import {alert} from '../utils';
+import { Torrent } from '../store/torrents/state';
+import { LinkInfo, TorrentId } from './types';
+import { makeUrl } from "./util";
 
 type fu = ReturnType<typeof fetch>;
 
@@ -13,15 +12,15 @@ export class RealDebrid {
 
   async _get<T = any>(path: string): Promise<T>;
   async _get<T = any>(path: string, params: Record<string, any>, includeMeta: false): Promise<T>;
-    async _get<T = any>(path: string, params: Record<string, any>, includeMeta: true): Promise<[T, Record<string,string[]>]>;
-      async _get<T = any>(path: string, params: Record<string, any> = {}, includeMeta: boolean = false): Promise<T | [T, Record<string,string[]>]> {
+  async _get<T = any>(path: string, params: Record<string, any>, includeMeta: true): Promise<[T, Record<string, string[]>]>;
+  async _get<T = any>(path: string, params: Record<string, any> = {}, includeMeta: boolean = false): Promise<T | [T, Record<string, string[]>]> {
     let response = await fetch(makeUrl(this.base, path, params), {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${this.access_token}`
       }
     });
-    if(!includeMeta)
+    if (!includeMeta)
       return await response.json();
     return [await response.json(), response.headers.raw()];
   }
@@ -58,11 +57,11 @@ export class RealDebrid {
     });
     return await response.json();
   }
-  async torrents(page = 1) : Promise<Omit<Torrent, 'files'>[]> {
+  async torrents(page = 1): Promise<Omit<Torrent, 'files'>[]> {
     const pageSize = 50;
 
     let [data, headers] = await this._get<Omit<Torrent, 'files'>[]>('torrents', { page, limit: pageSize.toString() }, true);
-    if(((headers['x-total-count'] && headers['x-total-count'][0]) || 0) > (page * pageSize)){
+    if (((headers['x-total-count'] && headers['x-total-count'][0]) || 0) > (page * pageSize)) {
       return [...data, ...(await this.torrents(page + 1))];
     }
     return data;
@@ -86,8 +85,8 @@ export class RealDebrid {
     //var bufferContent = fs.readFileSync(filePath)
     return this._put<{ id: string }>('torrents/addTorrent', readStream as any, { "Content-length": fileSizeInBytes.toString() });
   }
-  selectFiles(id: TorrentId, files: number[] | 'all' = 'all') {
-    return this._post(`torrents/selectFiles/${id}`, { files: (files instanceof Array) ? files.join(',') : files })
+  selectFiles(torrentId: TorrentId, files: number[] | 'all' = 'all') {
+    return this._post(`torrents/selectFiles/${torrentId}`, { files: (files instanceof Array) ? files.join(',') : files })
   }
   unrestrictLink(link: string) {
     return this._post<LinkInfo & { crc: number }>('unrestrict/link', { link });

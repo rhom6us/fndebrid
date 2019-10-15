@@ -1,6 +1,6 @@
 // import {app} from 'electron';
 
-export default State;
+
 export type AutoDeleteTorrentFileOption = 'never' | 'torrent_added' | 'torrent_completed' | 'download_completed';
 export type State = ({
   readonly torrentFilesAssociated: boolean,
@@ -33,3 +33,4 @@ export const defaultState: State = {
   fileBlackList: [],
 }
 
+export default State;

@@ -7,10 +7,32 @@ const Dotenv = require('dotenv-webpack');
 const { cssLoader, postcssLoader, sassLoader, cssHotLoader, cssModuleLoader, cssHotModuleLoader, fontLoader, fileLoader } = require('./loaders');
 
 
-const isDev = process.env.NODE_ENV === "development";
+//#region [isDev, isProd, buildType]
+const [isDev, isProd, buildType] = (() => { 
+  const envs = ['development', 'production']
+  const env = process.env.NODE_ENV;
+  if (!envs.some(p => p === env)) {
+    throw new Error(`Unknown environment "${process.env.NODE_ENV}"`)
+  }
+  const [dev, prod] = envs;
+  const isDev = env === dev;
+  const isProd = env === prod;
+  return [isDev, isProd, env];
+})();
+//#endregion
+
+//#region [isMain, isRenderer, target]
+const [isMain, isRenderer, target] = (() => { 
+  return [false, true, 'renderer'];
+})();
+//#endregion
 
 // module.exports = configuration;
 module.exports = function (context) {
+  console.log(`=== webpack.config.${target}.${buildType}.babel.js ===`)
+  console.log(context);
+  console.log(JSON.stringify(context));
+  console.log(`=== webpack.config.${target}.${buildType}.babel.js ===`)
   context.plugins.push(new Dotenv());
   // Fix filename clash in MiniCssExtractPlugin
   context.plugins.forEach((plugin) => {
@@ -20,7 +42,7 @@ module.exports = function (context) {
         return '[id].styles.css';
       };
     }
-  });
+  }); 
 
   const rules = context.module.rules.filter(rule => rule.test.test('global.scss'));
 
@@ -44,11 +66,13 @@ module.exports = function (context) {
   });
   context.module.rules.push({
     test: /\.(woff|woff2)$/,
-    use: fontLoader 
+    use: fontLoader
   })
 
   // context.entry.renderer = [`./src/renderer/index.tsx`];
-  context.entry.renderer.unshift('react-hot-loader/patch');
+  if (isDev) {
+    context.entry.renderer.unshift('react-hot-loader/patch');
+  }
   //addChunk(context, 'debug', 'debug.tsx', false);
   return context;
 };

@@ -1,0 +1,116 @@
+{
+  "context": "C:\\dev\\fndebrid",
+  "devtool": "eval-source-map",
+  "externals": [
+    "@blueprintjs/core",
+    "@blueprintjs/icons",
+    "@emotion/core",
+    "@emotion/styled",
+    "classnames",
+    "devtron",
+    "dotenv-webpack",
+    "electron-devtools-installer",
+    "electron-redux-proxy",
+    "emotion-theming",
+    "lodash",
+    "normalize.css",
+    "react",
+    "react-dom",
+    "react-hot-loader",
+    "react-router-static",
+    "redux",
+    "redux-saga",
+    "source-map-support",
+    "typesafe-actions",
+    "uuid",
+    "winreg",
+    "electron",
+    "webpack",
+    "electron-devtools-installer",
+    "webpack/hot/log-apply-result",
+    "electron-webpack/out/electron-main-hmr/HmrClient",
+    "source-map-support/source-map-support.js"
+  ],
+  "node": { "__dirname": true, "__filename": true },
+  "output": {
+    "filename": "[name].js",
+    "chunkFilename": "[name].bundle.js",
+    "libraryTarget": "commonjs2",
+    "path": "C:\\dev\\fndebrid\\dist\\main"
+  },
+  "target": "electron-main",
+  "resolve": {
+    "alias": {
+      "@": "C:\\dev\\fndebrid\\src\\main",
+      "common": "C:\\dev\\fndebrid\\src\\common"
+    },
+    "extensions": [".js", ".ts", ".tsx", ".json", ".node"]
+  },
+  "module": {
+    "rules": [
+      {
+        "test": {},
+        "exclude": {},
+        "use": {
+          "loader": "babel-loader",
+          "options": {
+            "presets": [
+              [null, { "modules": false, "targets": { "node": "10.2.0" } }]
+            ],
+            "plugins": [null, [null]]
+          }
+        }
+      },
+      { "test": {}, "use": "node-loader" },
+      {
+        "test": {},
+        "use": [
+          {
+            "loader": "url-loader",
+            "options": {
+              "limit": 10485760,
+              "name": "imgs/[name]--[folder].[ext]"
+            }
+          }
+        ]
+      },
+      {
+        "test": {},
+        "exclude": {},
+        "use": [
+          {
+            "loader": "ts-loader",
+            "options": {
+              "transpileOnly": true,
+              "appendTsSuffixTo": [{}],
+              "configFile": "C:\\dev\\fndebrid\\tsconfig.json"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "plugins": [
+    {
+      "definitions": {
+        "__static": "\"C:\\\\dev\\\\fndebrid\\\\static\"",
+        "process.env.NODE_ENV": "\"development\""
+      }
+    },
+    new HotModuleReplacementPlugin{ "options": {}, "fullBuildTimeout": 200, "requestTimeout": 10000 },
+    new WatchFilterPlugin(),
+    {}
+  ],
+  "optimization": {
+    "nodeEnv": "development",
+    "namedModules": true,
+    "noEmitOnErrors": true
+  },
+  "mode": "development",
+  "entry": {
+    "main": [
+      "C:\\dev\\fndebrid\\node_modules\\electron-webpack\\out\\electron-main-hmr\\main-hmr",
+      "C:\\dev\\fndebrid\\src\\main\\index.ts"
+    ]
+  }
+}

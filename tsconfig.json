@@ -11,5 +11,6 @@
     "emitDecoratorMetadata": false,
     "skipLibCheck": true,
     "suppressImplicitAnyIndexErrors": false
+    
   }
 }

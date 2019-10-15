@@ -1,5 +1,7 @@
 
-import { applyMiddleware, compose, createStore, Store } from 'redux';
+import { applyMiddleware, createStore, Store } from 'redux';
+import { composeWithDevTools as compose } from 'remote-redux-devtools';
+
 import createSagaMiddleware from 'redux-saga';
 // Import the state interface and our combined reducers/sagas.
 import { Action, rootReducer, rootSaga, State as ApplicationState } from './store';

@@ -1,5 +1,5 @@
-export * from './preferences/actions';
 export * from './torrents/actions';
+export * from './preferences/actions';
 
 
 
