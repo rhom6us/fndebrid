@@ -2,7 +2,7 @@ import { State, Action } from "../../main/store";
 import * as actions from '../../main/store/actions';
 import React, { useState } from "react";
 import { Dispatch } from "redux";
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { connect, MapDispatchToPropsFunction, MapStateToProps, useStore } from "react-redux";
 import { TorrentId } from '../../main/real-debrid';
 
 interface IOwnProps { }
@@ -20,7 +20,9 @@ export type Props = IOwnProps & IStateProps & IDispatchProps;
 
 const myfc:React.FC<Props> = (props) => {
   const [pendingValue, setPendingValue] = useState(props.downloadLocation);
-  
+  console.log('ye haw');
+  const store = useStore();
+  console.log(store.getState());
 
   const submitChange = () => {
     props.setDownloadLocation(pendingValue);

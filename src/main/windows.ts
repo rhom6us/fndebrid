@@ -6,7 +6,7 @@ import uuid from 'uuid';
 import { FileId, TorrentId } from './real-debrid';
 
 
-type WindowName = 'Main' | 'Preferences' | 'FileSelect';
+type WindowName = 'Main' | 'Preferences' | 'FileSelect' | 'AddMagnet';
 export const windows: { [K in WindowName]?: BrowserWindow } = {};
 
 const dialogs = new Set<BrowserWindow>();
@@ -49,9 +49,12 @@ function createWindow(route: WindowName, options: Electron.BrowserWindowConstruc
   }
 
   if (isDev) {
-    window.loadURL(`http://localhost:9080/?route=${route}`);
+    const search = new URLSearchParams({ ...query, route }).toString();
+    console.log({ search });
+    window.loadURL(`http://localhost:9080/?${search}`);
   }
   else {
+    console.log(__dirname);
     window.loadURL(formatUrl({
       // __dirname will be dist/main
       pathname: path.join(__dirname, '..', 'renderer', 'index.html'),
@@ -60,7 +63,6 @@ function createWindow(route: WindowName, options: Electron.BrowserWindowConstruc
       slashes: true,
     }));
   }
-
   window.on('closed', () => {
     delete windows[route];
   });
@@ -68,12 +70,35 @@ function createWindow(route: WindowName, options: Electron.BrowserWindowConstruc
   return windows[route] = window;
 }
 
-export function showAddMagnet(): void {
-  throw 'nyi';
+export function showAddMagnet() {
+  return new Promise<FileId[] | null>((resolve, reject) => {
+    const callbackId = uuid();
+    const window = createWindow('AddMagnet', {
+      devTools: true,
+      frame: false,
+      closable: true,
+      skipTaskbar: true,
+      height: 400,
+      width: 400,
+      autoHideMenuBar: true
+    }, { callbackId });
+
+    ipcMain.once(`return-${callbackId}`, (event, result: FileId[] | null | Error) => {
+      if (result instanceof Error) {
+        reject(result);
+      } else {
+        resolve(result);
+      }
+      
+      window!.close();
+    });
+
+
+  });
 }
 export const showMain = () => createWindow('Main');
 export const showPreferences = () => createWindow('Preferences', {
-  alwaysOnTop: true,
+  alwaysOnTop: false,
   frame: true,
   autoHideMenuBar: true,
   resizable: true,
@@ -104,5 +129,5 @@ export const showFileSelect = (torrentId: TorrentId) => {
     });
 
 
-  })
+  });
 }

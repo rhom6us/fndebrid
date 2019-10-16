@@ -1,4 +1,4 @@
-
+import { promisify } from 'util';
 import { shell } from 'electron';
 import { all, call, delay, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Unpack } from '../../../common';
@@ -29,8 +29,8 @@ function* watchFetchRequest() {
 function* watchAddMagnet() {
   yield takeEvery(addMagnet.request, function* ({ payload: magnetLink }) {
     try {
-      const { torrentId }: Yield<typeof api.addMagnet> = (yield call([api, api.addMagnet], magnetLink)) as any;
-      yield put(addMagnet.success(torrentId));
+      const { id }: Yield<typeof api.addMagnet> = (yield call([api, api.addMagnet], magnetLink)) as any;
+      yield put(addMagnet.success(id));
 
     } catch (err) {
       yield put(addMagnet.failure(getErrorMsg(err)));
@@ -40,8 +40,8 @@ function* watchAddMagnet() {
 function* watchAddTorrentFile() {
   yield takeEvery(addTorrentFile.request, function* ({ payload: { filePath } }) {
     try {
-      const { torrentId }: Yield<typeof api.addMagnet> = yield api.addTorrent(filePath)
-      yield put(addTorrentFile.success(torrentId));
+      const { id }: Yield<typeof api.addMagnet> = yield api.addTorrent(filePath)
+      yield put(addTorrentFile.success(id));
 
     } catch (err) {
       yield put(addTorrentFile.failure(getErrorMsg(err)));
@@ -52,6 +52,7 @@ function* watchTorrentAdded() {
   yield takeEvery([addMagnet.success, addTorrentFile.success], function* ({ payload: torrentId }) {
     while (true) {
       yield put(fetchTorrent.request(torrentId));
+      yield promisify(setImmediate);
       const { payload: torrent }: Yield<typeof fetchTorrent.success> = yield take(fetchTorrent.success);
       switch (torrent.status) {
         case 'magnet_conversion':

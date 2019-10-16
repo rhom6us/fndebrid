@@ -16,7 +16,7 @@ export interface CodeInfo {
   device_code: DeviceCode;
   user_code: string;
   interval: number; // * 1000
-  expires: Date;
+  expires: number;
   direct_verification_url: string;
 }
 export interface Credentials {
@@ -27,7 +27,7 @@ export interface TokenInfo {
   access_token: AccessToken;
   refresh_token: RefreshToken;
   token_type: 'Bearer';
-  expires: Date;
+  expires: number;
 }
 
 export interface Torrent {

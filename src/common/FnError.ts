@@ -1,6 +1,6 @@
 export class FnError extends Error {
-  constructor(message?: string) {
-    super(message);
+  constructor(message?: string, public readonly data?: any) {
+    super(`message${data ? ` (${JSON.stringify(data)})` : ''}`);
     this.name = new.target.name;
 
     //prior to es2015 (e.g. es5) the Error constructor broke the prototype chain, hence the following:
@@ -8,6 +8,7 @@ export class FnError extends Error {
       Object.setPrototypeOf(this, new.target.prototype);
     }
   }
+
 }
 
 export class OperationFailedError extends FnError {}

@@ -11,8 +11,9 @@
       "isBackground": false
     },
     {
+      "label": "build-main",
       "type": "npm",
-      "script": "compile",
+      "script": "build:main",
       "group": {
         "kind": "build",
         "isDefault": true

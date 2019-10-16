@@ -2,9 +2,27 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "native",
       "type": "node",
       "request": "launch",
-      "name": "Launch and Debug",
+      "preLaunchTask": "build-main",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
+      "args" : ["${workspaceRoot}"],
+      "outputCapture": "std",
+      "sourceMaps": true,
+      "outFiles": [
+          "${workspaceRoot}/dist/**/*.js"
+      ],
+      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"],
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "electron-webpack",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-webpack",
       "runtimeArgs": [
           "dev"

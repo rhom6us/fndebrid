@@ -1,7 +1,7 @@
-import { makeUrl } from '../util';
-
-import { DeviceCode, ClientId, ClientSecret, AccessToken, RefreshToken, TokenInfo, Credentials, CodeInfo } from '..';
+import fetch from 'node-fetch';
+import { ClientId, CodeInfo, Credentials, DeviceCode, RefreshToken, TokenInfo } from '..';
 import { ArguementFalsyError } from '../../../common';
+import { makeUrl } from '../util';
 
 const base = new URL('https://api.real-debrid.com/oauth/v2/');
 const public_client_id = 'X245A4XAIBGVM' as ClientId;
@@ -15,20 +15,20 @@ export async function code(client_id: ClientId = public_client_id) : Promise<Cod
   return {
     ...json,
     interval: json.interval * 1000,
-    expires: new Date(Date.parse(response.headers.get('Date')!) + (json.expires_in * 1000)),
+    expires: Date.parse(response.headers.get('Date')!) + (json.expires_in * 1000),
   };
 }
-export function credentials({ device_code, interval, expires }: { device_code: DeviceCode; interval: number; expires: Date; }): Promise<Credentials> {
+export function credentials({ device_code, interval, expires }: { device_code: DeviceCode; interval: number; expires: number; }): Promise<Credentials> {
   if (!device_code) throw new ArguementFalsyError('device_code');
   if (!interval) throw new ArguementFalsyError('interval');
   if (!expires) throw new ArguementFalsyError('expires');
 
-  if (Date.now() > expires.getTime()) {
+  if (Date.now() > expires) {
     return Promise.reject("expired");
   }
   return new Promise((resolve, reject) => {
     const timer = setInterval(async () => {
-      if (Date.now() > expires.getTime()) {
+      if (Date.now() > expires) {
         reject("expired");
       }
       const r = await fetch(makeUrl(base, 'device/credentials', { client_id: 'X245A4XAIBGVM', code: device_code }));
@@ -52,7 +52,7 @@ export async function token({ client_id, client_secret, code }: Credentials & { 
   const json = await response.json();
   return {
     ...json,
-    expires: new Date(Date.parse(response.headers.get('Date')!) + 1000 * json.expires_in),
+    expires: Date.parse(response.headers.get('Date')!) + 1000 * json.expires_in,
   };
 }
 

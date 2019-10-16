@@ -1,4 +1,4 @@
-import { Torrent, File, TorrentId } from "../../real-debrid";
+import { File, Torrent, TorrentId } from "../../real-debrid";
 
 export { Torrent, File };
 
@@ -8,7 +8,7 @@ export interface Entities {
 }
 export default State;
 export interface State {
-  readonly loading: boolean
+  readonly loading: boolean;
   readonly torrents: readonly TorrentId[]
   readonly entities: Entities;
   readonly selectedTorrent?: TorrentId;

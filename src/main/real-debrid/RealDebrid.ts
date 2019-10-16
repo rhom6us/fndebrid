@@ -4,10 +4,15 @@ import { Torrent } from '../store/torrents/state';
 import { FileId, Link, LinkInfo, MagnetLink, ExtendedTorrent, TorrentId } from './types';
 import { makeUrl } from "./util";
 import { Authorizor } from './Authorizor';
+import { FnError } from '../../common';
 
-type fu = ReturnType<typeof fetch>;
-
-export class RealDebrid {
+export class RealDebridError extends FnError{
+  constructor(public readonly url: string,  error: { error: string, error_code: number }) {
+    super(url, error);
+    Object.freeze(error);
+  }
+}
+  export class RealDebrid {
   constructor(private readonly authorizor: Authorizor, private readonly base = new URL('https://api.real-debrid.com/rest/1.0/')) {
   }
 
@@ -21,9 +26,13 @@ export class RealDebrid {
         Authorization: `Bearer ${await this.authorizor.getToken()}`
       }
     });
+    const json = await response.json();
+    if (json.error) {
+      throw new RealDebridError(path, json);
+    }
     if (!includeMeta)
-      return await response.json();
-    return [await response.json(), response.headers.raw()];
+      return json;
+    return [json, response.headers.raw()];
   }
   async _delete<T = void>(path: string, params: Record<string, string> = {}): Promise<T> {
     let response = await fetch(makeUrl(this.base, path, params), {
@@ -32,7 +41,11 @@ export class RealDebrid {
         Authorization: `Bearer ${await this.authorizor.getToken()}`
       }
     });
-    return await response.json();
+    const json = await response.json();
+    if (json.error) {
+      throw new RealDebridError(path, json);
+    }
+    return json;
   }
   async _post<T = void>(path: string, body: Record<string, string> = {}): Promise<T> {
     let response = await fetch(makeUrl(this.base, path), {
@@ -43,7 +56,12 @@ export class RealDebrid {
       },
       body: new URLSearchParams(body)
     });
-    return await response.json();
+    
+    const json = await response.json();
+    if (json.error) {
+      throw new RealDebridError(path, json);
+    }
+    return json;
   }
 
   async _put<T = void>(path: string, body: ReadStream, extraHeaders: Record<string, string> = {}): Promise<T> {
@@ -56,7 +74,12 @@ export class RealDebrid {
       },
       body
     });
-    return await response.json();
+    
+    const json = await response.json();
+    if (json.error) {
+      throw new RealDebridError(path, json);
+    }
+    return json;
   }
   async torrents(page = 1): Promise<Torrent[]> {
     const pageSize = 50;
@@ -68,13 +91,13 @@ export class RealDebrid {
     return data;
   }
   torrent(id: TorrentId) {
-    return this._get<ExtendedTorrent>(`torrents/${id}`);
+    return this._get<ExtendedTorrent>(`torrents/info/${id}`);
   }
   delete(id: TorrentId) {
     return this._delete(`torrents/delete/${id}`);
   }
   addMagnet(magnet: MagnetLink) {
-    return this._post<{ torrentId: TorrentId }>('torrents/addMagnet', { magnet });
+    return this._post<{ id: TorrentId }>('torrents/addMagnet', { magnet });
   }
   addTorrent(filePath: string) {
 

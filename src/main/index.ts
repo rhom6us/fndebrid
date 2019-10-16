@@ -12,7 +12,7 @@ const storage = new Store();
 console.log('main');
 function appReady() { 
   console.log('app.ready');
-  installReactDevTools();
+  // installReactDevTools();
 
   createAppIcon();
 
@@ -86,9 +86,12 @@ function initializeApp(app: Electron.App) {
 function setupRedux() {
   const initialState = storage.get('state');
   const store = configureStore(initialState);
-  app.on('quit', () => {
-    storage.set('state', store.getState());
-  });
+  store.subscribe(() => { 
+    setImmediate(state => storage.set('state', state), store.getState());
+  })
+  // app.on('quit', () => {
+  //   storage.set('state', store.getState());
+  // });
   const dispatcher = getDispatcher(store);
   return [store, dispatcher] as [typeof store, typeof dispatcher];
 }

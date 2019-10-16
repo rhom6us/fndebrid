@@ -57,7 +57,7 @@ const ListItem = styled(FormGroup)({
   flexBasis: '40%',
   margin: '0 20px'
 });
-export const Preferences: React.FC<IOwnProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>> = (props) => {
+const Preferences: React.FC<IOwnProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>> = (props) => {
   useEffect(() => {props.downloadLocation || props.setDefaultDownloadLocation()});
   return (
     <RootElement>

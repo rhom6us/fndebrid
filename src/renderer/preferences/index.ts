@@ -1,3 +1,3 @@
-import Preferences from './containers/Preferences';
+import Preferences from './components/Preferences';
 
-export {Preferences};
+export default Preferences;
