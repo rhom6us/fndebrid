@@ -1,13 +1,14 @@
 import { createReadStream, ReadStream, statSync } from 'fs';
 import fetch from 'node-fetch';
 import { Torrent } from '../store/torrents/state';
-import { LinkInfo, TorrentId } from './types';
+import { FileId, Link, LinkInfo, MagnetLink, ExtendedTorrent, TorrentId } from './types';
 import { makeUrl } from "./util";
+import { Authorizor } from './Authorizor';
 
 type fu = ReturnType<typeof fetch>;
 
 export class RealDebrid {
-  constructor(private access_token: string, private base = new URL('https://api.real-debrid.com/rest/1.0/')) {
+  constructor(private readonly authorizor: Authorizor, private readonly base = new URL('https://api.real-debrid.com/rest/1.0/')) {
   }
 
   async _get<T = any>(path: string): Promise<T>;
@@ -17,7 +18,7 @@ export class RealDebrid {
     let response = await fetch(makeUrl(this.base, path, params), {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${this.access_token}`
+        Authorization: `Bearer ${await this.authorizor.getToken()}`
       }
     });
     if (!includeMeta)
@@ -28,7 +29,7 @@ export class RealDebrid {
     let response = await fetch(makeUrl(this.base, path, params), {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${this.access_token}`
+        Authorization: `Bearer ${await this.authorizor.getToken()}`
       }
     });
     return await response.json();
@@ -38,7 +39,7 @@ export class RealDebrid {
       method: 'POST',
       headers: {
         // 'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.access_token}`
+        Authorization: `Bearer ${await this.authorizor.getToken()}`
       },
       body: new URLSearchParams(body)
     });
@@ -50,30 +51,30 @@ export class RealDebrid {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/x-bittorrent',
-        Authorization: `Bearer ${this.access_token}`,
+        Authorization: `Bearer ${await this.authorizor.getToken()}`,
         ...extraHeaders
       },
       body
     });
     return await response.json();
   }
-  async torrents(page = 1): Promise<Omit<Torrent, 'files'>[]> {
+  async torrents(page = 1): Promise<Torrent[]> {
     const pageSize = 50;
 
-    let [data, headers] = await this._get<Omit<Torrent, 'files'>[]>('torrents', { page, limit: pageSize.toString() }, true);
+    let [data, headers] = await this._get<Torrent[]>('torrents', { page, limit: pageSize.toString() }, true);
     if (((headers['x-total-count'] && headers['x-total-count'][0]) || 0) > (page * pageSize)) {
       return [...data, ...(await this.torrents(page + 1))];
     }
     return data;
   }
   torrent(id: TorrentId) {
-    return this._get<Torrent>(`torrents/${id}`);
+    return this._get<ExtendedTorrent>(`torrents/${id}`);
   }
   delete(id: TorrentId) {
     return this._delete(`torrents/delete/${id}`);
   }
-  addMagnet(magnet: string) {
-    return this._post<{ torrentId: string }>('torrents/addMagnet', { magnet });
+  addMagnet(magnet: MagnetLink) {
+    return this._post<{ torrentId: TorrentId }>('torrents/addMagnet', { magnet });
   }
   addTorrent(filePath: string) {
 
@@ -83,12 +84,15 @@ export class RealDebrid {
     let readStream = createReadStream(filePath);
     //var stringContent = fs.readFileSync('foo.txt', 'utf8');
     //var bufferContent = fs.readFileSync(filePath)
-    return this._put<{ id: string }>('torrents/addTorrent', readStream as any, { "Content-length": fileSizeInBytes.toString() });
+    return this._put<{ id: TorrentId }>('torrents/addTorrent', readStream as any, { "Content-length": fileSizeInBytes.toString() });
   }
-  selectFiles(torrentId: TorrentId, files: number[] | 'all' = 'all') {
+  selectFiles(torrentId: TorrentId, files: FileId[] | 'all' = 'all') {
+    if (!files.length) {
+      return Promise.resolve();
+    }
     return this._post(`torrents/selectFiles/${torrentId}`, { files: (files instanceof Array) ? files.join(',') : files })
   }
-  unrestrictLink(link: string) {
+  unrestrictLink(link: Link) {
     return this._post<LinkInfo & { crc: number }>('unrestrict/link', { link });
   }
   downloads() {

@@ -3,13 +3,13 @@ import { Torrent, File, TorrentId } from "../../real-debrid";
 export { Torrent, File };
 
 export interface Entities {
-  torrents: Record<string, Omit<Torrent, 'files'>>,
-  files: Record<string, File[]>
+  readonly torrents: Record<TorrentId, Torrent>,
+  readonly files: Record<TorrentId, readonly File[]>
 }
 export default State;
 export interface State {
   readonly loading: boolean
-  readonly torrents: Array<string>
+  readonly torrents: readonly TorrentId[]
   readonly entities: Entities;
   readonly selectedTorrent?: TorrentId;
   readonly errors?: Error | string

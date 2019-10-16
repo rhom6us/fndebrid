@@ -7,6 +7,7 @@ import configureStore from './configureStore';
 import { Dispatcher, getDispatcher } from './dispatcher';
 import { DEBUG, deleteDir, installReactDevTools, sleep } from './utils';
 import { showPreferences } from './windows';
+import { MagnetLink } from './real-debrid';
 const storage = new Store();
 console.log('main');
 function appReady() { 
@@ -21,10 +22,9 @@ function appReady() {
 }
 function appSecondInstance(dispatcher: Dispatcher) {
   return function (_: any, argv: string[]) {
-    const magnetLink = argv.filter(p => p.startsWith('magnet:'))[0];
+    const magnetLink = argv.filter(p => p.startsWith('magnet:'))[0] as MagnetLink;
     if (magnetLink) {
-
-      dispatcher.addMagnet.request({ magnetLink });
+      dispatcher.addMagnet.request(magnetLink);
     }
   }
 }

@@ -1,48 +1,60 @@
-import { makeUrl } from "./util";
-import { AuthorizatioInfo } from ".";
-import fetch, {Response} from 'node-fetch';
-import {alert} from '../utils';
-
+import { ArguementFalsyError, InvalidArguementError, InvalidOperationError } from '../../common';
+import * as api from './api/auth';
+import { AccessToken, ClientId, ClientSecret, RefreshToken } from './types';
+interface AuthInfo {
+  access_token: AccessToken;
+  refresh_token: RefreshToken;
+  client_id: ClientId;
+  client_secret: ClientSecret;
+  expires: Date;
+}
 export class Authorizor {
-  constructor(private base: URL = new URL('https://api.real-debrid.com/oauth/v2/')) { }
-  async code({ client_id }: Pick<AuthorizatioInfo, 'client_id'>) {
-    const response = await fetch(makeUrl(this.base, 'device/code', { client_id, new_credentials: 'yes' }));
-    const json = await response.json();
-    return json as {
-      device_code: string;
-      direct_verification_url: string;
-    };
+  public constructor(private deviceCodeCallback: (url: string) => Promise<void>, state?: AuthInfo) {
+    if (!deviceCodeCallback) throw new ArguementFalsyError('deviceCodeCallback');
+    this.authInfo = state;
   }
-  async credentials({ client_id, device_code }: Pick<AuthorizatioInfo, 'client_id'> & { device_code: string; }) {
-    const response = await new Promise<Response>((resolve, reject) => {
-      const timer = setInterval(async () => {
-        const r = await fetch(makeUrl(this.base, 'device/credentials', { client_id, code: device_code }));
-        if (r.status == 200) {
-          clearInterval(timer);
-          resolve(r);
-        }
-      }, 5000);
-    });
-    const json = await response.json();
-    return json as Pick<AuthorizatioInfo, 'client_id' | 'client_secret'>;
+  private _authInfo: AuthInfo | undefined;
+  public get authInfo(): AuthInfo | undefined {
+    return this._authInfo;
   }
-  async token({ client_id, client_secret, device_code }: Pick<AuthorizatioInfo, 'client_id' | 'client_secret'> & { device_code: string; }): Promise<AuthorizatioInfo> {
-    const response = await fetch(makeUrl(this.base, 'token'), {
-      method: 'POST',
-      headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ client_id, client_secret, code: device_code, grant_type: 'http://oauth.net/grant_type/device/1.0' })
-    });
-    const json: Pick<AuthorizatioInfo, 'access_token' | 'refresh_token'> = await response.json();
-    return { ...json, client_id, client_secret };
+  public set authInfo(authInfo: AuthInfo | undefined) {
+    if (authInfo) {
+      if (!authInfo.access_token) throw new InvalidArguementError('state', 'access_token is not present');
+      if (!authInfo.refresh_token) throw new InvalidArguementError('state', 'refresh_token is not present');
+      if (!authInfo.client_id) throw new InvalidArguementError('state', 'client_id is not present');
+      if (!authInfo.client_secret) throw new InvalidArguementError('state', 'client_secret is not present');
+      if (!authInfo.expires) throw new InvalidArguementError('state', 'expires is not present');
+    }
+    this._authInfo = authInfo;
   }
+  private async _loadState() {
+    const code = await api.code();
+    await this.deviceCodeCallback(code.direct_verification_url);
+    if (Date.now() > code.expires.getTime()) {
+      return;
+    }
+    const credentials = await api.credentials(code);
+    if (Date.now() > code.expires.getTime()) {
+      return;
+    }
+    const token = await api.token({ ...credentials, code: code.device_code });
+    this.authInfo = { ...credentials, ...token };
+  }
+  private async _refresh() {
+    if (!this.authInfo) {
+      throw new InvalidOperationError('authInfo has not been setup');
+    }
+    const token = await api.token({ ...this.authInfo, code: this.authInfo.refresh_token });
+    this.authInfo = { ...this.authInfo, ...token };
+  }
+  public async getToken() {
+    while (!this.authInfo) {
+      await this._loadState();
+    }
+    if (Date.now() >= this.authInfo!.expires.getTime()) {
+      await this._refresh();
+    }
+    return this.authInfo!.access_token;
 
-  static async getToken(callback: (url: string) => void) {
-    const auth = new Authorizor();
-    const client_id = 'X245A4XAIBGVM';
-    let code = await auth.code({ client_id });
-    callback(code.direct_verification_url);
-    let credentials = await auth.credentials({ ...code, client_id });
-    let token = await auth.token({ ...credentials, ...code });
-    return token.access_token;
   }
 }

@@ -1,5 +1,5 @@
 export class FnError extends Error {
-  constructor(message: string) {
+  constructor(message?: string) {
     super(message);
     this.name = new.target.name;
 
@@ -12,4 +12,11 @@ export class FnError extends Error {
 
 export class OperationFailedError extends FnError {}
 export class InvalidOperationError extends FnError {}
-export class UnexpectedStateError extends FnError {}
+export class UnexpectedStateError extends FnError { }
+export class ArguementError extends FnError {
+  constructor(public readonly name: string, message?: string) {
+      super(message);
+  }
+}
+export class ArguementFalsyError extends ArguementError { }
+export class InvalidArguementError extends ArguementError { }

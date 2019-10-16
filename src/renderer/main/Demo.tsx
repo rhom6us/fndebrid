@@ -3,11 +3,12 @@ import * as actions from '../../main/store/actions';
 import React, { useState } from "react";
 import { Dispatch } from "redux";
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { TorrentId } from '../../main/real-debrid';
 
 interface IOwnProps { }
 interface IStateProps {
-  downloadLocation: string;
-  torrents: any[];
+  readonly downloadLocation: string;
+  readonly torrents: readonly TorrentId[];
 }
 interface IDispatchProps {
   loadTorrents(): void;

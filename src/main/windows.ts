@@ -3,6 +3,7 @@ import path from 'path';
 import { format as formatUrl } from 'url';
 import { isDev } from './utils';
 import uuid from 'uuid';
+import { FileId, TorrentId } from './real-debrid';
 
 
 type WindowName = 'Main' | 'Preferences' | 'FileSelect';
@@ -80,8 +81,8 @@ export const showPreferences = () => createWindow('Preferences', {
   height: 750,
   width: 625
 });
-export const showFileSelect = (torrentId: string) => {
-  return new Promise<number[]>((resolve, reject) => {
+export const showFileSelect = (torrentId: TorrentId) => {
+  return new Promise<FileId[] | null>((resolve, reject) => {
     const callbackId = uuid();
     const window = createWindow('FileSelect', {
       frame: false,
@@ -92,13 +93,14 @@ export const showFileSelect = (torrentId: string) => {
       autoHideMenuBar: true
     }, { torrentId, callbackId });
 
-    ipcMain.once(`return-${callbackId}`, (event, result: number[] | Error) => {
+    ipcMain.once(`return-${callbackId}`, (event, result: FileId[] | null | Error) => {
       if (result instanceof Error) {
         reject(result);
       } else {
         resolve(result);
       }
-      window && window.close();
+      
+      window!.close();
     });
 
 

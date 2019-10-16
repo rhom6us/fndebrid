@@ -1,3 +1,4 @@
+import { Merge as MergeFest } from 'type-fest';
 
 export type Await<T> = T extends Promise<infer U> ? U : T;
 
@@ -18,7 +19,7 @@ type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X
   : 2) extends (<T>() => T extends Y ? 1 : 2)
   ? A
   : B;
-  
+
 export type WritableKeys<T extends object> = {
   [P in keyof T]-?: IfEquals<
     { [Q in P]: T[P] },
@@ -90,5 +91,19 @@ export type UnpackMap<T extends UnpackableMap> =
   } :
   T;
 
+type Merge3<T1, T2, T3> = MergeFest<MergeFest<T1, T2>, T3>;
+type Merge4<T1, T2, T3, T4> = MergeFest<Merge3<T1, T2, T3>, T4>;
+type Merge5<T1, T2, T3, T4, T5> = MergeFest<Merge4<T1, T2, T3, T4>, T5>;
+type Merge6<T1, T2, T3, T4, T5, T6> = MergeFest<Merge5<T1, T2, T3, T4, T5>, T6>;
+export type Merge<T1, T2, T3 = undefined, T4 = undefined, T5 = undefined, T6 = undefined> = 
+  T6 extends undefined ?
+  T5 extends undefined ?
+  T4 extends undefined ?
+  T3 extends undefined ?
+  MergeFest<T1, T2> :
+  Merge3<T1, T2, T3> :
+  Merge4<T1, T2, T3, T4> :
+  Merge5<T1, T2, T3, T4, T5> :
+  Merge6<T1, T2, T3, T4, T5, T6> ;
 
-export type Brand<T, U> = T & { __brand: U };
+
