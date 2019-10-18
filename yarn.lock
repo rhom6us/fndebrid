@@ -896,6 +896,12 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
+"@types/react-resize-detector@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react-resize-detector/-/react-resize-detector-4.0.2.tgz#5c046301a881fe9af741536e0dd4c34dfb155c6e"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*":
   version "16.9.5"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.5.tgz#079dabd918b19b32118c25fd00a786bb6d0d5e51"
@@ -2663,9 +2669,9 @@ electron-publish@21.2.0:
     lazy-val "^1.0.4"
     mime "^2.4.4"
 
-electron-redux-proxy@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/electron-redux-proxy/-/electron-redux-proxy-1.0.2.tgz#a581829474ba14a1cf886f4395579706e63c7fc4"
+electron-redux-proxy@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/electron-redux-proxy/-/electron-redux-proxy-1.0.5.tgz#afd66325e7f6799cde721dd31be52b3f2213002a"
 
 electron-store@^5.0.0:
   version "5.0.0"
@@ -4249,6 +4255,10 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
+lodash-es@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
@@ -5684,6 +5694,10 @@ querystringify@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.1.tgz#60e5a5fd64a7f8bfa4d2ab2ed6fdf4c85bad154e"
 
+raf-schd@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/raf-schd/-/raf-schd-4.0.2.tgz#bd44c708188f2e84c810bf55fcea9231bcaed8a0"
+
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
@@ -5770,6 +5784,16 @@ react-redux@^7.1.1:
     loose-envify "^1.4.0"
     prop-types "^15.7.2"
     react-is "^16.9.0"
+
+react-resize-detector@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-4.2.1.tgz#8982b74c3e1cf949afaa3c41050458c87b033982"
+  dependencies:
+    lodash "^4.17.15"
+    lodash-es "^4.17.15"
+    prop-types "^15.7.2"
+    raf-schd "^4.0.2"
+    resize-observer-polyfill "^1.5.1"
 
 react-router-static@^1.0.0:
   version "1.0.0"

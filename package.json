@@ -34,7 +34,7 @@
     "dotenv-webpack": "^1.7.0",
     "electron-debug": "^3.0.1",
     "electron-devtools-installer": "^2.2.4",
-    "electron-redux-proxy": "^1.0.2",
+    "electron-redux-proxy": "^1.0.5",
     "electron-store": "^5.0.0",
     "emotion-theming": "^10.0.19",
     "lodash": "^4.17.15",
