@@ -9,9 +9,10 @@
     "dist": "yarn build && electron-builder",
     "dist:broke": "yarn compile && electron-builder --config config/electron-builder.config.json",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "start": "webpack-dev-server --progress --colors --config webpack.config.renderer.babel.js",
+    "start:renderer": "webpack-dev-server --progress --colors --config webpack.config.renderer.babel.js",
     "build": "webpack --progress --colors",
-    "build:main": "webpack --progress --colors --config webpack.config.main.babel.js"
+    "build:main": "webpack --progress --colors --config webpack.config.main.babel.js",
+    "build:renderer": "webpack --progress --colors --config webpack.config.renderer.babel.js"
   },
   "build": {
     "files": [
