@@ -1,4 +1,4 @@
-import { ipcMain, WebContents } from 'electron';
+import { ipcMain, WebContents, BrowserWindow } from 'electron';
 import { StoreEnhancer } from 'redux';
 
 export const proxyEnhancer: StoreEnhancer = createStore => {
@@ -16,8 +16,14 @@ export const proxyEnhancer: StoreEnhancer = createStore => {
     ipcMain.on('getState', event => {
       event.returnValue = store.getState();
     });
-    ipcMain.on('subscribe', event => {
-      subscribers.add(event.sender);
+    ipcMain.on('subscribe', subscribeEvent => {
+      subscribers.add(subscribeEvent.sender);
+      BrowserWindow.fromWebContents(subscribeEvent.sender).on('close', closeEvent => {
+        if (closeEvent.defaultPrevented) {
+          return;
+        }
+        subscribers.delete(subscribeEvent.sender);
+      })
     });
 
     return store;
