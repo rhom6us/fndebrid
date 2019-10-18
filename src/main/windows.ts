@@ -17,13 +17,13 @@ export const windows: { [K in WindowName]?: BrowserWindow } = {};
 
 const dialogs = new Set<BrowserWindow>();
 
-ipcMain.on('please-resize', async (event, size) => {
+ipcMain.on('please-resize', async (event, size: {width?:number, height?:number}) => {
   const win = BrowserWindow.fromWebContents(event.sender);
  
   const zoom = event.sender.getZoomFactor()
   const [contentX, contentY] = win.getContentSize();
-  const x = size.x ? Math.floor(zoom * size.x) : contentX;
-  const y = size.y ? Math.floor(zoom * size.y) : contentY;
+  const x = size.width ? Math.floor(zoom * size.width) : contentX;
+  const y = size.height ? Math.floor(zoom * size.height) : contentY;
   win.setContentSize(x, y, true);
 })
 function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstructorOptions & { devTools?: boolean } = { devTools: isDev }, query: any) {
@@ -36,12 +36,14 @@ function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstru
       frame: false,
       closable: true,
       skipTaskbar: true,
-      height: 400,
+      height: 156,
       width: 400,
       autoHideMenuBar: true,
       maximizable: false,
       minimizable: false,
       resizable: false,
+      transparent: true,
+      backgroundColor: "#00FF0000"
     });
     dialogs.add(window);
     if (options.devTools) {
@@ -115,7 +117,10 @@ function createWindow(route: WindowName, options: Electron.BrowserWindowConstruc
 }
 
 export function showAddMagnet():Promise<string> {
-  return showDialog<'cancel' | string>('AddMagnet', {}, {});
+  return showDialog<'cancel' | string>('AddMagnet', {
+    height: 156,
+    width: 400,
+  }, {});
   // return new Promise<FileId[] | null>((resolve, reject) => {
   //   const callbackId = uuid();
   //   const window = showDialog('AddMagnet', {

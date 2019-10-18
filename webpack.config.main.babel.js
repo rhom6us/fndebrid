@@ -51,7 +51,6 @@ export default {
     new webpack.DefinePlugin({
       __static: JSON.stringify(path.resolve(staticSourceDir))
     }),
-    new webpack.HotModuleReplacementPlugin(),
     // new WatchFilterPlugin(
     //   file =>
     //     file === commonSourceDir ||
