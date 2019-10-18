@@ -6,7 +6,8 @@ import { Classes } from '@blueprintjs/core';
 import classNames from 'classnames';
 import styles from './bpjs/core';
 import styled from '@emotion/styled';
-
+import ResizeDetector from 'react-resize-detector';
+import { ipcRenderer } from 'electron';
 export const ThemeContext = React.createContext({ dark: true, toggle: () => { } });
 export const useTheme = () => React.useContext(ThemeContext);
 
@@ -41,15 +42,30 @@ export const ThemeProvider: React.FC = ({ children }) => {
 
   const TheRoot = styled('article')({
     backgroundColor: themeState.isDark ? styles.darkAppBackgroundColor : styles.appBackgroundColor,
-    minHeight: '100vh'
+    // minHeight: '100vh'
   });
   const className = classNames('root', { [Classes.DARK]: themeState.isDark })
+  
+  const resizeDetectorProps = {
+    refreshMode: 'debounce' as 'debounce',
+    refreshRate: 250,
+    refreshOptions: {
+      leading: true,
+      trailing:true
+    },
+    handleWidth: true,
+    handleHeight: true,
+    onResize(width: number, height: number) {
+      ipcRenderer.send('please-resize', { width, height });
+    }
+  };
   return (
     // <EmotionThemeProvider theme={computedTheme}>
     <TheRoot id="root" {...{ className }}>
       <ThemeContext.Provider value={{ dark: themeState.isDark, toggle }} >
         {children}
       </ThemeContext.Provider>
+      <ResizeDetector {...resizeDetectorProps} />
     </TheRoot>
 
     // </EmotionThemeProvider>
