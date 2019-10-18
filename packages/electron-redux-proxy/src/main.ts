@@ -23,7 +23,7 @@ export const proxyEnhancer: StoreEnhancer = createStore => {
           return;
         }
         subscribers.delete(subscribeEvent.sender);
-      })
+      });
     });
 
     return store;
