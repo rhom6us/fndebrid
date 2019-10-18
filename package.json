@@ -4,14 +4,15 @@
   "license": "MIT",
   "main": "dist/main/main.js",
   "scripts": {
+    "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\"",
     "dist": "yarn build && electron-builder",
     "dist:broke": "yarn compile && electron-builder --config config/electron-builder.config.json",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "build": "webpack --progress --colors",
-    "build:renderer": "webpack --progress --colors --config webpack.config.renderer.babel.js",
-    "watch:renderer": "webpack-dev-server --progress --colors --config webpack.config.renderer.babel.js",
-    "build:main": "webpack --progress --colors --config webpack.config.main.babel.js",
-    "watch:main": "webpack --watch --progress --colors --config webpack.config.main.babel.js"
+    "buildasdf": "webpack --progress --colors --config webpack/all.babel.js",
+    "build:renderer": "webpack --progress --colors --config webpack/renderer.babel.js",
+    "watch:renderer": "webpack-dev-server --config webpack/renderer.babel.js  --info-verbosity verbose",
+    "build:main": "webpack --progress --colors --config webpack/main.babel.js",
+    "watch:main": "webpack --watch --config webpack/main.babel.js --info-verbosity verbose"
   },
   "build": {
     "files": [
@@ -76,7 +77,6 @@
     "css-loader": "^3.2.0",
     "electron": "^6.0.12",
     "electron-builder": "^21.2.0",
-    "electron-reloader": "^0.3.0",
     "fibers": "^4.0.1",
     "file-loader": "^4.2.0",
     "fork-ts-checker-webpack-plugin": "^1.5.0",
@@ -87,6 +87,7 @@
     "node-loader": "^0.6.0",
     "node-powershell": "^4.0.0",
     "node-sass": "^4.12.0",
+    "nodemon": "^1.19.4",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
@@ -99,6 +100,7 @@
     "type-fest": "^0.8.1",
     "typescript": "^3.6.4",
     "url-loader": "^2.2.0",
+    "utf-8-validate": "^5.0.2",
     "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.2",

@@ -5,7 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import WatchFilterPlugin from 'webpack-match-plugin';
-import { cssLoader, postcssLoader, sassLoader, cssHotLoader, cssModuleLoader, cssHotModuleLoader, fontLoader, fileLoader } from './config/loaders';
+import { cssLoader, postcssLoader, sassLoader, cssHotLoader, cssModuleLoader, cssHotModuleLoader, fontLoader, fileLoader } from '../config/loaders';
 import { spawn } from 'child_process';
 function isAncestor(file, dir) {
   return file.length > dir.length && file[dir.length] === path.sep && file.startsWith(dir)
@@ -25,7 +25,7 @@ const config = {
   mode: 'development',
   target: 'electron-renderer',
   devtool: 'eval-source-map',
-  context: path.resolve(__dirname),
+  context: path.resolve('.'),
   entry: {
     renderer: [
       // 'css-hot-loader/hotModuleReplacement',

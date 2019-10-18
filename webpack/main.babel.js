@@ -3,7 +3,7 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import path from "path";
 import webpack from "webpack";
 import WatchFilterPlugin from "webpack-match-plugin";
-import { tsLoader, nodeLoader } from "./config/loaders";
+import { tsLoader, nodeLoader } from "../config/loaders";
 
 const sourceDir = "src/main";
 const commonSourceDir = "src/common";
@@ -19,12 +19,15 @@ export default {
   mode: "development",
   target: "electron-main",
   devtool: 'eval-source-map',
-  context: path.resolve(__dirname),
+  context: path.resolve('.'),
   entry: path.resolve(sourceDir, "index.ts"),
   output: {
     filename: `[name]${isDev ? "" : ".[contenthash]"}.js`,
     chunkFilename: `[name]${isDev ? "" : ".[contenthash]"}.js`,
     path: path.resolve(outDir, type)
+  },
+  stats: {
+    warnings: false
   },
   resolve: {
     alias: {

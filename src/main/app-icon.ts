@@ -27,5 +27,9 @@ export function createAppIcon() {
       click: app.quit
     }])
   );
+  app.on('quit', () => {
+    appIcon && appIcon.destroy();
+    appIcon = undefined;
+  })
   return appIcon;
 }

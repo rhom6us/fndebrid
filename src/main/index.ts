@@ -8,20 +8,29 @@ import { Dispatcher, getDispatcher } from './dispatcher';
 import { DEBUG, deleteDir, installReactDevTools, isDev } from './utils';
 import { showPreferences, showAddMagnet } from './windows';
 import { MagnetLink } from './real-debrid';
-// if (isDev) {
-//   require('electron-reloader')(module, {path:path.resolve(".", "dist", "main"), ignore:"src", watchRenderer:false});
-// }
+if (isDev || DEBUG) {
+  process.once('SIGTERM', function () {
+    app.quit();
+    process.kill(process.pid, 'SIGTERM');
+  });
+  process.once('SIGHUP', function () {
+    app.quit();
+    process.kill(process.pid, 'SIGHUP');
+  });
+  process.once('SIGUSR2', function () {
+    app.quit();
+    process.kill(process.pid, 'SIGUSR2');
+  });
+}
 const storage = new Store();
-console.log('main');
-function appReady() { 
-  console.log('app.ready');
-  // installReactDevTools();
+
+function appReady() {
+  
 
   createAppIcon();
 
-  if (DEBUG) {
-    showAddMagnet().then(link => console.log({link}));
-    // showPreferences();
+  if (isDev) {
+    showAddMagnet();
   }
 }
 function appSecondInstance(dispatcher: Dispatcher) {
@@ -38,13 +47,13 @@ function appWindowAllClosed() {
   }
 }
 function appWillQuit() {
-  
+
 }
 function appBeforeQuit() {
-  
+
 }
 function appQuit() {
-  
+
 }
 
 const [store, dispatcher] = setupRedux();
@@ -52,8 +61,8 @@ function initializeApp(app: Electron.App) {
   if (!app.requestSingleInstanceLock()) {
     app.exit();
     return;
-  } 
-  
+  }
+
   app.on('ready', appReady)
   app.on('second-instance', appSecondInstance(dispatcher));
   app.on('window-all-closed', appWindowAllClosed)
@@ -90,7 +99,7 @@ function initializeApp(app: Electron.App) {
 function setupRedux() {
   const initialState = storage.get('state');
   const store = configureStore(initialState);
-  store.subscribe(() => { 
+  store.subscribe(() => {
     setImmediate(state => storage.set('state', state), store.getState());
   })
   // app.on('quit', () => {

@@ -25,8 +25,10 @@ function tryReadClipboard() {
 function isMagnetLink(magnet: string) {
   try {
     const url = new URL(magnet);
-    return url.protocol == 'magnet:'
-  } catch (error) { }
+    return url.protocol === 'magnet:'
+  } catch (e) {
+    
+  }
   return false;
 }
 interface IOwnProps { }
@@ -56,7 +58,6 @@ export const AddMagnet = connect(mapStateToProps, mapDispatchToProps)((props: Pr
   function cancel() {
     window.close();
   }
-  console.log('AddMagnet');
 
 
   return (

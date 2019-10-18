@@ -69,10 +69,16 @@ function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstru
     }
    
     ipcMain.once(`dialog-result-${callbackId}`, (event, result) => {
+      if (result instanceof Error) {
+        reject(result);
+      }
       resolve(result);
       BrowserWindow.fromWebContents(event.sender).close();
     })
-    window.on('close', () => dialogs.delete(window));
+    window.on('close', () => {
+      resolve();
+      dialogs.delete(window);
+    });
 
   });
 }
@@ -116,28 +122,12 @@ function createWindow(route: WindowName, options: Electron.BrowserWindowConstruc
   return windows[route] = window;
 }
 
-export function showAddMagnet():Promise<string> {
-  return showDialog<'cancel' | string>('AddMagnet', {
+export function showAddMagnet() {
+  return showDialog<string>('AddMagnet', {
     height: 156,
     width: 400,
+    alwaysOnTop: true,
   }, {});
-  // return new Promise<FileId[] | null>((resolve, reject) => {
-  //   const callbackId = uuid();
-  //   const window = showDialog('AddMagnet', {
-  //   }, { callbackId });
-
-  //   ipcMain.once(`return-${callbackId}`, (event, result: FileId[] | null | Error) => {
-  //     if (result instanceof Error) {
-  //       reject(result);
-  //     } else {
-  //       resolve(result);
-  //     }
-
-  //     window!.close();
-  //   });
-
-
-  // });
 }
 export const showMain = () => createWindow('Main');
 export const showPreferences = () => createWindow('Preferences', {
