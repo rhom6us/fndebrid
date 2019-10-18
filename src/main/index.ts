@@ -8,9 +8,9 @@ import { Dispatcher, getDispatcher } from './dispatcher';
 import { DEBUG, deleteDir, installReactDevTools, isDev } from './utils';
 import { showPreferences, showAddMagnet } from './windows';
 import { MagnetLink } from './real-debrid';
-if (isDev) {
-  require('electron-reloader')(module, {path:path.resolve(".", "dist", "main"), ignore:"src", watchRenderer:false});
-}
+// if (isDev) {
+//   require('electron-reloader')(module, {path:path.resolve(".", "dist", "main"), ignore:"src", watchRenderer:false});
+// }
 const storage = new Store();
 console.log('main');
 function appReady() { 
