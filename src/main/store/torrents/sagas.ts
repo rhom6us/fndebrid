@@ -12,7 +12,7 @@ const auth = new Authorizor(async (url: string) => shell.openExternal(url));
 const api = new RealDebrid(auth);
 
 const getErrorMsg = (err: any) => err instanceof Error ? err.stack! : typeof err === 'string' ? err : 'An unknown error has occured';;
-function* watchFetchRequest() {
+function* fetchTorrents_request() {
   yield takeLatest(fetchTorrents.request, function* () {
     try {
 
@@ -26,7 +26,7 @@ function* watchFetchRequest() {
   });
 }
 
-function* watchAddMagnet() {
+function* addMagnet_request() {
   yield takeEvery(addMagnet.request, function* ({ payload: magnetLink }) {
     try {
       const { id }: Yield<typeof api.addMagnet> = (yield call([api, api.addMagnet], magnetLink)) as any;
@@ -37,7 +37,7 @@ function* watchAddMagnet() {
     }
   });
 }
-function* watchAddTorrentFile() {
+function* addTorrentFile_request() {
   yield takeEvery(addTorrentFile.request, function* ({ payload: { filePath } }) {
     try {
       const { id }: Yield<typeof api.addMagnet> = yield api.addTorrent(filePath)
@@ -104,9 +104,9 @@ function* watch_openFileSelect() {
 
 export default function* () {
   yield all([
-    fork(watchFetchRequest),
-    fork(watchAddMagnet),
-    fork(watchAddTorrentFile),
+    fork(fetchTorrents_request),
+    fork(addMagnet_request),
+    fork(addTorrentFile_request),
     fork(watchTorrentAdded),
     fork(watchTorrentRequest),
     fork(watch_openFileSelect)

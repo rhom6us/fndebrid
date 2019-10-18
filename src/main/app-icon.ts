@@ -16,7 +16,9 @@ export function createAppIcon() {
       click: showMain
     }, {
       label: 'Add magnet link',
-      click: showAddMagnet
+      async click() {
+        const result = await showAddMagnet();
+      }
     }, {
       label: 'Preferences',
       click: showPreferences

@@ -6,7 +6,7 @@ import { createAppIcon } from './app-icon';
 import configureStore from './configureStore';
 import { Dispatcher, getDispatcher } from './dispatcher';
 import { DEBUG, deleteDir, installReactDevTools, sleep } from './utils';
-import { showPreferences } from './windows';
+import { showPreferences, showAddMagnet } from './windows';
 import { MagnetLink } from './real-debrid';
 const storage = new Store();
 console.log('main');
@@ -17,7 +17,8 @@ function appReady() {
   createAppIcon();
 
   if (DEBUG) {
-    showPreferences();
+    showAddMagnet().then(link => console.log({link}));
+    // showPreferences();
   }
 }
 function appSecondInstance(dispatcher: Dispatcher) {
@@ -30,7 +31,7 @@ function appSecondInstance(dispatcher: Dispatcher) {
 }
 function appWindowAllClosed() {
   if (DEBUG) {
-    app.quit();
+    // app.quit();
   }
 }
 function appWillQuit() {
