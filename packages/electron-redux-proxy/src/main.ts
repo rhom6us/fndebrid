@@ -1,4 +1,4 @@
-import { ipcMain, WebContents, BrowserWindow } from 'electron';
+import { BrowserWindow, ipcMain, WebContents } from 'electron';
 import { StoreEnhancer } from 'redux';
 
 export const proxyEnhancer: StoreEnhancer = createStore => {
