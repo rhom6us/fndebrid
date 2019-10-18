@@ -4,8 +4,6 @@
   "license": "MIT",
   "main": "dist/main/main.js",
   "scripts": {
-    "dev": "electron-webpack dev",
-    "compile": "electron-webpack",
     "dist": "yarn build && electron-builder",
     "dist:broke": "yarn compile && electron-builder --config config/electron-builder.config.json",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
