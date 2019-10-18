@@ -11,7 +11,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "start": "webpack-dev-server --progress --colors --config webpack.config.renderer.babel.js",
     "build": "webpack",
-    "build:main": "webpack --config webpack.config.main.babel.js"
+    "build:main": "webpack --progress --colors --config webpack.config.main.babel.js"
   },
   "build": {
     "files": [
