@@ -5,9 +5,12 @@ import * as path from 'path';
 import { createAppIcon } from './app-icon';
 import configureStore from './configureStore';
 import { Dispatcher, getDispatcher } from './dispatcher';
-import { DEBUG, deleteDir, installReactDevTools, sleep } from './utils';
+import { DEBUG, deleteDir, installReactDevTools, isDev } from './utils';
 import { showPreferences, showAddMagnet } from './windows';
 import { MagnetLink } from './real-debrid';
+if (isDev) {
+  require('electron-reloader')(module, {path:path.resolve(".", "dist", "main"), ignore:"src", watchRenderer:false});
+}
 const storage = new Store();
 console.log('main');
 function appReady() { 

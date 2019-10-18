@@ -1,5 +1,11 @@
 {
   "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Compound",
+      "configurations": ["native", "Attach - Electron: Renderer"]
+    }
+  ],
   "configurations": [
     {
       "name": "native",
@@ -11,41 +17,67 @@
       "windows": {
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
       },
-      "args" : ["${workspaceRoot}"],
+      "runtimeArgs": ["--remote-debugging-port=9223", "."],
+      "env": {
+          "NODE_ENV": "development"
+      },
       "outputCapture": "std",
       "sourceMaps": true,
-      "outFiles": [
-          "${workspaceRoot}/dist/**/*.js"
-      ],
-      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"],
+      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+      "skipFiles": [
+        "node_modules/**",
+        "<node_internals>/Events.js",
+        "**/async_hooks.js"
+      ]
     },
     {
+      "name": "Attach - Electron: Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "preLaunchTask": "watch-renderer",
+      "port": 9223,
+      "webRoot": "${workspaceRoot}",
+      "timeout": 15000,
+      "sourceMaps": true
+    },
+    {
+      "name": "yarn: Renderer",
       "type": "node",
       "request": "launch",
-      "name": "electron-webpack",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron-webpack",
-      "runtimeArgs": [
-          "dev"
-      ],
+      "program": "${workspaceFolder}/node_modules/yarn/bin/yarn.js",
+      "args": ["watch:renderer"],
       "autoAttachChildProcesses": true,
-      "internalConsoleOptions": "openOnFirstSessionStart",
-      "console": "integratedTerminal",
+      "stopOnEntry": false
+    },
+    {
+      "name": "Webpack-dev-server: Renderer",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+      "args": ["--progress","--colors", "--config", "webpack.config.renderer.babel.js"],
+      "autoAttachChildProcesses": true,
+      "stopOnEntry": false,
+      
+      "env": {
+          "NODE_ENV": "development"
+      },
       "sourceMaps": true,
-      "outFiles": [
-          "${workspaceRoot}/dist/**/*.js"
-      ],
-      "skipFiles": ["node_modules/**", "<node_internals>/Events.js"],
-      "postDebugTask": "killzor",
-      "timeout": 1000000
-  },
-  {
-    "name": "Electron: Renderer",
-    "type": "chrome",
-    "request": "attach",
-    "port": 9223,
-    "webRoot": "${workspaceRoot}/dist/renderer",
-    "timeout": 15000,
-    "sourceMaps": true,
-  }
+      "sourceMapPathOverrides": {
+        "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
+        "webpack:///./*": "${workspaceRoot}/*",
+        "webpack:///*": "*"
+      }
+      
+    },
+    {
+      "name": "Webpack-cli: Renderer",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/webpack-cli/bin/cli.js",
+      "args": ["--config", "webpack.config.renderer.babel.js"],
+      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
+      "autoAttachChildProcesses": true,
+      "stopOnEntry": false
+    }
   ]
 }

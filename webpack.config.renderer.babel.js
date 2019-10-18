@@ -6,7 +6,7 @@ import path from 'path';
 import webpack from 'webpack';
 import WatchFilterPlugin from 'webpack-match-plugin';
 import { cssLoader, postcssLoader, sassLoader, cssHotLoader, cssModuleLoader, cssHotModuleLoader, fontLoader, fileLoader } from './config/loaders';
-
+import { spawn } from 'child_process';
 function isAncestor(file, dir) {
   return file.length > dir.length && file[dir.length] === path.sep && file.startsWith(dir)
 }
@@ -177,7 +177,16 @@ const config = {
     port: '9080',
     hot: true,
     overlay: true,
-    open: false
+    open: false,
+    // before() {
+    //   spawn(
+    //     'electron',
+    //     ['.'],
+    //     { shell: true, env: process.env, stdio: 'inherit' }
+    //   )
+    //   .on('close', code => process.exit(0))
+    //   .on('error', spawnError => console.error(spawnError))
+    // }
   },
   optimization: {
     nodeEnv: 'development',

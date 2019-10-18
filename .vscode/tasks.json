@@ -18,6 +18,12 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "watch-renderer",
+      "type": "npm",
+      "script": "watch:renderer",
+      "group": "build"
     }
   ]
 }

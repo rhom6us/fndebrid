@@ -42,6 +42,9 @@ export default {
     namedModules: true,
     noEmitOnErrors: true
   },
+  watchOptions: {
+    ignored: ['dist/**/*.*', 'node_modules']
+  },
   plugins: [
     new CleanWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin(),
