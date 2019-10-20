@@ -7,7 +7,7 @@ import webpack from 'webpack';
 import WatchFilterPlugin from 'webpack-match-plugin';
 import { cssLoader, postcssLoader, sassLoader, cssHotLoader, cssModuleLoader, cssHotModuleLoader, fontLoader, fileLoader } from '../config/loaders';
 import { spawn } from 'child_process';
-function isAncestor(file, dir) {
+function isAncestor(file: string, dir: string) {
   return file.length > dir.length && file[dir.length] === path.sep && file.startsWith(dir)
 }
 const isDev = process.env.NODE_ENV != 'production';
@@ -21,7 +21,7 @@ const configurator = {
 const sourceDir = path.join('src', "renderer");
 const alienSourceDir = path.join('src', "main");
 
-const config = {
+const config: webpack.Configuration = {
   mode: 'development',
   target: 'electron-renderer',
   devtool: 'eval-source-map',
@@ -39,20 +39,10 @@ const config = {
     path: path.resolve(outDir, configurator.type)
   },
   // externals: [
-  //   '@emotion/core',
-  //   '@emotion/styled',
-  //   'emotion-theming',
-  //   'lodash',
-  //   'react-router-static',
-  //   'redux',
-  //   'redux-electron-store',
-  //   'redux-saga',
-  //   'source-map-support',
-  //   'typesafe-actions',
-  //   'uuid',
-  //   'electron',
-  //   'webpack',
-  //   'electron-devtools-installer'
+  //   'path',
+  //   'util',
+  //   'fs',
+  //   'electron'
   // ],
   node: {
     __dirname: true,
@@ -89,15 +79,15 @@ const config = {
     }, {
       test: /\.node$/,
       use: "node-loader"
-      }, {
-        test: /\b(global|vars)\.scss$/i,
-        use: [
-          ...(isDev ? [cssHotLoader] : []),
-          MiniCssExtractPlugin.loader,
-          cssLoader,
-          postcssLoader,
-          sassLoader]
-      }, {
+    }, {
+      test: /\b(global|vars)\.scss$/i,
+      use: [
+        ...(isDev ? [cssHotLoader] : []),
+        MiniCssExtractPlugin.loader,
+        cssLoader,
+        postcssLoader,
+        sassLoader]
+    }, {
       test: /\.scss$/,
       exclude: /\b(global|vars)\.scss$/i,
       use: [
@@ -140,7 +130,7 @@ const config = {
     }]
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin() as any,
     new ForkTsCheckerWebpackPlugin(),
     ...(['renderer'].map(entry => new HtmlWebpackPlugin({
       title: "Webpack App",
@@ -157,7 +147,7 @@ const config = {
     new MiniCssExtractPlugin({
       filename: '[id].styles.css',
       chunkFilename: '[id].styles.css',
-      moduleFilename: (name) => '[id].styles.css'
+      // moduleFilename: (name) => '[id].styles.css'
     }),
     new webpack.DefinePlugin({
       __static: JSON.stringify(path.resolve(staticSourceDir))
@@ -174,7 +164,7 @@ const config = {
       path.resolve(outDir, 'renderer-dll')
     ],
     host: 'localhost',
-    port: '9080',
+    port: 9080,
     hot: true,
     overlay: true,
     open: false,

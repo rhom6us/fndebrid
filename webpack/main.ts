@@ -3,7 +3,7 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import path from "path";
 import webpack from "webpack";
 import WatchFilterPlugin from "webpack-match-plugin";
-import { tsLoader, nodeLoader } from "../config/loaders";
+import { tsLoader } from "../config/loaders";
 
 const sourceDir = "src/main";
 const commonSourceDir = "src/common";
@@ -12,10 +12,11 @@ const outDir = "dist";
 const type = "main";
 
 const isDev = process.env.NODE_ENV != 'production';
-function isAncestor(file, dir) {
+function isAncestor(file:string, dir:string) {
   return file.length > dir.length && file[dir.length] === path.sep && file.startsWith(dir)
 }
-export default {
+
+const config: webpack.Configuration = {
   mode: "development",
   target: "electron-main",
   devtool: 'eval-source-map',
@@ -49,7 +50,7 @@ export default {
     ignored: ['dist/**/*.*', 'node_modules']
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin() as any,
     new ForkTsCheckerWebpackPlugin(),
     new webpack.DefinePlugin({
       __static: JSON.stringify(path.resolve(staticSourceDir))
@@ -73,3 +74,4 @@ export default {
     ]
   }
 };
+export default config;
