@@ -1,7 +1,8 @@
 import { File, Torrent, TorrentId } from "../../real-debrid";
+import { Opaque } from 'type-fest';
 
 export { Torrent, File };
-
+export type JobId = Opaque<string>;
 export interface Entities {
   readonly torrents: Record<TorrentId, Torrent>,
   readonly files: Record<TorrentId, readonly File[]>
@@ -13,6 +14,7 @@ export interface State {
   readonly entities: Entities;
   readonly selectedTorrent?: TorrentId;
   readonly errors?: Error | string
+  readonly jobs: Record<JobId, TorrentId>
 }
 
 export const defaultState: State = {
@@ -23,4 +25,5 @@ export const defaultState: State = {
     files: {}
   },
   loading: false,
+  jobs: {}
 }

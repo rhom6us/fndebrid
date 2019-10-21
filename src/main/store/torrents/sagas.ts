@@ -4,7 +4,8 @@ import { all, call, delay, fork, put, take, takeEvery, takeLatest } from 'redux-
 import { Unpack } from '../../../common';
 import { Authorizor, RealDebrid } from '../../real-debrid';
 import { showFileSelect } from '../../windows';
-import { addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, openFileSelect } from './actions';
+import { addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, openFileSelect, updateJob } from './actions';
+import { setImmediateAsync } from '../../../common/utils';
 
 type Yield<T> = Unpack<T>;
 
@@ -27,10 +28,10 @@ function* fetchTorrents_request() {
 }
 
 function* addMagnet_request() {
-  yield takeEvery(addMagnet.request, function* ({ payload: magnetLink }) {
+  yield takeEvery(addMagnet.request, function* ({ payload: [magnetLink, jobId] }) {
     try {
       const { id }: Yield<typeof api.addMagnet> = (yield call([api, api.addMagnet], magnetLink)) as any;
-      yield put(addMagnet.success(id));
+      yield put(addMagnet.success([id, jobId]));
 
     } catch (err) {
       yield put(addMagnet.failure(getErrorMsg(err)));
@@ -38,10 +39,10 @@ function* addMagnet_request() {
   });
 }
 function* addTorrentFile_request() {
-  yield takeEvery(addTorrentFile.request, function* ({ payload: { filePath } }) {
+  yield takeEvery(addTorrentFile.request, function* ({ payload: { filePath, jobId } }) {
     try {
       const { id }: Yield<typeof api.addMagnet> = yield api.addTorrent(filePath)
-      yield put(addTorrentFile.success(id));
+      yield put(addTorrentFile.success([id, jobId]));
 
     } catch (err) {
       yield put(addTorrentFile.failure(getErrorMsg(err)));
@@ -49,31 +50,11 @@ function* addTorrentFile_request() {
   });
 }
 function* watchTorrentAdded() {
-  yield takeEvery([addMagnet.success, addTorrentFile.success], function* ({ payload: torrentId }) {
-    while (true) {
-      yield put(fetchTorrent.request(torrentId));
-      yield promisify(setImmediate);
-      const { payload: torrent }: Yield<typeof fetchTorrent.success> = yield take(fetchTorrent.success);
-      switch (torrent.status) {
-        case 'magnet_conversion':
-          yield delay(1500);
-          continue;
-        case 'waiting_files_selection':
-          yield put(openFileSelect(torrentId));
-          return;
-        case 'compressing':
-        case 'dead':
-        case 'downloaded':
-        case 'downloading':
-        case 'error':
-        case 'magnet_error':
-        case 'queued':
-        case 'uploading':
-        case 'virus':
-        default:
-          return;
-      }
-    }
+  yield takeEvery([addMagnet.success, addTorrentFile.success], function* ({ payload: [torrentId, jobId] }) {
+    yield put(fetchTorrent.request(torrentId));
+    yield setImmediateAsync();
+    const { payload: torrent }: Yield<typeof fetchTorrent.success> = yield take(fetchTorrent.success);
+    yield put(updateJob(jobId, torrent.id));
   });
 }
 function* watchTorrentRequest() {

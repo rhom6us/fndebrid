@@ -31,19 +31,20 @@ function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstru
     const callbackId = uuid5(`http://fndebrid.butler.software/${route}`, uuid5.URL);
     const window = new BrowserWindow({
       alwaysOnTop: true,
-      ...options,
-      webPreferences: { nodeIntegration: true },
       frame: false,
       closable: true,
       skipTaskbar: true,
-      height: 156,
-      width: 400,
       autoHideMenuBar: true,
       maximizable: false,
       minimizable: false,
       resizable: false,
       transparent: true,
-      backgroundColor: "#00FF0000"
+      backgroundColor: "#00FF0000",
+      ...options,
+      webPreferences: {
+        nodeIntegration: true,
+        ...options.webPreferences
+      },
     });
     dialogs.add(window);
     if (options.devTools) {
@@ -124,9 +125,10 @@ function createWindow(route: WindowName, options: Electron.BrowserWindowConstruc
 
 export function showAddMagnet() {
   return showDialog<string>('AddMagnet', {
-    height: 156,
-    width: 400,
-    alwaysOnTop: true,
+    height: 156/.8,
+    width: 400 / .8,
+    skipTaskbar: false,
+    alwaysOnTop: false,
   }, {});
 }
 export const showMain = () => createWindow('Main');

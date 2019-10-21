@@ -38,7 +38,10 @@ const mapStateToProps = function (state: State, ownProps: IOwnProps) {
 const mapDispatchToProps = function (dispatch: Dispatch<Action<any>>, ownProps: IOwnProps) {
   const dispatcher = getDispatcher(dispatch);
   return {
-    addMagnet: (magnet: string) => dispatcher.addMagnet.request(magnet as MagnetLink),
+    addMagnet: (magnet: string) => {
+      const jobId = uuid5(magnet, uuid5.URL);
+      dispatcher.addMagnet.request([magnet as MagnetLink, jobId]);
+    },
   }
 }
 type IDispatchProps = ReturnType<typeof mapDispatchToProps>;
