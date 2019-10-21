@@ -2,18 +2,25 @@
 import { createAsyncAction, ActionType, createAction } from 'typesafe-actions'
 import { Torrent, JobId } from './state'
 import { create } from 'domain';
-import { TorrentId, MagnetLink, ExtendedTorrent } from '../../real-debrid';
+import { TorrentId, MagnetLink, ExtendedTorrent, FileId } from '../../real-debrid';
 
 
-export const updateJob = createAction('torrents/updateJob', action => 
-  (jobId: JobId, torrentId: TorrentId) => action({jobId, torrentId})
-);
-export const cancelJob = createAction('torrents/updateJob', action => 
+export const completeJob = createAction('torrents/completeJob', action => 
   (jobId: JobId) => action({jobId})
 );
-export const openFileSelect = createAction('#torrents/showFileSelect', action => 
-  (torrentId: TorrentId) => action(torrentId)
+export const cancelJob = createAction('torrents/cancelJob', action => 
+  (jobId: JobId) => action({jobId})
 );
+export const deleteTorrent = createAsyncAction(
+  'torrents/deleteTorrent/request',
+  'torrents/deleteTorrent/success',
+  'torrents/deleteTorrent/error',
+)<TorrentId, TorrentId, string>();
+export const selectFiles = createAsyncAction(
+  'torrents/selectFiles/request',
+  'torrents/selectFiles/success',
+  'torrents/selectFiles/error',
+)<[TorrentId, FileId[]], undefined, Error>();
 
 export const fetchTorrent = createAsyncAction(
   'torrents/fetch/request',

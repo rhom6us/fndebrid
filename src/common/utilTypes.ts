@@ -1,17 +1,23 @@
 import { Merge as MergeFest } from 'type-fest';
-
+export type Opaque<Type, Scope extends string> = Type & {readonly __name__: Scope, readonly __opaque__: unique symbol};
+export type Uuid = Opaque<string, 'uuid'>;
 export type Await<T> = T extends Promise<infer U> ? U : T;
-
+export type Ctor<TInstance = any, TArgs extends any[] = any[]> = new (...args: TArgs) => TInstance;
+export type InstanceType<T extends Ctor> =
+  T extends Ctor<infer TInstance> ? TInstance
+  : never;
 //#region Key selectors
 
-type NonUndefined<A> = A extends undefined ? never : A;
+type NeverUndefined<T> = T extends undefined ? never : T;
+type NeverNull<T> = T extends null ? never : T;
+type NeverNullOrUndefined<T> = NeverNull<NeverUndefined<T>>;
 export type FunctionKeys<T extends object> = {
-  [K in keyof T]-?: NonUndefined<T[K]> extends Function ? K : never
+  [K in keyof T]-?: NeverNullOrUndefined<T[K]> extends Function ? K : never
 }[keyof T];
 
 
 export type NonFunctionKeys<T extends object> = {
-  [K in keyof T]-?: NonUndefined<T[K]> extends Function ? never : K
+  [K in keyof T]-?: NeverNullOrUndefined<T[K]> extends Function ? never : K
 }[keyof T];
 
 type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X

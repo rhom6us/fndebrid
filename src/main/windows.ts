@@ -12,14 +12,14 @@ declare global {
     computedStyleMap(): CSSStyleDeclaration
   }
 }
-type WindowName = 'Main' | 'Preferences' | 'FileSelect' | 'AddMagnet';
+type WindowName = 'Main' | 'Preferences' | 'AddTorrent';
 export const windows: { [K in WindowName]?: BrowserWindow } = {};
 
 const dialogs = new Set<BrowserWindow>();
 
-ipcMain.on('please-resize', async (event, size: {width?:number, height?:number}) => {
+ipcMain.on('please-resize', async (event, size: { width?: number, height?: number }) => {
   const win = BrowserWindow.fromWebContents(event.sender);
- 
+
   const zoom = event.sender.getZoomFactor()
   const [contentX, contentY] = win.getContentSize();
   const x = size.width ? Math.floor(zoom * size.width) : contentX;
@@ -36,9 +36,10 @@ function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstru
       skipTaskbar: true,
       autoHideMenuBar: true,
       maximizable: false,
+      useContentSize: true,
       minimizable: false,
       resizable: false,
-      transparent: true,
+      transparent: false,
       backgroundColor: "#00FF0000",
       ...options,
       webPreferences: {
@@ -52,10 +53,10 @@ function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstru
         window.webContents.openDevTools();
       })
     }
-  
+
     if (isDev) {
       const search = new URLSearchParams({ ...query, route }).toString();
-      console.log({ search });
+      console.log(search);
       window.loadURL(`http://localhost:9080/?${search}`);
     }
     else {
@@ -68,7 +69,7 @@ function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstru
         slashes: true,
       }));
     }
-   
+
     ipcMain.once(`dialog-result-${callbackId}`, (event, result) => {
       if (result instanceof Error) {
         reject(result);
@@ -124,8 +125,8 @@ function createWindow(route: WindowName, options: Electron.BrowserWindowConstruc
 }
 
 export function showAddMagnet() {
-  return showDialog<string>('AddMagnet', {
-    height: 156/.8,
+  return showDialog<string>('AddTorrent', {
+    height: 156 / .8,
     width: 400 / .8,
     skipTaskbar: false,
     alwaysOnTop: false,
@@ -143,27 +144,8 @@ export const showPreferences = () => createWindow('Preferences', {
   useContentSize: true
 });
 export const showFileSelect = (torrentId: TorrentId) => {
-  return new Promise<FileId[] | null>((resolve, reject) => {
-    const callbackId = uuid();
-    const window = createWindow('FileSelect', {
-      frame: false,
-      closable: true,
-      skipTaskbar: true,
-      height: 400,
-      width: 400,
-      autoHideMenuBar: true,
-      useContentSize: true,
-    }, { torrentId, callbackId });
-    ipcMain.once(`return-${callbackId}`, (event, result: FileId[] | null | Error) => {
-      if (result instanceof Error) {
-        reject(result);
-      } else {
-        resolve(result);
-      }
-
-      window!.close();
-    });
-
-
-  });
+  showDialog('AddTorrent', {
+    height: 400,
+    width: 400,
+  }, { torrentId });
 }

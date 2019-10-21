@@ -88,7 +88,11 @@ export class RealDebridError extends FnError{
     if (((headers['x-total-count'] && headers['x-total-count'][0]) || 0) > (page * pageSize)) {
       return [...data, ...(await this.torrents(page + 1))];
     }
-    return data;
+    
+    return (data as ExtendedTorrent[]).map(torrent => {
+      const { files, ...result } = torrent;
+      return result;
+    }) as Torrent[];
   }
   torrent(id: TorrentId) {
     return this._get<ExtendedTorrent>(`torrents/info/${id}`);

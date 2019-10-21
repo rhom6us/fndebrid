@@ -1,16 +1,15 @@
 import { number } from 'prop-types';
-import { Opaque, MergeExclusive } from 'type-fest';
-import { Merge } from '../../common';
+import { Merge, Opaque } from '~common';
 
-export type TorrentId = Opaque<string>;
-export type MagnetLink = Opaque<string>;
-export type FileId = Opaque<string>;
-export type Link = Opaque<string>;
-export type ClientId = Opaque<string>;
-export type ClientSecret = Opaque<string>;
-export type AccessToken = Opaque<string>;
-export type RefreshToken = Opaque<string>;
-export type DeviceCode = Opaque<string>;
+export type TorrentId = Opaque<string, 'torrent_id'>;
+export type MagnetLink = Opaque<string, 'magnet_link'>;
+export type FileId = Opaque<string, 'file_id'>;
+export type Link = Opaque<string, 'link'>;
+export type ClientId = Opaque<string, 'client_id'>;
+export type ClientSecret = Opaque<string, 'client_secret'>;
+export type AccessToken = Opaque<string,'access_token'>;
+export type RefreshToken = Opaque<string, 'refresh_token'>;
+export type DeviceCode = Opaque<string, 'device_code'>;
 
 export interface CodeInfo {
   device_code: DeviceCode;
@@ -52,13 +51,13 @@ export interface Torrent {
 export type TorrentStatus = "magnet_error" | "magnet_conversion" | "waiting_files_selection" | "queued" | "downloading" | "downloaded" | "error" | "virus" | "compressing" | "uploading" | "dead";
 
 
-export interface ExtendedTorrent extends Torrent {
+export interface TorrentExtension {
   original_filename: string;
   original_bytes: number;
   files: File[];
 }
-
-
+export type ExtendedTorrent = TorrentExtension & Torrent;
+export type MaybeExtendedTorrent = Partial<TorrentExtension> & Torrent;
 
 
 export interface File {

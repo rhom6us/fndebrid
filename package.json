@@ -10,7 +10,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "buildasdf": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/all.ts",
     "build:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/renderer.ts",
-    "watch:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack-dev-server --progress --colors --config webpack/renderer.ts  --info-verbosity verbose",
+    "watch:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack-dev-server --config webpack/renderer.ts  --info-verbosity none",
     "build:main": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/main.ts",
     "watch:main": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --watch --progress --colors --config webpack/main.ts --info-verbosity verbose"
   },
@@ -40,6 +40,7 @@
     "emotion-theming": "^10.0.19",
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
+    "parse-torrent": "^7.0.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-hot-loader": "^4.12.15",
@@ -64,6 +65,7 @@
     "@types/node": "^12.11.1",
     "@types/node-fetch": "^2.5.2",
     "@types/node-powershell": "^3.1.0",
+    "@types/parse-torrent": "^5.8.3",
     "@types/react-dom": "^16.9.1",
     "@types/react-redux": "^7.1.4",
     "@types/react-resize-detector": "^4.0.2",
@@ -72,6 +74,7 @@
     "@types/uuid": "^3.4.5",
     "@types/webpack": "^4.39.4",
     "@types/webpack-dev-server": "^3.1.7",
+    "@types/webpackbar": "^2.6.0",
     "@types/winreg": "^1.2.30",
     "abort-controller": "^3.0.0",
     "babel-loader": "^8.0.6",
@@ -112,6 +115,7 @@
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.2",
     "webpack-match-plugin": "^1.0.3",
+    "webpackbar": "^4.0.0",
     "yarn": "^1.19.1"
   }
 }

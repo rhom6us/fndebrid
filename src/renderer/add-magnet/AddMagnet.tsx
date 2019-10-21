@@ -9,8 +9,9 @@ import { Flex } from './components/Flex';
 import { State } from '../../main/store';
 import { Dispatch, Action } from 'redux';
 import { getDispatcher } from '../../main/dispatcher';
-import { MagnetLink } from '../../main/real-debrid';
+import { MagnetLink, getInfoHash } from '../../main/real-debrid';
 import { connect } from 'react-redux';
+import { JobId } from '../../main/store/torrents/state';
 const callbackId = uuid5(`http://fndebrid.butler.software/AddMagnet`, uuid5.URL);
 function tryReadClipboard() {
   try {
@@ -27,28 +28,17 @@ function isMagnetLink(magnet: string) {
     const url = new URL(magnet);
     return url.protocol === 'magnet:'
   } catch (e) {
-    
+
   }
   return false;
 }
-interface IOwnProps { }
-const mapStateToProps = function (state: State, ownProps: IOwnProps) {
-  return {};
+interface IOwnProps {
+  onSubmit: (magnetLink: MagnetLink) => void;
+  onCancel: () => void;
 }
-const mapDispatchToProps = function (dispatch: Dispatch<Action<any>>, ownProps: IOwnProps) {
-  const dispatcher = getDispatcher(dispatch);
-  return {
-    addMagnet: (magnet: string) => {
-      const jobId = uuid5(magnet, uuid5.URL);
-      dispatcher.addMagnet.request([magnet as MagnetLink, jobId]);
-    },
-  }
-}
-type IDispatchProps = ReturnType<typeof mapDispatchToProps>;
-type IStateProps = ReturnType<typeof mapStateToProps>;
 
-type Props = IStateProps & IDispatchProps & IOwnProps;
-export const AddMagnet = connect(mapStateToProps, mapDispatchToProps)((props: Props) => {
+
+export const AddMagnet: React.FC<IOwnProps> = ({ onSubmit, onCancel: cancel }) => {
   const [magnet, setMagnet] = useState<string>(tryReadClipboard());
   const [validMagnet, setValidMagnet] = useState(isMagnetLink(magnet))
   function updateMagnet(m: string) {
@@ -56,15 +46,14 @@ export const AddMagnet = connect(mapStateToProps, mapDispatchToProps)((props: Pr
     setMagnet(m);
   }
   function submit() {
-    props.addMagnet(magnet);
+    onSubmit(magnet as MagnetLink)
   }
-  function cancel() {
-    window.close();
-  }
+
 
 
   return (
-    <Dialog title="fn Debrid" onClose={cancel}>
+
+    <>
       <Dialog.Body>
         <H5>Add magnet link</H5>
         <InputGroup placeholder="Paste magnet link heere" value={magnet} onChange={handleStringChange(updateMagnet)} />
@@ -76,7 +65,7 @@ export const AddMagnet = connect(mapStateToProps, mapDispatchToProps)((props: Pr
         </Dialog.Footer.Actions>
 
       </Dialog.Footer>
-    </Dialog>
+    </>
     // <TitleBar onClose={cancel} />
     // <Card interactive={false}>
     //   <H5>Add magnet link</H5>
@@ -89,4 +78,4 @@ export const AddMagnet = connect(mapStateToProps, mapDispatchToProps)((props: Pr
     //   </Flex>
     // </Card>
   );
-});
+};

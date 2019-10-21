@@ -8,6 +8,8 @@ import { Dispatcher, getDispatcher } from './dispatcher';
 import { DEBUG, deleteDir, installReactDevTools, isDev } from './utils';
 import { showPreferences, showAddMagnet } from './windows';
 import { MagnetLink } from './real-debrid';
+import  uuid5  from 'uuid/v5';
+import { jobId } from '~main/store/torrents/state';
 if (isDev || DEBUG) {
   process.once('SIGTERM', function () {
     app.quit();
@@ -37,7 +39,7 @@ function appSecondInstance(dispatcher: Dispatcher) {
   return function (_: any, argv: string[]) {
     const magnetLink = argv.filter(p => p.startsWith('magnet:'))[0] as MagnetLink;
     if (magnetLink) {
-      dispatcher.addMagnet.request(magnetLink);
+      dispatcher.addMagnet.request([magnetLink, jobId(magnetLink)]);
     }
   }
 }

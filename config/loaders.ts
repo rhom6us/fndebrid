@@ -73,11 +73,18 @@ export const electronMainBabelLoader = {
 export const fontLoader = {
   loader: 'url-loader',
   options: {
-    name: 'fonts/[hash].[ext]',
-    limit: 5000,
-    mimetype: 'application/font-woff'
+    name: "fonts/[name]--[folder].[ext]",
+    limit: 10240,
+    // mimetype: 'application/font-woff'
   }
 };
+export const imageLoader = {
+  loader: 'url-loader',
+  options: {
+    limit: 10240,
+    name: "imgs/[name]--[folder].[ext]"
+  },
+}
 export const tsLoader = {
   loader: "ts-loader",
   options: {
@@ -86,3 +93,20 @@ export const tsLoader = {
     // configFile: "C:\\dev\\fndebrid\\tsconfig.json"
   }
 }
+
+export const jsLoader = {
+  loader: 'babel-loader',
+  options: {
+    presets: [
+      [
+        "@babel/preset-env", {
+          debug: isDev,
+          modules: false,
+          targets: {
+            electron: "6.0.12"
+          }
+        }
+      ]
+    ],
+  }
+};

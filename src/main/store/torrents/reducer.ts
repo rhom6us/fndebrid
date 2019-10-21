@@ -2,7 +2,7 @@
 import { createReducer, ActionType } from 'typesafe-actions'
 import * as actions from './actions'
 import { State, defaultState, Torrent } from './state';
-import { TorrentId } from '../../real-debrid';
+import { TorrentId, ExtendedTorrent, MaybeExtendedTorrent } from '../../real-debrid';
 
 declare global {
   interface Array<T> {
@@ -13,40 +13,44 @@ Array.prototype.toKeyed = function toKeyed<T, K extends string | number | symbol
   return this.reduce((result, item) => { result[keySelector(item)] = item; return result; }, {} as Record<K, T>);
 }
 
+function mergeTorrents(stateTorrent: MaybeExtendedTorrent, fetchedTorrent: Torrent): MaybeExtendedTorrent {
+  return {
+    ...stateTorrent,
+    ...fetchedTorrent,
+    status: fetchedTorrent.status == 'magnet_conversion' && stateTorrent.status == 'waiting_files_selection' ? stateTorrent.status : fetchedTorrent.status
+  }
+}
 
 export default createReducer<State, ActionType<typeof actions>>(defaultState)
-  .handleAction(actions.updateJob, (state, { payload: { jobId, torrentId } }) => f({
-    ...state,
-    jobs: f({
-      ...state.jobs,
-      [jobId]: torrentId
-    })
-  }))
-  .handleAction(actions.cancelJob, (state, { payload: { jobId } }) => {
-    const { [jobId]: canceledTorrentId, ...jobs } = state.jobs as Record<string, TorrentId>;
-    const { [canceledTorrentId]: canceledTorrent, ...torrents } = state.entities.torrents as Record<string, Torrent>;
+
+  .handleAction([actions.cancelJob, actions.completeJob], (state, { payload: { jobId } }) => {
+    const { [jobId]: _, ...jobs } = state.jobs;
     return f({
       ...state,
-      entities: f({
-        ...state.entities,
-        torrents: f(torrents)
-      }),
       jobs: f(jobs)
     });
   })
   .handleAction(actions.fetchTorrents.request, (state) => f({ ...state, loading: true }))
+
   .handleAction(actions.fetchTorrents.success, (state, { payload: torrents }) => f({
     ...state,
     loading: false,
     torrents: f(torrents.map(p => p.id)),
     entities: f({
       ...state.entities,
-      torrents: torrents.map(t => f({ ...t, files: (state.entities.files as any)[t.id] })).toKeyed(t => t.id)
+      torrents: f(torrents.map(t => f(mergeTorrents(state.entities.torrents[t.id], t))).toKeyed(t => t.id))
     })
   }))
   .handleAction(actions.fetchTorrents.failure, (state, { payload: errors }) => f({ ...state, loading: false, errors }))
 
-  .handleAction(actions.addMagnet.failure, (state, { payload: errors }) => f({ ...state, errors }))
+  .handleAction([actions.addMagnet.success, actions.addTorrentFile.success], (state, { payload: [torrentId, jobId] }) => f({
+    ...state,
+    jobs: f({
+      ...state.jobs,
+      [jobId]: torrentId
+    })
+  }))
+  .handleAction([actions.addMagnet.failure, actions.addTorrentFile.failure], (state, { payload: errors }) => f({ ...state, errors }))
 
   .handleAction(actions.fetchTorrent.success, (state, { payload: torrent }) => f({
     ...state,
@@ -62,6 +66,18 @@ export default createReducer<State, ActionType<typeof actions>>(defaultState)
       })
     })
   }))
+  .handleAction(actions.deleteTorrent.success, (state, { payload: torrentId }) => {
+    const { [torrentId]: deletedTorrent, ...torrents } = state.entities.torrents;
+    return f({
+      ...state,
+      torrents: f(state.torrents.filter(p => p != torrentId)),
+      entities: f({
+        ...state.entities,
+        torrents: f(torrents)
+      })
+    })
+  })
+
 
   ;
 // export { reducer as torrentsReducer }

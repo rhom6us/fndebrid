@@ -1,16 +1,21 @@
 {
-    "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-
-
     /** my settings */
+    "baseUrl": ".",
+
+    "paths": {
+      "~*": ["./src/*"], // this is for parcel-bundler
+      "common": ["./src/common"],
+      "common/*": ["./src/common/*"]
+    },
+
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    
+
     "jsx": "react",
     "emitDecoratorMetadata": false,
     "skipLibCheck": true,
     "suppressImplicitAnyIndexErrors": false
-    
   }
 }

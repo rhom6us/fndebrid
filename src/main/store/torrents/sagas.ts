@@ -1,11 +1,12 @@
 import { promisify } from 'util';
 import { shell } from 'electron';
-import { all, call, delay, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import { all, call, delay, fork, put, take, takeEvery, takeLatest, select } from 'redux-saga/effects';
 import { Unpack } from '../../../common';
-import { Authorizor, RealDebrid } from '../../real-debrid';
+import { Authorizor, RealDebrid, TorrentStatus } from '../../real-debrid';
 import { showFileSelect } from '../../windows';
-import { addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, openFileSelect, updateJob } from './actions';
+import { addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, selectFiles } from './actions';
 import { setImmediateAsync } from '../../../common/utils';
+import { State } from '~main/store';
 
 type Yield<T> = Unpack<T>;
 
@@ -49,15 +50,14 @@ function* addTorrentFile_request() {
     }
   });
 }
-function* watchTorrentAdded() {
+
+function* addTorrentMagnet_success() {
   yield takeEvery([addMagnet.success, addTorrentFile.success], function* ({ payload: [torrentId, jobId] }) {
     yield put(fetchTorrent.request(torrentId));
-    yield setImmediateAsync();
-    const { payload: torrent }: Yield<typeof fetchTorrent.success> = yield take(fetchTorrent.success);
-    yield put(updateJob(jobId, torrent.id));
   });
 }
-function* watchTorrentRequest() {
+
+function* fetchTorrent_request() {
   yield takeLatest(fetchTorrent.request, function* ({ payload: torrentId }) {
     try {
       const torrent: Yield<typeof api.torrent> = yield call([api, api.torrent], torrentId);
@@ -69,16 +69,23 @@ function* watchTorrentRequest() {
     }
   });
 }
-function* watch_openFileSelect() {
-  yield takeEvery(openFileSelect, function* ({ payload: torrentId }) {
-    const fileIds: Yield<typeof showFileSelect> = yield showFileSelect(torrentId);
-    if (fileIds === null) { //send null to defer selection
-      return;
+function* fetchTorrent_success() {
+  yield takeEvery(fetchTorrent.success, function* ({ payload: { id, status } }) {
+    if (status == 'magnet_conversion') {
+      yield delay(1500);
+      yield put(fetchTorrent.request(id));
     }
-    if (fileIds.length) {
+  })
+}
+function* selectFiles_request() {
+  yield takeEvery(selectFiles.request,  function* ({ payload: [torrentId, fileIds] }) {
+    try {
       yield api.selectFiles(torrentId, fileIds);
-    } else { //send empty array to cancel
-      yield api.delete(torrentId);
+      yield put(selectFiles.success());
+      yield put(fetchTorrent.request(torrentId));
+      
+    } catch (error) {
+      yield put(selectFiles.failure(error));
     }
   })
 }
@@ -88,8 +95,9 @@ export default function* () {
     fork(fetchTorrents_request),
     fork(addMagnet_request),
     fork(addTorrentFile_request),
-    fork(watchTorrentAdded),
-    fork(watchTorrentRequest),
-    fork(watch_openFileSelect)
+    fork(addTorrentMagnet_success),
+    fork(fetchTorrent_request),
+    fork(selectFiles_request),
+    fork(fetchTorrent_success),
   ])
 }
