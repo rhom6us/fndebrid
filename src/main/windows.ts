@@ -130,6 +130,7 @@ export function showAddMagnet() {
     width: 400 / .8,
     skipTaskbar: false,
     alwaysOnTop: false,
+    resizable: true,
   }, {});
 }
 export const showMain = () => createWindow('Main');

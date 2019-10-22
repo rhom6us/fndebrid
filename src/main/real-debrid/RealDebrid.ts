@@ -6,13 +6,13 @@ import { makeUrl } from "./util";
 import { Authorizor } from './Authorizor';
 import { FnError } from '../../common';
 
-export class RealDebridError extends FnError{
-  constructor(public readonly url: string,  error: { error: string, error_code: number }) {
+export class RealDebridError extends FnError {
+  constructor(public readonly url: string, error: { error: string, error_code: number }) {
     super(url, error);
     Object.freeze(error);
   }
 }
-  export class RealDebrid {
+export class RealDebrid {
   constructor(private readonly authorizor: Authorizor, private readonly base = new URL('https://api.real-debrid.com/rest/1.0/')) {
   }
 
@@ -47,7 +47,7 @@ export class RealDebridError extends FnError{
     }
     return json;
   }
-  async _post<T = void>(path: string, body: Record<string, string> = {}): Promise<T> {
+  async _post<T = void>(path: string, body: Record<string, string> = {}): Promise<T | undefined> {
     let response = await fetch(makeUrl(this.base, path), {
       method: 'POST',
       headers: {
@@ -56,12 +56,15 @@ export class RealDebridError extends FnError{
       },
       body: new URLSearchParams(body)
     });
-    
+    if (response.status == 204) {
+      return;
+    }
     const json = await response.json();
     if (json.error) {
       throw new RealDebridError(path, json);
     }
     return json;
+
   }
 
   async _put<T = void>(path: string, body: ReadStream, extraHeaders: Record<string, string> = {}): Promise<T> {
@@ -74,7 +77,7 @@ export class RealDebridError extends FnError{
       },
       body
     });
-    
+
     const json = await response.json();
     if (json.error) {
       throw new RealDebridError(path, json);
@@ -88,7 +91,7 @@ export class RealDebridError extends FnError{
     if (((headers['x-total-count'] && headers['x-total-count'][0]) || 0) > (page * pageSize)) {
       return [...data, ...(await this.torrents(page + 1))];
     }
-    
+
     return (data as ExtendedTorrent[]).map(torrent => {
       const { files, ...result } = torrent;
       return result;
@@ -100,8 +103,9 @@ export class RealDebridError extends FnError{
   delete(id: TorrentId) {
     return this._delete(`torrents/delete/${id}`);
   }
-  addMagnet(magnet: MagnetLink) {
-    return this._post<{ id: TorrentId }>('torrents/addMagnet', { magnet });
+  async addMagnet(magnet: MagnetLink) {
+    const result = await this._post<{ id: TorrentId }>('torrents/addMagnet', { magnet });
+    return result!;
   }
   addTorrent(filePath: string) {
 
@@ -111,7 +115,7 @@ export class RealDebridError extends FnError{
     let readStream = createReadStream(filePath);
     //var stringContent = fs.readFileSync('foo.txt', 'utf8');
     //var bufferContent = fs.readFileSync(filePath)
-    return this._put<{ id: TorrentId }>('torrents/addTorrent', readStream as any, { "Content-length": fileSizeInBytes.toString() });
+    return this._put<{ id: TorrentId }>('torrents/addTorrent', readStream as any, { "Content-length": fileSizeInBytes.toString() })!;
   }
   selectFiles(torrentId: TorrentId, files: FileId[] | 'all' = 'all') {
     if (!files.length) {

@@ -3,7 +3,7 @@ import { connect, useStore } from 'react-redux';
 import { Dispatch } from 'redux';
 import uuid5 from 'uuid/v5';
 import { getDispatcher } from '~main/dispatcher';
-import { FileId, MagnetLink, TorrentId } from '~main/real-debrid';
+import { FileId, MagnetLink, TorrentId, ExtendedTorrent } from '~main/real-debrid';
 import { State } from '~main/store';
 import { JobId, jobId, Torrent } from '~main/store/torrents/state';
 import { Dialog } from '~renderer/add-magnet/components';
@@ -38,18 +38,25 @@ type IStateProps = ReturnType<typeof mapStateToProps>;
 
 type Props = IStateProps & IDispatchProps & IOwnProps;
 
-function getBody(jobId: JobId | undefined, torrent: Torrent | undefined) {
-  if (!jobId) {
-    return 'add_magnet';
+function getBody(jobs: Record<JobId, TorrentId>, jobId: JobId | undefined, torrentId: TorrentId | undefined, torrent: Torrent | undefined) {
+  if (!torrentId) {
+    if (!jobId) {
+      return 'add_magnet';
+    }
+    return 'uploading';
   }
   if (!torrent) {
-    return 'uploading';
+    return 'fetching';
   }
   switch (torrent.status) {
     case 'magnet_conversion':
     case 'magnet_error':
+        return torrent.status;
     case 'waiting_files_selection':
-      return torrent.status;
+      if (jobId && jobId in jobs) {
+        return torrent.status;
+      }
+      return 'submitting_selection';
     default:
       return 'complete';
   }
@@ -57,14 +64,19 @@ function getBody(jobId: JobId | undefined, torrent: Torrent | undefined) {
 }
 export const AddTorrent = connect(mapStateToProps, mapDispatchToProps)(({ addMagnet, cancelJob, completeJob, deleteTorrent, selectFiles, jobs, torrents }: Props) => {
   const [jobId, setJobId] = useState(initialJobId);
-  const torrentId = useMemo(()=>jobs[jobId], [jobs, jobId])
-  // const [torrentId, setTorrentId] = useState(intitialTorrentId);
-  // useEffect(() => {
-  //   if (jobId && !torrentId) {
-  //     setTorrentId(jobs[jobId])
-  //   }
-  // }, [jobs, jobId])
+  const [aquiredTorrentId, setAquiredTorrentId] = useState(intitialTorrentId);
+  const torrentId = useMemo(() => aquiredTorrentId || jobs[jobId], [aquiredTorrentId, jobs, jobId])
   const torrent = useMemo(() => torrents[torrentId], [torrents, torrentId]);
+  useEffect(() => {
+    if (torrentId && !aquiredTorrentId) {
+      setAquiredTorrentId(torrentId);
+      console.log('setAquiredTorrentId', torrentId);
+    }
+  }, [torrentId, aquiredTorrentId]);
+  useEffect(() => {
+    window.addEventListener('close', cancelSetup);
+    return () => window.removeEventListener('close', cancelSetup);
+  });
 
   function submitMagnet(magnet: MagnetLink) {
     const jobId = uuid5(magnet, uuid5.URL) as JobId;
@@ -79,22 +91,27 @@ export const AddTorrent = connect(mapStateToProps, mapDispatchToProps)(({ addMag
     if (torrentId) {
       deleteTorrent(torrentId);
     }
+    cancelSetup();
+  }
+  function cancelSetup() {
     if (jobId) {
       cancelJob(jobId);
     }
     window.close();
   }
 
-  const displayMode = useMemo(() => getBody(jobId, torrent), [jobId, torrent]);
+  const displayMode = useMemo(() => getBody(jobs, jobId, torrentId, torrent), [jobs, jobId, torrentId, torrent]);
   return (
-    <Dialog title="fn Debrid" onClose={window.close}>
+    <Dialog title="fn Debrid" onClose={cancelSetup}>
       {(() => {
         switch (displayMode) {
           case 'add_magnet': return <AddMagnet onSubmit={submitMagnet} onCancel={cancelDownload} />;
           case 'uploading': return <h3>Uploading your magnet to real-debrid.com...</h3>;
           case 'magnet_conversion': return <h3>Converting your magnet...</h3>;
           case 'magnet_error': return <h3>Looks like this magnet isn't working right now. Try again later.</h3>;
+          case 'fetching': return <h3>Fetching torrent details...</h3>
           case 'waiting_files_selection': return <FileSelect torrent={torrent} onSubmit={submitFileSelection} onCancel={cancelDownload} />;
+          case 'submitting_selection': return <h3>Submitting your file selection to real-debrid.com...</h3>
           case 'complete': return <h3>Submitted</h3>;
           default: return assertNever(displayMode);
 
