@@ -1,15 +1,15 @@
 import { app } from 'electron';
 // import debug from 'electron-debug';
 import Store from 'electron-store';
-import * as path from 'path';
+import path from 'path';
 import { createAppIcon } from './app-icon';
 import configureStore from './configureStore';
 import { Dispatcher, getDispatcher } from './dispatcher';
-import { DEBUG, deleteDir, installReactDevTools, isDev } from './utils';
+import { DEBUG, deleteDir, isDev } from './utils';
 import { showPreferences, showAddMagnet } from './windows';
-import { MagnetLink } from './real-debrid';
+import { MagnetLink } from '@fndebrid/real-debrid';
 import  uuid5  from 'uuid/v5';
-import { jobId } from '~main/store/torrents/state';
+import { jobId } from '@fndebrid/store/torrents/state';
 if (isDev || DEBUG) {
   process.once('SIGTERM', function () {
     app.quit();

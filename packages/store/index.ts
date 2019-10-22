@@ -2,7 +2,7 @@ import { combineReducers, Dispatch as ReduxDispatch, Store as ReduxStore } from 
 import { all, fork } from 'redux-saga/effects';
 import { ActionType } from 'typesafe-actions';
 import { preferencesReducer, preferencesSaga } from './preferences';
-import { torrentsReducer, torrentsSaga } from './torrents';
+import { torrentsReducer } from './torrents';
 import {State as PreferencesState} from './preferences/state'
 import {State as TorrentsState} from './torrents/state'
 

@@ -2,12 +2,12 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     /** my settings */
-    "baseUrl": ".",
+    // "baseUrl": ".",
 
     "paths": {
-      "~*": ["./src/*"], // this is for parcel-bundler
-      "common": ["./src/common"],
-      "common/*": ["./src/common/*"]
+      // "~*": ["./src/*"], // this is for parcel-bundler
+      // "common": ["./src/common"],
+      // "common/*": ["./src/common/*"]
     },
 
     "noUnusedLocals": false,

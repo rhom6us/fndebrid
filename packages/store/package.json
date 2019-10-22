@@ -1,0 +1,14 @@
+{
+  "name": "@fndebrid/store",
+  "version": "1.0.0",
+  "source": "index.ts",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@fndebrid/common": "file:../common",
+    "@fndebrid/real-debrid": "file:../real-debrid",
+    "redux-saga": "^1.1.1",
+    "typesafe-actions": "^4.4.2",
+    "uuid": "^3.3.3"
+  }
+}

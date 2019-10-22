@@ -1,0 +1,7 @@
+{
+  "name": "@fndebrid/real-debrid",
+  "version": "1.0.0",
+  "source": "index.ts",
+  "license": "MIT",
+  "private": true
+}

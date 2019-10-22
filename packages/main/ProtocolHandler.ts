@@ -1,12 +1,9 @@
 import { app } from "electron";
 import path from 'path';
-import { AnyAction } from "redux";
 import { Associator } from './Associator';
-import { InvalidOperationError } from '../common';
+import { InvalidOperationError } from '@fndebrid/common';
 
-interface IDispatch {
-  (action: AnyAction): void;
-}
+
 
 
 

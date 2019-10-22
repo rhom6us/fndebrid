@@ -1,7 +1,6 @@
 // import Registry from 'winreg';
 import path from 'path';
-import { AnyAction } from "redux";
-import { RegistryHive as Registry } from '../common/registry';
+import { RegistryHive as Registry } from '@fndebrid/common/registry';
 
 
 async function setAssReg(ns: string, ext: string, execPath: string) {

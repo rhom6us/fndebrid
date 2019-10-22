@@ -1,10 +1,8 @@
-import { File, Torrent, TorrentId, MaybeExtendedTorrent } from "../../real-debrid";
-import { isString, parseUrl } from 'common/utils';
-import { InvalidArguementError, Uuid, Opaque } from '~common';
-import uuid5 from 'uuid/v5';
-import uuid4 from 'uuid/v4';
+import { isString, Opaque, parseUrl } from '@fndebrid/common';
+import { File, MaybeExtendedTorrent, Torrent, TorrentId } from "@fndebrid/real-debrid";
 import { isUndefined } from 'util';
-import MagnetUri from 'magnet-uri';
+import uuid4 from 'uuid/v4';
+import uuid5 from 'uuid/v5';
 export { Torrent, File };
 export type JobId = Opaque<string, 'jobId'>;
 export type InfoHash = string;

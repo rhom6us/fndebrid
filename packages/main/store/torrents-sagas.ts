@@ -1,12 +1,10 @@
 import { promisify } from 'util';
 import { shell } from 'electron';
 import { all, call, delay, fork, put, take, takeEvery, takeLatest, select } from 'redux-saga/effects';
-import { Unpack } from '../../../common';
-import { Authorizor, RealDebrid, TorrentStatus } from '../../real-debrid';
-import { showFileSelect } from '../../windows';
-import { addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, selectFiles } from './actions';
-import { setImmediateAsync } from '../../../common/utils';
-import { State } from '~main/store';
+import { Unpack, setImmediateAsync } from '@fndebrid/common';
+import { Authorizor, RealDebrid, TorrentStatus } from '@fndebrid/real-debrid';
+import { addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, selectFiles } from '@fndebrid/store/torrents/actions';
+import { State } from '@fndebrid/store/torrents/state';
 
 type Yield<T> = Unpack<T>;
 

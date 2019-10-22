@@ -3,7 +3,7 @@ import path from 'path';
 import { format as formatUrl } from 'url';
 import { isDev } from './utils';
 import uuid5 from 'uuid/v5';
-import { FileId, TorrentId } from './real-debrid';
+import { FileId, TorrentId } from '@fndebrid/real-debrid';
 import uuid from 'uuid';
 import { showWindow } from './file-selection';
 

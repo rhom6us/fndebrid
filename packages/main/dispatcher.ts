@@ -1,6 +1,6 @@
 import { ActionCreator as TsActionsActionCreator } from 'typesafe-actions';
-import { Dispatch, Store, TypeConstant } from './store';
-import * as actions from './store/actions';
+import { Dispatch, Store, TypeConstant } from '@fndebrid/store';
+import * as actions from '@fndebrid/store/actions';
 
 
 
