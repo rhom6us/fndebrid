@@ -68,12 +68,14 @@ export default createReducer<State, ActionType<typeof actions>>(defaultState)
   }))
   .handleAction(actions.deleteTorrent.success, (state, { payload: torrentId }) => {
     const { [torrentId]: deletedTorrent, ...torrents } = state.entities.torrents;
+    const { [torrentId]: deletedFiles, ...files } = state.entities.files;
     return f({
       ...state,
       torrents: f(state.torrents.filter(p => p != torrentId)),
       entities: f({
         ...state.entities,
-        torrents: f(torrents)
+        torrents: f(torrents),
+        files: f(files)
       })
     })
   })
