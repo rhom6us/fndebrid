@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
-import { ClientId, CodeInfo, Credentials, DeviceCode, RefreshToken, TokenInfo } from '..';
-import { ArguementFalsyError } from '../../../common';
+import { ClientId, CodeInfo, Credentials, DeviceCode, RefreshToken, TokenInfo } from '../types';
 import { makeUrl } from '../util';
+import { ArguementFalsyError } from '@fndebrid/electron-common';
 
 const base = new URL('https://api.real-debrid.com/oauth/v2/');
 const public_client_id = 'X245A4XAIBGVM' as ClientId;

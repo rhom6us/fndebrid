@@ -1,9 +1,9 @@
-import { isString, Opaque, parseUrl } from '@fndebrid/common';
-import { File, MaybeExtendedTorrent, Torrent, TorrentId } from "@fndebrid/real-debrid";
+import { isString, Opaque, parseUrl } from '@fndebrid/electron-common';
+import { File, MaybeExtendedTorrent, TorrentId } from "@fndebrid/real-debrid";
 import { isUndefined } from 'util';
 import uuid4 from 'uuid/v4';
 import uuid5 from 'uuid/v5';
-export { Torrent, File };
+
 export type JobId = Opaque<string, 'jobId'>;
 export type InfoHash = string;
 export function jobId(url?: URL | string): JobId {

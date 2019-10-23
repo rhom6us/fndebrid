@@ -21,7 +21,7 @@ function mergeTorrents(stateTorrent: MaybeExtendedTorrent, fetchedTorrent: Torre
   }
 }
 
-export default createReducer<State, ActionType<typeof actions>>(defaultState)
+export const reducer = createReducer<State, ActionType<typeof actions>>(defaultState)
 
   .handleAction([actions.cancelJob, actions.completeJob], (state, { payload: { jobId } }) => {
     const { [jobId]: _, ...jobs } = state.jobs;

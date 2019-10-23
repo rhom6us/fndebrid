@@ -5,7 +5,7 @@ import * as actions from './actions';
 
 
 
-export default createReducer<State, ActionType<typeof actions>>(defaultState)
+export const reducer = createReducer<State, ActionType<typeof actions>>(defaultState)
   .handleAction(actions.setPreferences, (state, { payload }) => ({ ...state, ...payload }))
   .handleAction(actions.setAutoSelectFilesPattern, (state, { payload: { autoSelectFilesPattern } }) => ({ ...state, autoSelectFiles: 'pattern', autoSelectFilesPattern }))
   .handleAction(actions.setAutoSelectFiles, (state, { payload: { autoSelectFiles } }) => {

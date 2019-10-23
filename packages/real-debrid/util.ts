@@ -1,8 +1,8 @@
 
 import parseTorrent from 'parse-torrent';
-import { MagnetLink } from '~main/real-debrid/types';
-import { InvalidArguementError, OperationFailedError } from '~common';
 import { promisify } from 'util';
+import { OperationFailedError, InvalidArguementError } from '@fndebrid/electron-common';
+import { MagnetLink } from './types';
 export function makeUrl(base: URL, path: string, params: Record<string, any> = {}) {
   const url = new URL(path, base);
 

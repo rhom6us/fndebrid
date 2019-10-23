@@ -1,7 +1,7 @@
 import path from "path";
 import webpack from "webpack";
 import common, { mainOutDir, mainSourceDir } from './common';
-import { tsLoader } from "../config/loaders";
+import { tsLoader } from "../loaders";
 
 
 

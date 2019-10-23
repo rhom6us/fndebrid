@@ -8,7 +8,6 @@
     "dist": "yarn build && electron-builder",
     "dist:broke": "yarn compile && electron-builder --config config/electron-builder.config.json",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "buildasdf": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/all.ts",
     "build:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/renderer.ts",
     "watch:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack-dev-server --config webpack/renderer.ts  --info-verbosity none",
     "build:main": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/main.ts",

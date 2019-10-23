@@ -3,7 +3,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import common, { isDev, outDir, rendererOutDir, rendererSourceDir, staticSourceDir } from './common';
-import { cssHotLoader, cssHotModuleLoader, cssLoader, cssModuleLoader, fontLoader, imageLoader, jsLoader, postcssLoader, sassLoader, tsLoader } from '../config/loaders';
+import { cssHotLoader, cssHotModuleLoader, cssLoader, cssModuleLoader, fontLoader, imageLoader, jsLoader, postcssLoader, sassLoader, tsLoader } from '../loaders';
 
 
 

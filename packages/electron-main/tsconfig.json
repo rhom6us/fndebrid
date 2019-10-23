@@ -1,0 +1,13 @@
+{
+  "extends":"../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+
+    "paths": {
+      "@fndebrid/*":["./node_modules/@fndebrid/*"]
+   //   // "~*": ["./src/*"], // this is for parcel-bundler
+   //   // "common": ["./src/common"],
+   //   // "common/*": ["./src/common/*"]
+    },
+  }
+}

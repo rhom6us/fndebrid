@@ -1,29 +1,22 @@
 import { combineReducers, Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
-import { all, fork } from 'redux-saga/effects';
 import { ActionType } from 'typesafe-actions';
-import { preferencesReducer, preferencesSaga } from './preferences';
-import { torrentsReducer } from './torrents';
-import {State as PreferencesState} from './preferences/state'
-import {State as TorrentsState} from './torrents/state'
+import * as preferences from './preferences'
+import * as torrents from './torrents'
 
+import { getDispatcher, Dispatcher } from './dispatcher';
+export { getDispatcher, Dispatcher };
 export interface State {
-  torrents: TorrentsState,
-  preferences: PreferencesState
+  torrents: torrents.State,
+  preferences: preferences.State
 }
 
 export type Action = ActionType<typeof import('./actions')>;
 export type TypeConstant = Action['type'];
 export type Dispatch = ReduxDispatch<Action>;
 export type Store = ReduxStore<State, Action>;
-export const rootReducer = combineReducers<State>({
-  torrents: torrentsReducer,
-  preferences: preferencesReducer,
+export const reducer = combineReducers<State>({
+  torrents: torrents.reducer,
+  preferences: preferences.reducer,
 });
 
 
-export function* rootSaga () {
-  yield all([
-    fork(torrentsSaga),
-    fork(preferencesSaga),
-  ]);
-}

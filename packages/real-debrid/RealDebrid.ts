@@ -1,10 +1,9 @@
 import { createReadStream, ReadStream, statSync } from 'fs';
 import fetch from 'node-fetch';
-import { Torrent } from '../store/torrents/state';
-import { FileId, Link, LinkInfo, MagnetLink, ExtendedTorrent, TorrentId } from './types';
+import { FileId, Link, LinkInfo, MagnetLink, ExtendedTorrent, TorrentId, Torrent } from './types';
 import { makeUrl } from "./util";
 import { Authorizor } from './Authorizor';
-import { FnError } from '../../common';
+import { FnError } from '@fndebrid/electron-common';
 
 export class RealDebridError extends FnError {
   constructor(public readonly url: string, error: { error: string, error_code: number }) {

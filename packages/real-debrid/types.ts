@@ -1,5 +1,5 @@
-import { number } from 'prop-types';
-import { Merge, Opaque } from '~common';
+import { Opaque } from '@fndebrid/electron-common';
+
 
 export type TorrentId = Opaque<string, 'torrent_id'>;
 export type MagnetLink = Opaque<string, 'magnet_link'>;

@@ -1,17 +1,21 @@
-import { ArguementFalsyError, InvalidArguementError, InvalidOperationError } from '../../common';
+import { ArguementFalsyError, InvalidArguementError, InvalidOperationError } from '@fndebrid/electron-common';
 import * as api from './api/auth';
 import { AccessToken, ClientId, ClientSecret, RefreshToken } from './types';
-import Store from 'electron-store';
-const storage = new Store();
-interface AuthInfo {
+
+export interface AuthInfo {
   access_token: AccessToken;
   refresh_token: RefreshToken;
   client_id: ClientId;
   client_secret: ClientSecret;
   expires: number;
 }
+export interface Store {
+  has(key: string): boolean;
+  get<T = any>(key: string): T;
+  set(key: string, value: any):void;
+}
 export class Authorizor {
-  public constructor(private deviceCodeCallback: (url: string) => Promise<void>, state?: AuthInfo) {
+  public constructor(private deviceCodeCallback: (url: string) => Promise<void>, private readonly storage: Store, state?: AuthInfo) {
     if (!deviceCodeCallback) throw new ArguementFalsyError('deviceCodeCallback');
     
     this.authInfo = state;
@@ -19,8 +23,8 @@ export class Authorizor {
   private _authInfo: AuthInfo | undefined;
   public get authInfo(): AuthInfo | undefined {
     if (!this._authInfo) {
-      if(storage.has('auth-info'))
-      this._authInfo = storage.get('auth-info');
+      if(this.storage.has('auth-info'))
+      this._authInfo = this.storage.get('auth-info');
     }
     return this._authInfo;
   }
@@ -31,7 +35,7 @@ export class Authorizor {
       if (!authInfo.client_id) throw new InvalidArguementError('state', 'client_id is not present');
       if (!authInfo.client_secret) throw new InvalidArguementError('state', 'client_secret is not present');
       if (!authInfo.expires) throw new InvalidArguementError('state', 'expires is not present');
-      storage.set('auth-info', authInfo);
+      this.storage.set('auth-info', authInfo);
       this._authInfo = authInfo;
     } 
   }

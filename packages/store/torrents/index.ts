@@ -1,3 +1,5 @@
-import * as torrentsActions from './actions';
-import torrentsReducer from './reducer';
-export { torrentsActions, torrentsReducer };
+import * as actions from './actions';
+export * from './reducer';
+export * from './state';
+export { actions };
+

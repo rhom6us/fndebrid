@@ -3,5 +3,16 @@
   "version": "1.0.0",
   "source": "index.ts",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@fndebrid/electron-common": "file:../electron-common",
+    "axios": "^0.19.0",
+    "node-fetch": "^2.6.0",
+    "parse-torrent": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/node-fetch": "^2.5.2",
+    "@types/parse-torrent": "^5.8.3"
+  }
 }
