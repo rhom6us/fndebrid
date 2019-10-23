@@ -1,0 +1,56 @@
+{
+  "name": "@fndebrid/webpack",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Thomas Butler <thomas@butler.software>",
+  "homepage": "https://github.com/rhom6us/fndebrid#readme",
+  "license": "ISC",
+  "main": "cli.js",
+  "private": true,
+  "bin": {
+    "fnwebpack": "./cli.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "@types/html-webpack-plugin": "^3.2.1",
+    "@types/mini-css-extract-plugin": "^0.8.0",
+    "@types/node": "^12.11.5",
+    "@types/webpack": "^4.39.5",
+    "@types/webpack-dev-server": "^3.4.0",
+    "@types/webpackbar": "^2.6.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^6.0.3",
+    "css-hot-loader": "^1.4.4",
+    "css-loader": "^3.2.0",
+    "electron": "^7.0.0",
+    "electron-builder": "^21.2.0",
+    "file-loader": "^4.2.0",
+    "fork-ts-checker-webpack-plugin": "^1.5.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-loader": "^0.6.0",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.4",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "sass": "^1.23.1",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "ts-loader": "^6.2.0",
+    "ts-node": "^8.4.1",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.6.4",
+    "url-loader": "^2.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0",
+    "webpackbar": "^4.0.0"
+  }
+}

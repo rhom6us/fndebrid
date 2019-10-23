@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "ISC",
   "private": true,
+  "scripts":{
+    "compile": "fnwebpack renderer"
+  },
   "dependencies": {
     "@blueprintjs/core": "^3.19.1",
     "@emotion/core": "^10.0.21",
@@ -27,6 +30,7 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
+    "@fndebrid/webpack": "1.0.0",
     "@types/classnames": "^2.2.9",
     "@types/lodash": "^4.14.144",
     "@types/react-dom": "^16.9.2",

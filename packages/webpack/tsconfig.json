@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "esModuleInterop": true,
+    "outDir": "./lib",
+    "inlineSourceMap": true,
+    "inlineSources": false,
+    "watch": true
+  }
+}

@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "compile": "fnwebpack main"
+  },
   "dependencies": {
     "@fndebrid/core": "^1.0.0",
     "@fndebrid/real-debrid": "^1.0.0",
