@@ -18,7 +18,7 @@ export default function configureStore(/*history: History,*/ initialState?: Stat
 
   const store = createStore(
     reducer,//connectRouter(history)(rootReducer),
-    initialState,
+    initialState as any,
     compose(
       proxyEnhancer,
       applyMiddleware(

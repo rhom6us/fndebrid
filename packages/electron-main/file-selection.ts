@@ -2,7 +2,7 @@
 import path from 'path';
 import { format as formatUrl } from 'url'
 import { BrowserWindow } from 'electron';
-import { isDev } from '@fndebrid/electron-common';
+import { isDev } from '@fndebrid/core';
 
 
 let window: BrowserWindow | undefined;

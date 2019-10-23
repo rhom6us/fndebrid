@@ -1,7 +1,7 @@
 import path from "path";
 import webpack from "webpack";
 import common, { mainOutDir, mainSourceDir } from './common';
-import { tsLoader } from "../loaders";
+import { tsLoader } from "./loaders";
 
 
 
@@ -9,7 +9,7 @@ import { tsLoader } from "../loaders";
 const config: webpack.Configuration = {
   ...common,
   target: "electron-main",
-  entry: path.resolve(mainSourceDir, "index.ts"),
+  entry: path.resolve(mainSourceDir, "main.ts"),
   output: {
     ...common.output,
     path: path.resolve(mainOutDir)
@@ -22,7 +22,7 @@ const config: webpack.Configuration = {
     rules: [
       {
         test: /\.ts$/i,
-        exclude: /(node_modules|renderer)/i,
+        exclude: /node_modules\/(?!@fndebrid\b)/i,
         use: [tsLoader]
       }
     ]

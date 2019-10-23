@@ -3,7 +3,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import common, { isDev, outDir, rendererOutDir, rendererSourceDir, staticSourceDir } from './common';
-import { cssHotLoader, cssHotModuleLoader, cssLoader, cssModuleLoader, fontLoader, imageLoader, jsLoader, postcssLoader, sassLoader, tsLoader } from '../loaders';
+import { cssHotLoader, cssHotModuleLoader, cssLoader, cssModuleLoader, fontLoader, imageLoader, jsLoader, postcssLoader, sassLoader, tsLoader } from './loaders';
 
 
 
@@ -15,7 +15,7 @@ const config: webpack.Configuration = {
     renderer: [
       // 'css-hot-loader/hotModuleReplacement',
       'react-hot-loader/patch',
-      path.resolve(rendererSourceDir, 'index.tsx')
+      path.resolve(rendererSourceDir, 'renderer.ts')
     ]
   },
   output: {
@@ -34,11 +34,11 @@ const config: webpack.Configuration = {
     extensions: ['.js', '.ts', '.tsx', '.json', '.node', '.css', '.scss']
   },
   module: {
-    rules: [{
+    rules: [/*{
       test: /\.m?js$/i,
-      exclude: /(node_modules)/i,
+      exclude: /node_modules\/(?!@fndebrid\b)/i,
       use: jsLoader
-    }, {
+    },*/ {
       test: /\.node$/i,
       use: "node-loader"
     }, {
@@ -70,7 +70,7 @@ const config: webpack.Configuration = {
       use: ['html-loader']
     }, {
       test: /\.tsx?$/,
-      exclude: /(node_modules|webpack-match-plugin)/i,
+      exclude: /node_modules\/(?!@fndebrid\b)/i,
       use: [tsLoader]
     }]
   },
@@ -78,7 +78,7 @@ const config: webpack.Configuration = {
     ...common.plugins!,
     ...(['renderer'].map(entry => new HtmlWebpackPlugin({
       title: "Webpack App",
-      template: `!!html-loader?minimize=false&url=false!${path.resolve(rendererSourceDir, 'template.html')}`,
+      // template: `!!html-loader?minimize=false&url=false!${path.resolve(rendererSourceDir, 'template.html')}`,
       "filename": `${"index"}.html`,
       // "chunks": [entry],
       inject: true,

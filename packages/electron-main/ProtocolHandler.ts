@@ -1,7 +1,7 @@
 import { app } from "electron";
 import path from 'path';
 import { Associator } from './Associator';
-import { InvalidOperationError } from '@fndebrid/electron-common';
+import { InvalidOperationError } from '@fndebrid/core';
 
 
 

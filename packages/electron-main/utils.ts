@@ -5,7 +5,7 @@ import fs from 'fs';
 import util from 'util';
 
 
-// export * from '@fndebrid/electron-common'/utils';
+// export * from '@fndebrid/core'/utils';
 
 
 export function alert(message: any): void {

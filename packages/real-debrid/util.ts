@@ -1,7 +1,7 @@
 
 import parseTorrent from 'parse-torrent';
 import { promisify } from 'util';
-import { OperationFailedError, InvalidArguementError } from '@fndebrid/electron-common';
+import { OperationFailedError, InvalidArguementError } from '@fndebrid/core';
 import { MagnetLink } from './types';
 export function makeUrl(base: URL, path: string, params: Record<string, any> = {}) {
   const url = new URL(path, base);

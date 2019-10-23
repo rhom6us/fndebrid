@@ -1,12 +1,37 @@
 {
   "name": "fndebrid",
   "version": "1.0.0",
-  "main": "index.js",
   "private": true,
   "repository": "https://github.com/rhom6us/fndebrid.git",
   "author": "Thomas Butler <thomas@butler.software>",
   "license": "MIT",
-  "dependencies": {},
+  "main": "dist/main/main.js",
+  "scripts": {
+    "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\"",
+    "dist": "yarn build && electron-builder",
+    "dist:broke": "yarn compile && electron-builder --config config/electron-builder.config.json",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "build:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/renderer.ts",
+    "watch:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack-dev-server --config webpack/renderer.ts  --info-verbosity none",
+    "build:main": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/main.ts",
+    "watch:main": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --watch --progress --colors --config webpack/main.ts --info-verbosity verbose"
+  },
+  "build": {
+    "files": [
+      "dist/",
+      "package.json"
+    ]
+  },
+  "browserslist": [
+    "electron 6.0.12",
+    "current node"
+  ],
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "react-hot-loader": "^4.12.15"
+  },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.1",
     "@types/mini-css-extract-plugin": "^0.8.0",
@@ -30,6 +55,7 @@
     "nodemon": "^1.19.4",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
     "sass": "^1.23.1",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
@@ -39,6 +65,7 @@
     "typescript": "^3.6.4",
     "url-loader": "^2.2.0",
     "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.9.0",
     "webpackbar": "^4.0.0"
   }

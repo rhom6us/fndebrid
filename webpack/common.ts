@@ -9,10 +9,10 @@ function isAncestor(file: string, dir: string) {
   return file.length > dir.length && file[dir.length] === path.sep && file.startsWith(dir)
 }
 export const isDev = process.env.NODE_ENV != 'production';
-export const sourceDir = 'src';
-export const commonSourceDir = path.join(sourceDir, 'common');
-export const rendererSourceDir = path.join(sourceDir, "renderer");
-export const mainSourceDir = path.join(sourceDir, "main");
+export const sourceDir = 'runtime';
+// export const commonSourceDir = path.join(sourceDir);
+export const rendererSourceDir = path.join(sourceDir/*, 'electron-renderer'*/);
+export const mainSourceDir = path.join(sourceDir/*, 'electron-main'*/);
 
 export const staticSourceDir = 'static';
 export const outDir = 'dist';
@@ -33,11 +33,11 @@ const config: webpack.Configuration = {
   },
   resolve: {
     alias:{
-      '@': path.resolve(rendererSourceDir),
-      '~main': path.resolve(mainSourceDir),
-      '~renderer': path.resolve(rendererSourceDir),
-      '~common': path.resolve(commonSourceDir),
-      common: path.resolve(commonSourceDir),
+      // '@': path.resolve(rendererSourceDir),
+      // '~main': path.resolve(mainSourceDir),
+      // '~renderer': path.resolve(rendererSourceDir),
+      // '~common': path.resolve(commonSourceDir),
+      // common: path.resolve(commonSourceDir),
       'react-dom': '@hot-loader/react-dom'
     },
   },

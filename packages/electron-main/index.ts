@@ -9,7 +9,7 @@ import { showPreferences, showAddMagnet } from './windows';
 import { MagnetLink } from '@fndebrid/real-debrid';
 import  uuid5  from 'uuid/v5';
 import { jobId } from '@fndebrid/store/torrents';
-import { isDev, DEBUG } from '@fndebrid/electron-common';
+import { isDev, DEBUG } from '@fndebrid/core';
 if (isDev || DEBUG) {
   process.once('SIGTERM', function () {
     app.quit();

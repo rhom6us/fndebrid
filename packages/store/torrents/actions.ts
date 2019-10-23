@@ -1,7 +1,7 @@
 
-import { ExtendedTorrent, FileId, MagnetLink, TorrentId } from '@fndebrid/real-debrid';
+import { ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId } from '@fndebrid/real-debrid';
 import { createAction, createAsyncAction } from 'typesafe-actions';
-import { JobId, Torrent } from './state';
+import { JobId } from './state';
 
 
 export const completeJob = createAction('torrents/completeJob', action => 

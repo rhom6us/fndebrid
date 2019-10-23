@@ -1,4 +1,4 @@
-import { ArguementFalsyError, InvalidArguementError, InvalidOperationError } from '@fndebrid/electron-common';
+import { ArguementFalsyError, InvalidArguementError, InvalidOperationError } from '@fndebrid/core';
 import * as api from './api/auth';
 import { AccessToken, ClientId, ClientSecret, RefreshToken } from './types';
 

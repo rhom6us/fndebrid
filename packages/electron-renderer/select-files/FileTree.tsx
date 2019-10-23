@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { TreeNode as FnTreeNode, FolderNode as FnFolderNode, FileNode as FnFileNode, TreeNodeId, FolderNode } from './TreeNode';
 import { ITreeNode, Tree, Classes, Button } from '@blueprintjs/core';
 import { FileId, File } from '@fndebrid/real-debrid';
-import { groupBy } from 'lodash';
+import { groupBy, isEqual } from 'lodash';
 interface IOwnProps {
   files: File[] | undefined;
   onSelectionChanged: (fileIds: FileId[]) => void;

@@ -1,7 +1,7 @@
 import { Ctor } from '../utilTypes';
 import { ArguementUndefinedError, ArguementFalsyError, ArguementTypeError, InvalidArguementError } from '..';
 
-i
+
 
 export function getInstanceTypeName(value: any) {
   if (isUndefined(value)) throw new ArguementUndefinedError('value');

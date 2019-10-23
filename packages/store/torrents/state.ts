@@ -1,4 +1,4 @@
-import { isString, Opaque, parseUrl } from '@fndebrid/electron-common';
+import { isString, Opaque, parseUrl } from '@fndebrid/core';
 import { File, MaybeExtendedTorrent, TorrentId } from "@fndebrid/real-debrid";
 import { isUndefined } from 'util';
 import uuid4 from 'uuid/v4';

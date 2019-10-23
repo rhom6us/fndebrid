@@ -1,13 +1,14 @@
 import { promisify } from 'util';
 import { shell } from 'electron';
 import { all, call, delay, fork, put, take, takeEvery, takeLatest, select } from 'redux-saga/effects';
-import { Unpack, setImmediateAsync } from '@fndebrid/electron-common';
+import { Unpack, setImmediateAsync } from '@fndebrid/core';
 import { Authorizor, RealDebrid, TorrentStatus } from '@fndebrid/real-debrid';
 import { addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, selectFiles } from '@fndebrid/store/torrents/actions';
-
+import Store from 'electron-store';
+const storage = new Store();
 type Yield<T> = Unpack<T>;
 
-const auth = new Authorizor(async (url: string) => shell.openExternal(url));
+const auth = new Authorizor(async (url: string) => shell.openExternal(url), storage);
 const api = new RealDebrid(auth);
 
 const getErrorMsg = (err: any) => err instanceof Error ? err.stack! : typeof err === 'string' ? err : 'An unknown error has occured';;

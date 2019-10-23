@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain, webFrame } from 'electron';
 import path from 'path';
 import { format as formatUrl } from 'url';
-import { isDev } from '@fndebrid/electron-common';
+import { isDev } from '@fndebrid/core';
 import uuid5 from 'uuid/v5';
 import { FileId, TorrentId } from '@fndebrid/real-debrid';
 import { showWindow } from './file-selection';

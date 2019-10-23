@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import { FileId, Link, LinkInfo, MagnetLink, ExtendedTorrent, TorrentId, Torrent } from './types';
 import { makeUrl } from "./util";
 import { Authorizor } from './Authorizor';
-import { FnError } from '@fndebrid/electron-common';
+import { FnError } from '@fndebrid/core';
 
 export class RealDebridError extends FnError {
   constructor(public readonly url: string, error: { error: string, error_code: number }) {

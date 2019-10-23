@@ -1,4 +1,4 @@
-import { Opaque } from '@fndebrid/electron-common';
+import { Opaque } from '@fndebrid/core';
 
 
 export type TorrentId = Opaque<string, 'torrent_id'>;

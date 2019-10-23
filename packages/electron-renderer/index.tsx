@@ -9,10 +9,11 @@ const render = (Component: any) => {
     <AppContainer>
       <Component />
     </AppContainer>,
-    document.getElementById('app')
+    document.querySelector('div')
   );
 }
-
+const div = document.createElement('div')
+document.body.appendChild(div);
 render(Root);
 
 if (module.hot) {

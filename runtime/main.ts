@@ -1,0 +1,1 @@
+import '@fndebrid/electron-main';

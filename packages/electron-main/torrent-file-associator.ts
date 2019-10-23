@@ -1,6 +1,6 @@
 // import Registry from 'winreg';
 import path from 'path';
-import { RegistryHive as Registry } from '@fndebrid/electron-common/registry';
+import { RegistryHive as Registry } from '@fndebrid/core/registry';
 
 
 async function setAssReg(ns: string, ext: string, execPath: string) {

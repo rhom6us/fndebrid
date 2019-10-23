@@ -2,13 +2,14 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { connect, useStore } from 'react-redux';
 import uuid5 from 'uuid/v5';
 
-import { FileId, MagnetLink, TorrentId, ExtendedTorrent } from '@fndebrid/real-debrid';
+import { FileId, MagnetLink, Torrent, TorrentId, ExtendedTorrent } from '@fndebrid/real-debrid';
 import { State, getDispatcher, Dispatch } from '@fndebrid/store';
-import { JobId, jobId, Torrent } from '@fndebrid/store/torrents/state';
+import { JobId, jobId } from '@fndebrid/store/torrents/state';
 
-import { assertNever } from '@fndebrid/electron-common/utils';
+import { assertNever } from '@fndebrid/core/utils';
 import AddMagnet from './add-magnet';
 import { FileSelect } from './select-files';
+import { Dialog } from './add-magnet/components';
 const params = new URL(window.location.href).searchParams;
 const initialJobId = params.get('jobid') as JobId;
 const intitialTorrentId = params.get('torrentid') as TorrentId;

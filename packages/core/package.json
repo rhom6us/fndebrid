@@ -1,8 +1,9 @@
 {
-  "name": "@fndebrid/electron-common",
+  "name": "@fndebrid/core",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "private": true,
   "dependencies": {
     "lodash": "^4.17.15",
     "winreg": "^1.2.4"

@@ -1,8 +1,8 @@
 
 import { createReducer, ActionType } from 'typesafe-actions'
 import * as actions from './actions'
-import { State, defaultState, Torrent } from './state';
-import { TorrentId, ExtendedTorrent, MaybeExtendedTorrent } from '@fndebrid/real-debrid';
+import { State, defaultState } from './state';
+import { TorrentId, Torrent, ExtendedTorrent, MaybeExtendedTorrent } from '@fndebrid/real-debrid';
 
 declare global {
   interface Array<T> {
