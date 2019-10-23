@@ -7,6 +7,7 @@
   "license": "MIT",
   "main": "dist/main/main.js",
   "scripts": {
+    "typecheck": "lerna exec --parallel -- tsc --noemit",
     "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\"",
     "dist": "yarn build && electron-builder",
     "dist:broke": "yarn compile && electron-builder --config config/electron-builder.config.json",
@@ -49,6 +50,7 @@
     "fork-ts-checker-webpack-plugin": "^1.5.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "lerna": "^3.18.3",
     "mini-css-extract-plugin": "^0.8.0",
     "node-loader": "^0.6.0",
     "node-sass": "^4.12.0",
