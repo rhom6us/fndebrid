@@ -7,6 +7,9 @@
   "scripts":{
     "compile": "fnwebpack renderer"
   },
+  "browserslist": [
+    "chrome 78.0"
+  ],
   "dependencies": {
     "@blueprintjs/core": "^3.19.1",
     "@emotion/core": "^10.0.21",

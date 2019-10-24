@@ -7,6 +7,9 @@
   "scripts": {
     "compile": "fnwebpack main"
   },
+  "browserslist": [
+    "node 12.8" 
+  ],
   "dependencies": {
     "@fndebrid/core": "^1.0.0",
     "@fndebrid/real-debrid": "^1.0.0",
