@@ -5,7 +5,6 @@
   "repository": "https://github.com/rhom6us/fndebrid.git",
   "author": "Thomas Butler <thomas@butler.software>",
   "license": "MIT",
-  "main": "dist/main/main.js",
   "scripts": {
     "i": "yarn add",
     "reinstall": "yarn install --force",
@@ -20,10 +19,6 @@
       "package.json"
     ]
   },
-  "browserslist": [
-    "electron 6.0.12",
-    "current node"
-  ],
   "workspaces": {
     "packages": [
       "packages/*"
