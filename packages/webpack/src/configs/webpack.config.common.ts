@@ -57,7 +57,7 @@ export const config: webpack.Configuration = {
   },
   plugins: [
     new WebpackBar(),
-    new CleanWebpackPlugin() as any,
+    // new CleanWebpackPlugin() as any,
     new ForkTsCheckerWebpackPlugin({
       // silent: true
     }),

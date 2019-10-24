@@ -9,10 +9,15 @@ const render = (Component: any) => {
     <AppContainer>
       <Component />
     </AppContainer>,
-    document.body
+    document.querySelector('react-dom')
   );
 }
-render(Root);
+setImmediate(() => {
+  document.body.appendChild(document.createElement('react-dom'));
+  render(Root);
+});
+// const c = document.createElement('mount');
+// document.body.appendChild(c);
 
 if (module.hot) {
   module.hot.accept('./Root', () => render(Root));

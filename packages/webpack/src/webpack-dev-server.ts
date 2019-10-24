@@ -28,7 +28,7 @@ const devServerOptions: WebpackDevServer.Configuration = {
     modules: false,
     timings: false,
     version: false,
-     hash: false,
+    hash: false,
   },
   // before: function(app, server) {
   //   app.get('/some/path', function(req, res) {

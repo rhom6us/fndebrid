@@ -10,4 +10,4 @@ export const watch = process.argv.some(p => p == '--watch');
 export const rootDir = path.join(sourceDir, '../../');
 
 export const staticSourceDir = path.join(rootDir, 'static');
-export const outDir = path.join(rootDir, 'dist', app);
+export const outDir = path.join(rootDir, 'dist');
