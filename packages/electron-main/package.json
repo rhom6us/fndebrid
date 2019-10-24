@@ -5,7 +5,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "compile": "fnwebpack main"
+    "compile": "fnbuild",
+    "watch": "fnbuild --watch"
+
   },
   "browserslist": [
     "node 12.8" 

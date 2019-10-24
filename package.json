@@ -9,8 +9,11 @@
     "i": "yarn add",
     "reinstall": "yarn install --force",
     "typecheck": "lerna exec --parallel -- tsc --noemit",
-    "watch:main": "yarn workspace @fndebrid/electron-main run compile",
-    "watch:renderer": "yarn workspace @fndebrid/electron-renderer run compile",
+    "build:main": "yarn workspace @fndebrid/electron-main run compile",
+    "watch:main": "yarn workspace @fndebrid/electron-main run watch",
+    "build:renderer": "yarn workspace @fndebrid/electron-renderer run compile",
+    "watch:renderer": "yarn workspace @fndebrid/electron-renderer run watch",
+    "serve:renderer": "yarn workspace @fndebrid/electron-renderer run serve",
     "watch:fnwebpack": "yarn workspace @fndebrid/webpack run compile:watch"
   },
   "build": {

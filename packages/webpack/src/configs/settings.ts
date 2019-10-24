@@ -4,6 +4,7 @@ export const isDev = mode != 'production';
 export const sourceDir = path.resolve('.');
 export const [, app] = sourceDir.match(/electron-(main|renderer)[\\\/]?$/i) as [string, 'main' | 'renderer'];
 
+export const watch = process.argv.some(p => p == '--watch');
 // This will be running from ./packages / electron - (main | renderer).
 // Get back up to the root dir
 export const rootDir = path.join(sourceDir, '../../');

@@ -25,10 +25,13 @@ var html_webpack_plugin_1 = __importDefault(require("html-webpack-plugin"));
 var mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 var webpack_config_common_1 = require("./webpack.config.common");
 var rules_1 = require("./rules");
-var settings_1 = require("./settings");
-exports.default = __assign(__assign({}, webpack_config_common_1.config), { target: 'electron-renderer', entry: __spreadArrays([
-        'react-hot-loader/patch'
-    ], webpack_config_common_1.config.entry), resolve: __assign(__assign({}, webpack_config_common_1.config.resolve), { extensions: ['.tsx', '.css', '.scss'] }), module: __assign(__assign({}, webpack_config_common_1.config.module), { rules: __spreadArrays(webpack_config_common_1.config.module.rules, [
+var entry = Object.keys(webpack_config_common_1.config.entry).reduce(function (map, key) {
+    map[key] = ['react-hot-loader/patch', webpack_config_common_1.config.entry[key]];
+    return map;
+}, {});
+exports.default = __assign(__assign({}, webpack_config_common_1.config), { target: 'electron-renderer', entry: entry, resolve: __assign(__assign({}, webpack_config_common_1.config.resolve), { extensions: __spreadArrays(webpack_config_common_1.config.resolve.extensions, [
+            '.tsx', '.css', '.scss'
+        ]) }), module: __assign(__assign({}, webpack_config_common_1.config.module), { rules: __spreadArrays(webpack_config_common_1.config.module.rules, [
             rules_1.nodeRule,
             rules_1.globalStylesheetRule,
             rules_1.stylesheetRile,
@@ -41,33 +44,18 @@ exports.default = __assign(__assign({}, webpack_config_common_1.config), { targe
             // template: `!!html-loader?minimize=false&url=false!${path.resolve(rendererSourceDir, 'template.html')}`,
             "filename": "index" + ".html",
             // "chunks": [entry],
-            inject: true,
+            inject: 'head',
             // "compile": true,
             chunks: "all",
+            // excludeChunks: [],
+            // "nodeModules": "C:\\dev\\fndebrid\\node_modules",
+            meta: {
+                viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+            }
         }),
         new mini_css_extract_plugin_1.default({
             filename: '[id].styles.css',
             chunkFilename: '[id].styles.css',
         }),
-    ]), devServer: {
-        contentBase: [
-            settings_1.staticSourceDir,
-        ],
-        host: 'localhost',
-        port: 9080,
-        hot: true,
-        overlay: true,
-        open: false,
-        noInfo: true,
-        stats: 'minimal'
-        // before() {
-        //   spawn(
-        //     'electron',
-        //     ['.'],
-        //     { shell: true, env: process.env, stdio: 'inherit' }
-        //   )
-        //   .on('close', code => process.exit(0))
-        //   .on('error', spawnError => console.error(spawnError))
-        // }
-    } });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoid2VicGFjay5jb25maWcucmVuZGVyZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvY29uZmlncy93ZWJwYWNrLmNvbmZpZy5yZW5kZXJlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLDRFQUFvRDtBQUNwRCxvRkFBMkQ7QUFHM0QsaUVBQWlEO0FBQ2pELGlDQUF3RztBQUN4Ryx1Q0FBNkM7QUFJN0Msa0JBQWUsc0JBQ1YsOEJBQU0sS0FDVCxNQUFNLEVBQUUsbUJBQW1CLEVBQzNCLEtBQUs7UUFDSCx3QkFBd0I7T0FDckIsOEJBQU0sQ0FBQyxLQUFpQixHQUU3QixPQUFPLHdCQUNGLDhCQUFNLENBQUMsT0FBTyxLQUNqQixVQUFVLEVBQUUsQ0FBQyxNQUFNLEVBQUUsTUFBTSxFQUFFLE9BQU8sQ0FBQyxLQUV2QyxNQUFNLHdCQUNELDhCQUFNLENBQUMsTUFBTSxLQUNoQixLQUFLLGlCQUNBLDhCQUFNLENBQUMsTUFBTSxDQUFDLEtBQUs7WUFDdEIsZ0JBQVE7WUFDUiw0QkFBb0I7WUFDcEIsc0JBQWM7WUFDZCxpQkFBUztZQUNULGdCQUFRO1lBQ1IsZ0JBQVE7ZUFHWixPQUFPLGlCQUNGLDhCQUFNLENBQUMsT0FBTztRQUNqQixJQUFJLDZCQUFpQixDQUFDO1lBQ3BCLEtBQUssRUFBRSxhQUFhO1lBQ3BCLDBHQUEwRztZQUMxRyxVQUFVLEVBQUssT0FBTyxVQUFPO1lBQzdCLHFCQUFxQjtZQUNyQixNQUFNLEVBQUUsSUFBSTtZQUNaLG1CQUFtQjtZQUNuQixNQUFNLEVBQUUsS0FBSztTQUdkLENBQUM7UUFDRixJQUFJLGlDQUFvQixDQUFDO1lBQ3ZCLFFBQVEsRUFBRSxpQkFBaUI7WUFDM0IsYUFBYSxFQUFFLGlCQUFpQjtTQUVqQyxDQUFDO1FBRUosU0FBUyxFQUFFO1FBQ1QsV0FBVyxFQUFFO1lBQ1gsMEJBQWU7U0FFaEI7UUFDRCxJQUFJLEVBQUUsV0FBVztRQUNqQixJQUFJLEVBQUUsSUFBSTtRQUNWLEdBQUcsRUFBRSxJQUFJO1FBQ1QsT0FBTyxFQUFFLElBQUk7UUFDYixJQUFJLEVBQUUsS0FBSztRQUNYLE1BQU0sRUFBRSxJQUFJO1FBQ1osS0FBSyxFQUFFLFNBQVM7UUFDaEIsYUFBYTtRQUNiLFdBQVc7UUFDWCxrQkFBa0I7UUFDbEIsYUFBYTtRQUNiLDBEQUEwRDtRQUMxRCxNQUFNO1FBQ04sMENBQTBDO1FBQzFDLDBEQUEwRDtRQUMxRCxJQUFJO0tBQ0wsR0FFRixDQUFDIn0=
+    ]) });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoid2VicGFjay5jb25maWcucmVuZGVyZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvY29uZmlncy93ZWJwYWNrLmNvbmZpZy5yZW5kZXJlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLDRFQUFvRDtBQUNwRCxvRkFBMkQ7QUFHM0QsaUVBQWlEO0FBQ2pELGlDQUF3RztBQUd4RyxJQUFNLEtBQUssR0FBRyxNQUFNLENBQUMsSUFBSSxDQUFDLDhCQUFNLENBQUMsS0FBSyxDQUFDLENBQUMsTUFBTSxDQUFDLFVBQUMsR0FBRyxFQUFFLEdBQUc7SUFDdEQsR0FBRyxDQUFDLEdBQUcsQ0FBQyxHQUFHLENBQUMsd0JBQXdCLEVBQUUsOEJBQU0sQ0FBQyxLQUFLLENBQUMsR0FBRyxDQUFDLENBQUMsQ0FBQztJQUN6RCxPQUFPLEdBQUcsQ0FBQztBQUNiLENBQUMsRUFBRSxFQUF1QyxDQUFDLENBQUE7QUFFM0Msa0JBQWUsc0JBQ1YsOEJBQU0sS0FDVCxNQUFNLEVBQUUsbUJBQW1CLEVBQzNCLEtBQUssT0FBQSxFQUNMLE9BQU8sd0JBQ0YsOEJBQU0sQ0FBQyxPQUFPLEtBQ2pCLFVBQVUsaUJBQ0wsOEJBQU0sQ0FBQyxPQUFPLENBQUMsVUFBVTtZQUM1QixNQUFNLEVBQUUsTUFBTSxFQUFFLE9BQU87ZUFHM0IsTUFBTSx3QkFDRCw4QkFBTSxDQUFDLE1BQU0sS0FDaEIsS0FBSyxpQkFDQSw4QkFBTSxDQUFDLE1BQU0sQ0FBQyxLQUFLO1lBQ3RCLGdCQUFRO1lBQ1IsNEJBQW9CO1lBQ3BCLHNCQUFjO1lBQ2QsaUJBQVM7WUFDVCxnQkFBUTtZQUNSLGdCQUFRO2VBR1osT0FBTyxpQkFDRiw4QkFBTSxDQUFDLE9BQU87UUFDakIsSUFBSSw2QkFBaUIsQ0FBQztZQUNwQixLQUFLLEVBQUUsYUFBYTtZQUNwQiwwR0FBMEc7WUFDMUcsVUFBVSxFQUFLLE9BQU8sVUFBTztZQUM3QixxQkFBcUI7WUFDckIsTUFBTSxFQUFFLE1BQU07WUFDZCxtQkFBbUI7WUFDbkIsTUFBTSxFQUFFLEtBQUs7WUFDYixxQkFBcUI7WUFDckIsb0RBQW9EO1lBQ3BELElBQUksRUFBRTtnQkFDSixRQUFRLEVBQUUsdURBQXVEO2FBQ2xFO1NBQ0YsQ0FBQztRQUNGLElBQUksaUNBQW9CLENBQUM7WUFDdkIsUUFBUSxFQUFFLGlCQUFpQjtZQUMzQixhQUFhLEVBQUUsaUJBQWlCO1NBRWpDLENBQUM7U0FFTCxDQUFDIn0=

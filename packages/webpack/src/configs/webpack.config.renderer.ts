@@ -4,20 +4,23 @@ import path from 'path';
 import webpack from 'webpack';
 import { config } from './webpack.config.common';
 import { fontRule, globalStylesheetRule, htmlRule, imageRule, nodeRule, stylesheetRile } from './rules';
-import { staticSourceDir } from './settings';
+import { staticSourceDir, app } from './settings';
 
-
+const entry = Object.keys(config.entry).reduce((map, key) => {
+  map[key] = ['react-hot-loader/patch', config.entry[key]];
+  return map;
+}, {} as Record<string, readonly string[]>)
 
 export default <webpack.Configuration>{
   ...config,
   target: 'electron-renderer',
-  entry: [
-    'react-hot-loader/patch',
-    ...config.entry as string[]
-  ],
+  entry,
   resolve: {
     ...config.resolve,
-    extensions: ['.tsx', '.css', '.scss']
+    extensions: [
+      ...config.resolve.extensions,
+      '.tsx', '.css', '.scss'
+    ]
   },
   module: {
     ...config.module,
@@ -38,39 +41,19 @@ export default <webpack.Configuration>{
       // template: `!!html-loader?minimize=false&url=false!${path.resolve(rendererSourceDir, 'template.html')}`,
       "filename": `${"index"}.html`,
       // "chunks": [entry],
-      inject: true,
+      inject: 'head',
       // "compile": true,
       chunks: "all",
       // excludeChunks: [],
-      // "nodeModules": "C:\\dev\\fndebrid\\node_modules"
+      // "nodeModules": "C:\\dev\\fndebrid\\node_modules",
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
+      }
     }),
     new MiniCssExtractPlugin({
       filename: '[id].styles.css',
       chunkFilename: '[id].styles.css',
       // moduleFilename: (name) => '[id].styles.css'
     }),
-  ],
-  devServer: {
-    contentBase: [
-      staticSourceDir,
-      // path.resolve(outDir, 'renderer-dll')
-    ],
-    host: 'localhost',
-    port: 9080,
-    hot: true,
-    overlay: true,
-    open: false,
-    noInfo: true,
-    stats: 'minimal'
-    // before() {
-    //   spawn(
-    //     'electron',
-    //     ['.'],
-    //     { shell: true, env: process.env, stdio: 'inherit' }
-    //   )
-    //   .on('close', code => process.exit(0))
-    //   .on('error', spawnError => console.error(spawnError))
-    // }
-  }
-
+  ]
 };

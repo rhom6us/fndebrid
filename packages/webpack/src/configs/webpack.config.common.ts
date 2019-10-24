@@ -4,21 +4,25 @@ import path from 'path';
 import webpack from 'webpack';
 import WebpackBar from 'webpackbar';
 import { typescriptRule } from './rules';
-import { isDev, mode, outDir, sourceDir, staticSourceDir } from './settings';
+import { isDev, mode, outDir, sourceDir, staticSourceDir, watch, app } from './settings';
 
 
 export const config: webpack.Configuration = {
   mode,
-  devtool: 'eval-source-map',
+  devtool: 'cheap-module-eval-source-map',//'eval-source-map',
   context: sourceDir,
-  entry: [path.join(sourceDir, 'index.ts')],
+  entry: {
+    [app]: path.join(sourceDir, 'index.ts')
+  },
+  watch,
   output: {
     path: outDir,
     filename: `[name]${isDev ? "" : ".[contenthash]"}.js`,
     chunkFilename: `[name]${isDev ? "" : ".[contenthash]"}.js`,
   },
   stats: {
-    warnings: false
+    warnings: false,
+    warningsFilter: /export .* was not found in/
   },
   resolve: {
     alias: {
@@ -54,7 +58,9 @@ export const config: webpack.Configuration = {
   plugins: [
     new WebpackBar(),
     new CleanWebpackPlugin() as any,
-    new ForkTsCheckerWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      // silent: true
+    }),
     new webpack.DefinePlugin({
       __static: JSON.stringify(staticSourceDir)
     }),
