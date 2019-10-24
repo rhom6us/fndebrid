@@ -1,7 +1,7 @@
 {
   "files.exclude": {
     ".gitignore": true,
-    "**/node_modules/": false,
+    "**/node_modules/": true,
     "dist/": true,
     "LICENSE": true,
     "README.md": true,
