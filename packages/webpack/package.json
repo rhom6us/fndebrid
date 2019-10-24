@@ -5,16 +5,15 @@
   "author": "Thomas Butler <thomas@butler.software>",
   "homepage": "https://github.com/rhom6us/fndebrid#readme",
   "license": "ISC",
-  "main": "cli.js",
   "private": true,
   "bin": {
-    "fnwebpack": "./cli.js"
+    "fnwebpack": "./lib/index.js"
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "compile": "tsc"
+    "compile:watch": "tsc"
   },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.1",

@@ -89,7 +89,7 @@ export const tsLoader = {
   loader: "ts-loader",
   options: {
     transpileOnly: true,
-    allowTsInNodeModules: true,
+    allowTsInNodeModules: false,
     // projectReferences: true,
     // appendTsSuffixTo: [{}],
     // configFile: "C:\\dev\\fndebrid\\tsconfig.json"

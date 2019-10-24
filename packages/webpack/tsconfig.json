@@ -7,6 +7,6 @@
     "outDir": "./lib",
     "inlineSourceMap": true,
     "inlineSources": false,
-    "watch": true
-  }
+    "watch": true,
+  },
 }

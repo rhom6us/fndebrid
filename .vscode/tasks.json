@@ -25,82 +25,82 @@
         "group": "huzza"
       }
     },
-    {
-      "label": "watch main",
-      "type": "npm",
-      "script": "watch:main",
-      "group": "build",
-      "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": false,
-        "clear": true,
-        "group": "huzza"
-      },
-      "problemMatcher": ["$ts-checker-webpack-watch"]
-    },
-    {
-      "label": "build main",
-      "type": "npm",
-      "script": "build:main",
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": false,
-        "clear": true,
-        "group": "huzza"
-      }
-    },
-    {
-      "label": "build renderer",
-      "type": "npm",
-      "script": "build:renderer",
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": false,
-        "clear": true,
-        "group": "huzza"
-      }
-    },
-    {
-      "label": "watch renderer",
-      "type": "npm",
-      "script": "watch:renderer",
-      "group": "build",
-      "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": false,
-        "clear": true,
-        "group": "huzza"
-      },
-      "problemMatcher":{
-        "base": "$ts-webpack",
-				"applyTo": "closedDocuments",
-				"fileLocation": "absolute",
-				"background": {
-					"activeOnStart": true,
-					"beginsPattern": {
-						"regexp": "(.*?)Compiling(.*?)"
-					},
-					"endsPattern": {
-						"regexp": "(.*?)Compiled(.*?)"
-					}
-				}
-      }
-    }
+    // {
+    //   "label": "watch main",
+    //   "type": "npm",
+    //   "script": "watch:main",
+    //   "group": "build",
+    //   "isBackground": true,
+    //   "presentation": {
+    //     "echo": true,
+    //     "reveal": "always",
+    //     "focus": false,
+    //     "panel": "dedicated",
+    //     "showReuseMessage": false,
+    //     "clear": true,
+    //     "group": "huzza"
+    //   },
+    //   "problemMatcher": ["$ts-checker-webpack-watch"]
+    // },
+    // {
+    //   "label": "build main",
+    //   "type": "npm",
+    //   "script": "build:main",
+    //   "group": "build",
+    //   "presentation": {
+    //     "echo": true,
+    //     "reveal": "always",
+    //     "focus": false,
+    //     "panel": "dedicated",
+    //     "showReuseMessage": false,
+    //     "clear": true,
+    //     "group": "huzza"
+    //   }
+    // },
+    // {
+    //   "label": "build renderer",
+    //   "type": "npm",
+    //   "script": "build:renderer",
+    //   "group": "build",
+    //   "presentation": {
+    //     "echo": true,
+    //     "reveal": "always",
+    //     "focus": false,
+    //     "panel": "dedicated",
+    //     "showReuseMessage": false,
+    //     "clear": true,
+    //     "group": "huzza"
+    //   }
+    // },
+    // {
+    //   "label": "watch renderer",
+    //   "type": "npm",
+    //   "script": "watch:renderer",
+    //   "group": "build",
+    //   "isBackground": true,
+    //   "presentation": {
+    //     "echo": true,
+    //     "reveal": "always",
+    //     "focus": false,
+    //     "panel": "dedicated",
+    //     "showReuseMessage": false,
+    //     "clear": true,
+    //     "group": "huzza"
+    //   },
+    //   "problemMatcher":{
+    //     "base": "$ts-webpack",
+		// 		"applyTo": "closedDocuments",
+		// 		"fileLocation": "absolute",
+		// 		"background": {
+		// 			"activeOnStart": true,
+		// 			"beginsPattern": {
+		// 				"regexp": "(.*?)Compiling(.*?)"
+		// 			},
+		// 			"endsPattern": {
+		// 				"regexp": "(.*?)Compiled(.*?)"
+		// 			}
+		// 		}
+    //   }
+    // }
   ]
 }
