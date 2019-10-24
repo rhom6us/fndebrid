@@ -11,7 +11,7 @@
     "watch:main": "yarn workspace @fndebrid/electron-main run compile",
     "watch:renderer": "yarn workspace @fndebrid/electron-renderer run compile",
     "watch:fnwebpack": "yarn workspace @fndebrid/webpack run compile:watch"
-     },
+  },
   "build": {
     "files": [
       "dist/",
@@ -22,15 +22,20 @@
     "electron 6.0.12",
     "current node"
   ],
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@types/*/**"
+    ]
+  },
   "dependencies": {
     "react-hot-loader": "^4.12.15"
   },
   "devDependencies": {
-    
+
     "lerna": "^3.18.3"
-    
+
   }
 }
