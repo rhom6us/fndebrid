@@ -7,10 +7,20 @@ import configureStore from './configureStore';
 import { Dispatcher, getDispatcher } from '../store/dispatcher';
 import { showPreferences, showAddMagnet } from './windows';
 import { MagnetLink } from '@fndebrid/real-debrid';
-import  uuid5  from 'uuid/v5';
+import uuid5 from 'uuid/v5';
 import { jobId } from '@fndebrid/store/torrents';
 import { isDev, DEBUG } from '@fndebrid/core';
+import fs from 'fs';
+
 if (isDev || DEBUG) {
+  const programPath = path.resolve(process.argv.filter(p => p.endsWith('main.js'))[0]);
+  fs.watchFile(programPath, {}, () => {
+    app.relaunch({
+      execPath: process.argv[0],
+      args: process.argv.slice(1)
+    });
+    app.quit();
+  })
   process.once('SIGTERM', function () {
     app.quit();
     process.kill(process.pid, 'SIGTERM');
@@ -27,7 +37,7 @@ if (isDev || DEBUG) {
 const storage = new Store();
 
 function appReady() {
-  
+
 
   createAppIcon();
 

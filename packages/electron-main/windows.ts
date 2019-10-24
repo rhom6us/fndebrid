@@ -19,7 +19,7 @@ const dialogs = new Set<BrowserWindow>();
 ipcMain.on('please-resize', async (event, size: { width?: number, height?: number }) => {
   const win = BrowserWindow.fromWebContents(event.sender);
 
-  const zoom = event.sender.getZoomFactor()
+  const zoom = event.sender.zoomFactor
   const [contentX, contentY] = win.getContentSize();
   const x = size.width ? Math.floor(zoom * size.width) : contentX;
   const y = size.height ? Math.floor(zoom * size.height) : contentY;
