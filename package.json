@@ -7,6 +7,8 @@
   "license": "MIT",
   "main": "dist/main/main.js",
   "scripts": {
+    "i": "yarn add",
+    "reinstall": "yarn install --force",
     "typecheck": "lerna exec --parallel -- tsc --noemit",
     "watch:main": "yarn workspace @fndebrid/electron-main run compile",
     "watch:renderer": "yarn workspace @fndebrid/electron-renderer run compile",
@@ -36,6 +38,6 @@
   "devDependencies": {
 
     "lerna": "^3.18.3"
-
+    
   }
 }
