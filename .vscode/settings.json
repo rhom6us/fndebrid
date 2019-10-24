@@ -9,5 +9,8 @@
   },
 "editor.detectIndentation": false,
 "editor.tabSize": 2,
-"npm.packageManager": "yarn"
+"npm.packageManager": "yarn",
+"search.exclude": {
+  "packages/webpack/lib/": true
+}
 }

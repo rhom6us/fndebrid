@@ -4,7 +4,7 @@
   "description": "> TODO: description",
   "author": "Thomas Butler <thomas@butler.software>",
   "homepage": "https://github.com/rhom6us/fndebrid#readme",
-  "license": "ISC",
+  "license": "\r",
   "private": true,
   "bin": {
     "fnbuild": "./lib/webpack.js",
@@ -14,7 +14,8 @@
     "access": "public"
   },
   "scripts": {
-    "compile:watch": "tsc"
+    "compile": "tsc",
+    "watch": "tsc --watch"
   },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.1",

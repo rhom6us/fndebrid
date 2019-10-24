@@ -15,13 +15,14 @@ const initialJobId = params.get('jobid') as JobId;
 const intitialTorrentId = params.get('torrentid') as TorrentId;
 
 interface IOwnProps { }
-const mapStateToProps = function (state: State, ownProps: IOwnProps) {
+function mapStateToProps(state: State, ownProps: IOwnProps) {
   return {
     jobs: state.torrents.jobs,
     torrents: state.torrents.entities.torrents
   };
 }
-const mapDispatchToProps = function (dispatch: Dispatch, ownProps: IOwnProps) {
+
+function mapDispatchToProps(dispatch: Dispatch, ownProps: IOwnProps) {
   const dispatcher = getDispatcher(dispatch);
   return {
     addMagnet(magnet: MagnetLink, jobId: JobId) {
@@ -51,7 +52,7 @@ function getBody(jobs: Record<JobId, TorrentId>, jobId: JobId | undefined, torre
   switch (torrent.status) {
     case 'magnet_conversion':
     case 'magnet_error':
-        return torrent.status;
+      return torrent.status;
     case 'waiting_files_selection':
       if (jobId && jobId in jobs) {
         return torrent.status;

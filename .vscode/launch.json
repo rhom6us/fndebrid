@@ -21,18 +21,22 @@
       "name": "monitor main",
       "type": "node",
       "request": "launch",
-      "preLaunchTask":"watch main",
+      "preLaunchTask": "watch main",
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
       "windows": {
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon.cmd"
       },
       "args": [
-        "--signal", "SIGUSR2",
+        "--signal",
+        "SIGUSR2",
         "--debug",
-        "--watch", "dist/main/",
-        "--ignore", "src/",
-        "--exec", "\"${workspaceRoot}/node_modules/.bin/electron.cmd --remote-debugging-port=9223 . --debug\""
+        "--watch",
+        "dist/main/",
+        "--ignore",
+        "src/",
+        "--exec",
+        "\"${workspaceRoot}/node_modules/.bin/electron.cmd --remote-debugging-port=9223 . --debug\""
       ],
       "restart": true,
       "env": {
