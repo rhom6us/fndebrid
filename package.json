@@ -6,15 +6,15 @@
   "author": "Thomas Butler <thomas@butler.software>",
   "license": "MIT",
   "scripts": {
-    "i": "yarn add",
-    "reinstall": "yarn install --force",
-    "typecheck": "lerna exec --parallel -- tsc --noemit",
+    "[watch]:fnwebpack": "yarn workspace @fndebrid/webpack run watch",
     "[build]:main": "yarn workspace @fndebrid/electron-main run compile",
-    "[watch]:main": "yarn workspace @fndebrid/electron-main run watch",
     "[build]:renderer": "yarn workspace @fndebrid/electron-renderer run compile",
+    "[watch]:main": "yarn workspace @fndebrid/electron-main run watch",
     "[watch]:renderer": "yarn workspace @fndebrid/electron-renderer run watch",
     "[serve]:renderer": "yarn workspace @fndebrid/electron-renderer run serve",
-    "[watch]:fnwebpack": "yarn workspace @fndebrid/webpack run watch"
+    "reinstall": "yarn install --force",
+    "typecheck": "lerna exec --parallel -- tsc --noemit",
+    "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\""
   },
   "build": {
     "files": [

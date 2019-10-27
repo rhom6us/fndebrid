@@ -1,4 +1,4 @@
-import { cssHotLoader, cssHotModuleLoader, cssLoader, cssModuleLoader, fontLoader, imageLoader, postcssLoader, sassLoader, tsLoader } from './loaders';
+import { cssHotLoader, cssHotModuleLoader, cssLoader, cssModuleLoader, fontLoader, imageLoader, postcssLoader, sassLoader, tsLoader, babelLoader } from './loaders';
 import { isDev } from './settings';
 import MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -6,6 +6,16 @@ export const typescriptRule = {
   test: /\.tsx?$/i,
   exclude: /node_modules\/(?!@fndebrid\b)/i,
   use: [tsLoader]
+}
+export const reactTypescriptRule = {
+  test: /\.tsx?$/i,
+  //include: /node_modules/i,
+  use: ['react-hot-loader/webpack', tsLoader]
+}
+export const scriptRule = {
+  test: /\.(j|t)sx?$/i,
+  exclude: /node_modules/,
+  use: [babelLoader]
 }
 export const nodeRule = {
   test: /\.node$/i,
@@ -20,7 +30,7 @@ export const globalStylesheetRule = {
     postcssLoader,
     sassLoader]
 };
-export const stylesheetRile = {
+export const stylesheetRule = {
   test: /\.s?css$/i,
   exclude: /\b(global|vars)\.s?css$/i,
   use: [

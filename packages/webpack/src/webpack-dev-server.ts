@@ -5,9 +5,7 @@ import config from './configs';
 import { staticSourceDir } from './configs/settings';
 
 
-const compiler = Webpack(config);
-const devServerOptions: WebpackDevServer.Configuration = {
-  ...config.devServer,
+const options: WebpackDevServer.Configuration = {
   contentBase: [
     staticSourceDir,
     // path.resolve(outDir, 'renderer-dll')
@@ -18,7 +16,7 @@ const devServerOptions: WebpackDevServer.Configuration = {
   noInfo: true,
   open: false,
   overlay: true,
-  inline: false,
+  inline: true,
   // clientLogLevel: "warning",
   stats: {
     colors: true,
@@ -39,8 +37,10 @@ const devServerOptions: WebpackDevServer.Configuration = {
   //   // do fancy stuff
   // }
 };
-const server = new WebpackDevServer(compiler, devServerOptions);
+WebpackDevServer.addDevServerEntrypoints(config, options);
+const compiler = Webpack(config);
+const server = new WebpackDevServer(compiler, options);
 
-server.listen(devServerOptions.port, devServerOptions.host, () => {
-  console.log(`Starting server on http://${devServerOptions.host}:${devServerOptions.port}`);
+server.listen(options.port, options.host, () => {
+  console.log(`Starting server on http://${options.host}:${options.port}`);
 });

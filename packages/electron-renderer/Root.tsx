@@ -1,12 +1,12 @@
 import React from "react";
+import { hot } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-static';
-import AddMagnet from './add-magnet';
+import { AddTorrent } from './AddTorrent';
 import configureStore from './configureStore';
 import Main from './main';
 import Preferences from './preferences';
 import { ThemeProvider } from './ThemeContext';
-import { AddTorrent } from './AddTorrent';
 
 
 const store = configureStore();
@@ -20,5 +20,4 @@ const Root: React.FC = () => (
   </ThemeProvider>
 );
 
-
-export default Root;
+export default hot(module)(Root);

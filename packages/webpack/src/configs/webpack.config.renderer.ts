@@ -3,18 +3,14 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import { config } from './webpack.config.common';
-import { fontRule, globalStylesheetRule, htmlRule, imageRule, nodeRule, stylesheetRile } from './rules';
+import { fontRule, globalStylesheetRule, htmlRule, imageRule, nodeRule, stylesheetRule, scriptRule, reactTypescriptRule } from './rules';
 import { staticSourceDir, app } from './settings';
 
-const entry = Object.keys(config.entry).reduce((map, key) => {
-  map[key] = ['react-hot-loader/patch', config.entry[key]];
-  return map;
-}, {} as Record<string, readonly string[]>)
+
 
 export default <webpack.Configuration>{
   ...config,
   target: 'electron-renderer',
-  entry,
   resolve: {
     ...config.resolve,
     extensions: [
@@ -26,9 +22,10 @@ export default <webpack.Configuration>{
     ...config.module,
     rules: [
       ...config.module.rules,
+      reactTypescriptRule,
       nodeRule,
       globalStylesheetRule,
-      stylesheetRile,
+      stylesheetRule,
       imageRule,
       fontRule,
       htmlRule,

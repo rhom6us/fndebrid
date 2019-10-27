@@ -68,7 +68,7 @@ export const config: webpack.Configuration = {
   ],
   module: {
     rules: [
-      typescriptRule
+      //typescriptRule
     ]
   },
 };

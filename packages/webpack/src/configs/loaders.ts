@@ -50,12 +50,6 @@ export const fileLoader = {
 export const threadLoader = {
   loader: 'thread-loader'
 };
-export const babelLoader = {
-  loader: "babel-loader",
-  options: {
-    cacheDirectory: true
-  }
-};
 export const electronMainBabelLoader = {
   loader: 'babel-loader',
   options: {
@@ -112,3 +106,25 @@ export const jsLoader = {
     ],
   }
 };
+
+export const babelLoader = {
+  loader: "babel-loader",
+  options: {
+    cacheDirectory: true,
+    babelrc: false,
+    presets: [
+      [
+        "@babel/preset-env",
+        { targets: { browsers: "last 2 versions" } } // or whatever your project requires
+      ],
+      "@babel/preset-typescript",
+      "@babel/preset-react"
+    ],
+    plugins: [
+      // plugin-proposal-decorators is only needed if you're using experimental decorators in TypeScript
+      ["@babel/plugin-proposal-decorators", { legacy: true }],
+      ["@babel/plugin-proposal-class-properties", { loose: true }],
+      "react-hot-loader/babel"
+    ]
+  }
+}
