@@ -9,22 +9,17 @@ interface IOwnProps {
 }
 function buildTree(fnFiles: File[], selections: Set<TreeNodeId>, expansions: Set<TreeNodeId>) {
   let id = 0;
-  const node = new FnFolderNode<File>(++id, 'root', selections.has(id), expansions.has(id));
+  const rootNode = FnTreeNode.createRoot<File>();
   for (const fnFile of fnFiles) {
     const [file, ...folders] = fnFile.path.split('/').filter(Boolean).reverse();
-    let currentNode = node;
+    let currentFolder = rootNode;
     while (folders.length) {
-      const currentFolder = folders.pop();
-      let matchingNode = currentNode.folders.filter(p => p.name == currentFolder)[0];
-      if (!matchingNode) {
-        matchingNode = new FnFolderNode<File>(++id, currentFolder!, selections.has(id), expansions.has(id));
-        currentNode.childNodes.push(matchingNode);
-      }
-      currentNode = matchingNode;
+      const proposedFolderName = folders.pop()!;
+      currentFolder = currentFolder.find(proposedFolderName) || currentFolder.addFolder(++id, proposedFolderName, selections.has(id), expansions.has(id));
     }
-    currentNode.childNodes.push(new FnFileNode(++id, file, selections.has(id), expansions.has(id), fnFile));
+    currentFolder.addFile(++id, file, selections.has(id), fnFile);
   }
-  return node;
+  return rootNode;
 }
 export const FileTree: React.FC<IOwnProps> = ({ files, onSelectionChanged }) => {
   const [selections, setSelections] = useState(new Set<TreeNodeId>());
@@ -35,22 +30,32 @@ export const FileTree: React.FC<IOwnProps> = ({ files, onSelectionChanged }) => 
   }
   const rootNode = useMemo(() => buildTree(files, selections, expansions), [files, selections, expansions]);
 
+  const isSelected = (node: ITreeNode) => selections.has(node.id);
+  const selectNode = (node: ITreeNode) => selections.add(node.id);
+  const unselectNode = (node: ITreeNode) => selections.delete(node.id);
+
   function handleNodeClick(node: FnTreeNode<File>, _nodePath: number[], e: React.MouseEvent<HTMLElement>) {
     const selected = !!!node.isSelected;
     if (selected) {
-      selections.add(node.id);
-      node.descendants.forEach(({ id }) => selections.add(id));
+      for (const { id } of node) {
+        selections.add(id);
+      }
+      // selections.add(node.id);
+      // node.descendants.forEach(({ id }) => selections.add(id));
     } else {
-      selections.delete(node.id);
-      node.descendants.forEach(({ id }) => selections.delete(id));
+      for (const { id } of node) {
+        selections.delete(id);
+      }
+      // selections.delete(node.id);
+      // node.descendants.forEach(({ id }) => selections.delete(id));
     }
     const { selectedFolders, unselectedFolders } = groupBy(rootNode.folders, folder => selections.has(folder.id) ? 'selectedFolders' : 'unselectedFolders');
     unselectedFolders && unselectedFolders
-      .filter(folder => folder.files.every(file => selections.has(file.id)))
-      .forEach(folder => selections.add(folder.id));
+      .filter(folder => folder.files.every(isSelected))
+      .forEach(selectNode);
     selectedFolders && selectedFolders
-      .filter(folder => folder.files.every(file => !selections.has(file.id)))
-      .forEach(folder => selections.delete(folder.id));
+      .filter(folder => !folder.files.every(isSelected))
+      .forEach(unselectNode);
 
     setSelections(new Set(selections));
     const selectedFileIds = rootNode.files.filter(node => selections.has(node.id)).map(node => node.nodeData.id);
@@ -62,12 +67,12 @@ export const FileTree: React.FC<IOwnProps> = ({ files, onSelectionChanged }) => 
 
   function handleNodeCollapse(node: ITreeNode) {
     expansions.delete(node.id);
-    setExpansions(selections);
+    setExpansions(new Set(expansions));
   }
 
   function handleNodeExpand(node: ITreeNode) {
     expansions.add(node.id);
-    setExpansions(selections);
+    setExpansions(new Set(expansions));
   }
 
   return (
