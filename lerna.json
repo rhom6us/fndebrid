@@ -1,7 +1,8 @@
 {
-  
+
   "packages": [
-    "packages/*"
+    "packages/*",
+    "packages/@fndebrid/*"
   ],
   "version": "independent",
   "npmClient": "yarn",

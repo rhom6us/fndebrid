@@ -24,7 +24,8 @@
   },
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "packages/@fndebrid/*"
     ],
     "nohoist": [
       "**/@types/*/**"
