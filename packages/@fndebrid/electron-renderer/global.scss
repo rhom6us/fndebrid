@@ -1,8 +1,7 @@
-@import "normalize.css";
-@import "@blueprintjs/core";
+@import 'normalize.css';
+@import '@blueprintjs/core';
 // @import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-@import "@blueprintjs/core/lib/scss/variables";
-
+@import '@blueprintjs/core/lib/scss/variables';
 
 html {
   overflow: hidden;
@@ -13,7 +12,8 @@ html {
 .bp3-dialog-header {
   -webkit-user-select: none;
   -webkit-app-region: drag;
-  button, a {
-  -webkit-app-region: no-drag;
+  button,
+  a {
+    -webkit-app-region: no-drag;
   }
 }

@@ -1,3 +1,3 @@
-declare module "emotion-theming"{
+declare module 'emotion-theming' {
   export const ThemeProvider: any;
 }

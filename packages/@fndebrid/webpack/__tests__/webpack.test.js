@@ -3,5 +3,5 @@
 const webpack = require('..');
 
 describe('@fndbrid/webpack', () => {
-    it('needs tests');
+  it('needs tests');
 });

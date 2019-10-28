@@ -16,8 +16,7 @@ export function Dialog({children, title, onClose}: PropsWithChildren<{title: str
       hasBackdrop={false}
       isOpen={true}
       isCloseButtonShown={true}
-      title={title}
-    >
+      title={title}>
       {children}
     </HeightBpDialog>
   );

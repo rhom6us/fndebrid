@@ -115,8 +115,7 @@ const Preferences: React.FC<
         {props.autoDeleteTorrentFile != 'never' && (
           <SubRadioGroup
             onChange={handleStringChange(props.setAutoDeleteTorrentFile as any)}
-            selectedValue={props.autoDeleteTorrentFile}
-          >
+            selectedValue={props.autoDeleteTorrentFile}>
             <Radio label='...after the torrent has been added to real-debrid' value='torrent_added' />
             <Radio label='...after the torrent download is complete on real-debrid' value='torrent_completed' />
             <Radio label='...after the torrent has downloaded to this computer' value='download_completed' />
@@ -131,8 +130,7 @@ const Preferences: React.FC<
           <ListItem
             label='Always include files matching any of these patterns:'
             helperText='helper text'
-            labelInfo='labelInfo'
-          >
+            labelInfo='labelInfo'>
             <TagInput
               className={Classes.FILL}
               addOnBlur={true}
@@ -146,8 +144,7 @@ const Preferences: React.FC<
           <ListItem
             label='Always exclude files matching any of these patterns:'
             helperText='helper text'
-            labelInfo='labelInfo'
-          >
+            labelInfo='labelInfo'>
             <TagInput
               className={Classes.FILL}
               addOnBlur={true}

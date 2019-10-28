@@ -1,5 +1,4 @@
-import { Opaque } from '@fndebrid/core';
-
+import {Opaque} from '@fndebrid/core';
 
 export type TorrentId = Opaque<string, 'torrent_id'>;
 export type MagnetLink = Opaque<string, 'magnet_link'>;
@@ -7,7 +6,7 @@ export type FileId = Opaque<string, 'file_id'>;
 export type Link = Opaque<string, 'link'>;
 export type ClientId = Opaque<string, 'client_id'>;
 export type ClientSecret = Opaque<string, 'client_secret'>;
-export type AccessToken = Opaque<string,'access_token'>;
+export type AccessToken = Opaque<string, 'access_token'>;
 export type RefreshToken = Opaque<string, 'refresh_token'>;
 export type DeviceCode = Opaque<string, 'device_code'>;
 
@@ -44,12 +43,20 @@ export interface Torrent {
   ended?: Date;
   speed?: number;
   seeders?: number;
- 
 }
 
-
-export type TorrentStatus = "magnet_error" | "magnet_conversion" | "waiting_files_selection" | "queued" | "downloading" | "downloaded" | "error" | "virus" | "compressing" | "uploading" | "dead";
-
+export type TorrentStatus =
+  | 'magnet_error'
+  | 'magnet_conversion'
+  | 'waiting_files_selection'
+  | 'queued'
+  | 'downloading'
+  | 'downloaded'
+  | 'error'
+  | 'virus'
+  | 'compressing'
+  | 'uploading'
+  | 'dead';
 
 export interface TorrentExtension {
   original_filename: string;
@@ -59,16 +66,12 @@ export interface TorrentExtension {
 export type ExtendedTorrent = TorrentExtension & Torrent;
 export type MaybeExtendedTorrent = Partial<TorrentExtension> & Torrent;
 
-
 export interface File {
   id: FileId;
   path: string;
   bytes: number;
   selected: number;
 }
-
-
-
 
 export interface LinkInfo {
   id: string;

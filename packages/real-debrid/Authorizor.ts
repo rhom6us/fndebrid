@@ -1,6 +1,6 @@
-import { ArguementFalsyError, InvalidArguementError, InvalidOperationError } from '@fndebrid/core';
+import {ArguementFalsyError, InvalidArguementError, InvalidOperationError} from '@fndebrid/core';
 import * as api from './api/auth';
-import { AccessToken, ClientId, ClientSecret, RefreshToken } from './types';
+import {AccessToken, ClientId, ClientSecret, RefreshToken} from './types';
 
 export interface AuthInfo {
   access_token: AccessToken;
@@ -12,19 +12,22 @@ export interface AuthInfo {
 export interface Store {
   has(key: string): boolean;
   get<T = any>(key: string): T;
-  set(key: string, value: any):void;
+  set(key: string, value: any): void;
 }
 export class Authorizor {
-  public constructor(private deviceCodeCallback: (url: string) => Promise<void>, private readonly storage: Store, state?: AuthInfo) {
+  public constructor(
+    private deviceCodeCallback: (url: string) => Promise<void>,
+    private readonly storage: Store,
+    state?: AuthInfo,
+  ) {
     if (!deviceCodeCallback) throw new ArguementFalsyError('deviceCodeCallback');
-    
+
     this.authInfo = state;
   }
   private _authInfo: AuthInfo | undefined;
   public get authInfo(): AuthInfo | undefined {
     if (!this._authInfo) {
-      if(this.storage.has('auth-info'))
-      this._authInfo = this.storage.get('auth-info');
+      if (this.storage.has('auth-info')) this._authInfo = this.storage.get('auth-info');
     }
     return this._authInfo;
   }
@@ -37,7 +40,7 @@ export class Authorizor {
       if (!authInfo.expires) throw new InvalidArguementError('state', 'expires is not present');
       this.storage.set('auth-info', authInfo);
       this._authInfo = authInfo;
-    } 
+    }
   }
   private async _loadState() {
     const code = await api.code();
@@ -49,15 +52,15 @@ export class Authorizor {
     if (Date.now() > code.expires) {
       return;
     }
-    const token = await api.token({ ...credentials, code: code.device_code });
-    this.authInfo = { ...credentials, ...token };
+    const token = await api.token({...credentials, code: code.device_code});
+    this.authInfo = {...credentials, ...token};
   }
   private async _refresh() {
     if (!this.authInfo) {
       throw new InvalidOperationError('authInfo has not been setup');
     }
-    const token = await api.token({ ...this.authInfo, code: this.authInfo.refresh_token });
-    this.authInfo = { ...this.authInfo, ...token };
+    const token = await api.token({...this.authInfo, code: this.authInfo.refresh_token});
+    this.authInfo = {...this.authInfo, ...token};
   }
   public async getToken() {
     while (!this.authInfo) {
@@ -67,6 +70,5 @@ export class Authorizor {
       await this._refresh();
     }
     return this.authInfo!.access_token;
-
   }
 }
