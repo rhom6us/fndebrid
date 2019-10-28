@@ -25,20 +25,19 @@
     "[watch]:main": "yarn workspace @fndebrid/electron-main watch",
     "[watch]:renderer": "yarn workspace @fndebrid/electron-renderer watch",
     "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\"",
-    "prettier": "run-p prettier:**",
-    "prettier:html": "prettier --write **/*.html",
-    "prettier:json": "prettier --write **/*.json",
-    "prettier:markdown": "prettier --write **/*.md",
-    "prettier:stylesheet": "prettier --write **/*.{css,scss,sass,less}",
-    "prettier:typscript": "prettier --write **/*.{ts,tsx}",
-    "prettier:yaml": "prettier --write **/*.{yml,yaml}",
     "reinstall": "yarn install --force",
     "typecheck": "lerna exec --parallel -- tsc --noemit"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn prettier"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,css,scss,json,md,html,yml,yaml}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "react-hot-loader": "^4.12.15"
@@ -46,6 +45,7 @@
   "devDependencies": {
     "husky": "^3.0.9",
     "lerna": "^3.18.3",
+    "lint-staged": "^9.4.2",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
     "prettier-plugin-packagejson": "^2.0.1"
