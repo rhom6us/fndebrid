@@ -1,11 +1,15 @@
 {
   "files.exclude": {
+    ".github": true,
     ".gitignore": true,
+    ".yarn": true,
+    ".yarnrc": true,
     "**/node_modules/": true,
     "dist/": true,
     "LICENSE": true,
     "README.md": true,
-    "yarn-error.log": true
+    "yarn-error.log": true,
+    "yarn.lock": true
   },
   "editor.detectIndentation": false,
   "editor.tabSize": 2,
