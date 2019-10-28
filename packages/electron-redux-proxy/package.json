@@ -2,45 +2,42 @@
   "name": "electron-redux-proxy",
   "version": "1.0.7",
   "description": "A store proxy for running over IPC",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "keywords": [
+    "electron",
+    "ipc",
+    "proxy",
+    "redux",
+    "store",
+    "storeehancer"
+  ],
+  "homepage": "https://github.com/rhom6us/electron-redux-proxy#readme",
+  "bugs": {
+    "url": "https://github.com/rhom6us/electron-redux-proxy/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhom6us/electron-redux-proxy.git"
+  },
+  "license": "MIT",
+  "author": "Thomas Butler",
   "files": [
     "dist/**/*"
   ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest --config jestconfig.json",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "yarn build",
     "prepublishOnly": "yarn test && yarn lint",
+    "test": "jest --config jestconfig.json",
     "preversion": "yarn lint",
     "version": "yarn format && git add -A src",
     "postversion": "git push && git push --tags"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rhom6us/electron-redux-proxy.git"
-  },
-  "keywords": [
-    "electron",
-    "redux",
-    "store",
-    "storeehancer",
-    "proxy",
-    "ipc"
-  ],
-  "author": "Thomas Butler",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/rhom6us/electron-redux-proxy/issues"
-  },
-  "homepage": "https://github.com/rhom6us/electron-redux-proxy#readme",
-  "peerDependencies": {
-    "electron": "^6.0.12",
-    "redux": "^4.0.4"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/electron": "^1.6.10",
     "@types/jest": "^24.0.18",
@@ -53,5 +50,8 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.6.3"
   },
-  "dependencies": {}
+  "peerDependencies": {
+    "electron": "^6.0.12",
+    "redux": "^4.0.4"
+  }
 }

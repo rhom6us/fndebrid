@@ -1,9 +1,9 @@
 {
   "name": "@fndebrid/electron-main",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
   "private": true,
+  "license": "MIT",
+  "main": "index.js",
   "scripts": {
     "compile": "fnbuild",
     "watch": "fnbuild --watch"

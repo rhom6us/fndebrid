@@ -6,6 +6,6 @@
     "esModuleInterop": true,
     "outDir": "./lib",
     "inlineSourceMap": true,
-    "inlineSources": false,
-  },
+    "inlineSources": false
+  }
 }

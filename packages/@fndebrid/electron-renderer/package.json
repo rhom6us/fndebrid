@@ -1,13 +1,13 @@
 {
   "name": "@fndebrid/electron-renderer",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "ISC",
   "private": true,
+  "license": "ISC",
+  "main": "index.js",
   "scripts": {
     "compile": "fnbuild",
-    "watch": "fnbuild --watch",
-    "serve": "fnserve"
+    "serve": "fnserve",
+    "watch": "fnbuild --watch"
   },
   "browserslist": [
     "chrome 78.0"

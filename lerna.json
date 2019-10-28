@@ -1,9 +1,5 @@
 {
-
-  "packages": [
-    "packages/*",
-    "packages/@fndebrid/*"
-  ],
+  "packages": ["packages/*", "packages/@fndebrid/*"],
   "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true

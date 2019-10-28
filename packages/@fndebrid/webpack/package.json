@@ -1,21 +1,21 @@
 {
   "name": "@fndebrid/webpack",
   "version": "1.0.0",
+  "private": true,
   "description": "> TODO: description",
-  "author": "Thomas Butler <thomas@butler.software>",
   "homepage": "https://github.com/rhom6us/fndebrid#readme",
   "license": "\r",
-  "private": true,
+  "author": "Thomas Butler <thomas@butler.software>",
   "bin": {
     "fnbuild": "./lib/webpack.js",
     "fnserve": "./lib/webpack-dev-server.js"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "compile": "tsc",
     "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "react-hot-loader": "^4.12.15"
   },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.1",
@@ -54,7 +54,7 @@
     "webpack-dev-server": "^3.9.0",
     "webpackbar": "^4.0.0"
   },
-  "dependencies": {
-    "react-hot-loader": "^4.12.15"
+  "publishConfig": {
+    "access": "public"
   }
 }

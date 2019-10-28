@@ -23,11 +23,7 @@
       "outputCapture": "std",
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/dist/main.js"],
-      "skipFiles": [
-        "node_modules/**",
-        "<node_internals>/Events.js",
-        "**/async_hooks.js"
-      ],
+      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"],
       "sourceMapPathOverrides": {
         "webpack:///./*": "${workspaceRoot}/packages/electron-main/*",
         "webpack:///../*": "${workspaceRoot}/packages/*"
@@ -60,11 +56,7 @@
       },
       "outputCapture": "std",
       "sourceMaps": true,
-      "skipFiles": [
-        "node_modules/**",
-        "<node_internals>/Events.js",
-        "**/async_hooks.js"
-      ],
+      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"],
       "timeout": 100000
     },
     // {
@@ -101,11 +93,7 @@
       "outputCapture": "std",
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/dist/**/*.js"],
-      "skipFiles": [
-        "node_modules/**",
-        "<node_internals>/Events.js",
-        "**/async_hooks.js"
-      ]
+      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"]
     },
     {
       "name": "Attach - Electron: Renderer",

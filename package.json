@@ -3,25 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "repository": "https-//github.com/rhom6us/fndebrid.git",
-  "author": "Thomas Butler <thomas@butler.software>",
   "license": "MIT",
-  "scripts": {
-    "[watch]:fnwebpack": "yarn workspace @fndebrid/webpack run watch",
-    "[build]:main": "yarn workspace @fndebrid/electron-main run compile",
-    "[build]:renderer": "yarn workspace @fndebrid/electron-renderer run compile",
-    "[watch]:main": "yarn workspace @fndebrid/electron-main run watch",
-    "[watch]:renderer": "yarn workspace @fndebrid/electron-renderer run watch",
-    "[serve]:renderer": "yarn workspace @fndebrid/electron-renderer run serve",
-    "reinstall": "yarn install --force",
-    "typecheck": "lerna exec --parallel -- tsc --noemit",
-    "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\""
-  },
-  "build": {
-    "files": [
-      "dist/",
-      "package.json"
-    ]
-  },
+  "author": "Thomas Butler <thomas@butler.software>",
   "workspaces": {
     "packages": [
       "packages/*",
@@ -31,10 +14,30 @@
       "**/@types/*/**"
     ]
   },
+  "scripts": {
+    "[build]:main": "yarn workspace @fndebrid/electron-main run compile",
+    "[build]:renderer": "yarn workspace @fndebrid/electron-renderer run compile",
+    "[serve]:renderer": "yarn workspace @fndebrid/electron-renderer run serve",
+    "[watch]:fnwebpack": "yarn workspace @fndebrid/webpack run watch",
+    "[watch]:main": "yarn workspace @fndebrid/electron-main run watch",
+    "[watch]:renderer": "yarn workspace @fndebrid/electron-renderer run watch",
+    "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\"",
+    "pre-commit": "",
+    "reinstall": "yarn install --force",
+    "typecheck": "lerna exec --parallel -- tsc --noemit"
+  },
   "dependencies": {
     "react-hot-loader": "^4.12.15"
   },
   "devDependencies": {
-    "lerna": "^3.18.3"
+    "lerna": "^3.18.3",
+    "prettier": "^1.18.2",
+    "prettier-plugin-packagejson": "^2.0.1"
+  },
+  "build": {
+    "files": [
+      "dist/",
+      "package.json"
+    ]
   }
 }

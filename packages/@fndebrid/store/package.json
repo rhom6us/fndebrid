@@ -1,9 +1,9 @@
 {
   "name": "@fndebrid/store",
   "version": "1.0.0",
-  "source": "index.ts",
-  "license": "MIT",
   "private": true,
+  "license": "MIT",
+  "source": "index.ts",
   "dependencies": {
     "@fndebrid/core": "^1.0.0",
     "@fndebrid/real-debrid": "^1.0.0",

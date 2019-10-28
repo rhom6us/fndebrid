@@ -7,10 +7,10 @@
     "README.md": true,
     "yarn-error.log": true
   },
-"editor.detectIndentation": false,
-"editor.tabSize": 2,
-"npm.packageManager": "yarn",
-"search.exclude": {
-  "packages/webpack/lib/": true
-}
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "npm.packageManager": "yarn",
+  "search.exclude": {
+    "packages/webpack/lib/": true
+  }
 }
