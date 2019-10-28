@@ -1,15 +1,9 @@
+import {ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId} from '@fndebrid/real-debrid';
+import {createAction, createAsyncAction} from 'typesafe-actions';
+import {JobId} from './state';
 
-import { ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId } from '@fndebrid/real-debrid';
-import { createAction, createAsyncAction } from 'typesafe-actions';
-import { JobId } from './state';
-
-
-export const completeJob = createAction('torrents/completeJob', action => 
-  (jobId: JobId) => action({jobId})
-);
-export const cancelJob = createAction('torrents/cancelJob', action => 
-  (jobId: JobId) => action({jobId})
-);
+export const completeJob = createAction('torrents/completeJob', action => (jobId: JobId) => action({jobId}));
+export const cancelJob = createAction('torrents/cancelJob', action => (jobId: JobId) => action({jobId}));
 export const deleteTorrent = createAsyncAction(
   'torrents/deleteTorrent/request',
   'torrents/deleteTorrent/success',
@@ -43,5 +37,4 @@ export const addTorrentFile = createAsyncAction(
   'torrents/add-torrent-file/request',
   'torrents/add-torrent-file/success',
   'torrents/add-torrent-file/error',
-)<{ filePath: string, jobId:JobId }, [TorrentId, JobId], string>();
-
+)<{filePath: string; jobId: JobId}, [TorrentId, JobId], string>();

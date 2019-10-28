@@ -1,6 +1,6 @@
-import { isString, Opaque, parseUrl } from '@fndebrid/core';
-import { File, MaybeExtendedTorrent, TorrentId } from "@fndebrid/real-debrid";
-import { isUndefined } from 'util';
+import {isString, Opaque, parseUrl} from '@fndebrid/core';
+import {File, MaybeExtendedTorrent, TorrentId} from '@fndebrid/real-debrid';
+import {isUndefined} from 'util';
 import uuid4 from 'uuid/v4';
 import uuid5 from 'uuid/v5';
 
@@ -11,24 +11,24 @@ export function jobId(url?: URL | string): JobId {
     return uuid4() as JobId;
   }
   if (isString(url)) {
-    return jobId(parseUrl(url))
+    return jobId(parseUrl(url));
   }
   return uuid5(url.href, uuid5.URL) as JobId;
 }
 export interface Entities {
-  readonly torrents: Record<string, MaybeExtendedTorrent>,
-  readonly files: Record<string, readonly File[]>,
+  readonly torrents: Record<string, MaybeExtendedTorrent>;
+  readonly files: Record<string, readonly File[]>;
 }
 
 export default State;
 export interface State {
   readonly loading: boolean;
-  readonly torrents: readonly TorrentId[]
+  readonly torrents: readonly TorrentId[];
   readonly entities: Entities;
   readonly selectedTorrent?: TorrentId;
-  readonly errors?: Error | string
-  readonly jobs: Record<string, TorrentId>,
-  readonly hashes: Record<InfoHash,  readonly TorrentId[]>
+  readonly errors?: Error | string;
+  readonly jobs: Record<string, TorrentId>;
+  readonly hashes: Record<InfoHash, readonly TorrentId[]>;
 }
 
 export const defaultState: State = {
@@ -40,5 +40,5 @@ export const defaultState: State = {
   },
   loading: false,
   jobs: {},
-  hashes:{}
-}
+  hashes: {},
+};

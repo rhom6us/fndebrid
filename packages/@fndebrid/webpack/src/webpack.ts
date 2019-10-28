@@ -2,8 +2,6 @@
 import webpack from 'webpack';
 import config from './configs';
 
-
-
 webpack(config, (err: any, stats) => {
   if (err) {
     console.error(err.stack || err);
@@ -23,9 +21,11 @@ webpack(config, (err: any, stats) => {
   // //   console.warn(info.warnings);
   // // }
 
-  console.log(stats.toString({
-    assets: false,
-    chunks: false,  // Makes the build much quieter
-    colors: true    // Shows colors in the console
-  }));
-})
+  console.log(
+    stats.toString({
+      assets: false,
+      chunks: false, // Makes the build much quieter
+      colors: true, // Shows colors in the console
+    }),
+  );
+});

@@ -2,21 +2,25 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import webpack from 'webpack';
-import { config } from './webpack.config.common';
-import { fontRule, globalStylesheetRule, htmlRule, imageRule, nodeRule, stylesheetRule, scriptRule, reactTypescriptRule } from './rules';
-import { staticSourceDir, app } from './settings';
-
-
+import {config} from './webpack.config.common';
+import {
+  fontRule,
+  globalStylesheetRule,
+  htmlRule,
+  imageRule,
+  nodeRule,
+  stylesheetRule,
+  scriptRule,
+  reactTypescriptRule,
+} from './rules';
+import {staticSourceDir, app} from './settings';
 
 export default <webpack.Configuration>{
   ...config,
   target: 'electron-renderer',
   resolve: {
     ...config.resolve,
-    extensions: [
-      ...config.resolve.extensions,
-      '.tsx', '.css', '.scss'
-    ]
+    extensions: [...config.resolve.extensions, '.tsx', '.css', '.scss'],
   },
   module: {
     ...config.module,
@@ -29,28 +33,28 @@ export default <webpack.Configuration>{
       imageRule,
       fontRule,
       htmlRule,
-    ]
+    ],
   },
   plugins: [
     ...config.plugins,
     new HtmlWebpackPlugin({
-      title: "Webpack App",
+      title: 'Webpack App',
       // template: `!!html-loader?minimize=false&url=false!${path.resolve(rendererSourceDir, 'template.html')}`,
-      "filename": `${"index"}.html`,
+      filename: `${'index'}.html`,
       // "chunks": [entry],
       inject: 'head',
       // "compile": true,
-      chunks: "all",
+      chunks: 'all',
       // excludeChunks: [],
       // "nodeModules": "C:\\dev\\fndebrid\\node_modules",
       meta: {
         viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
-      }
+      },
     }),
     new MiniCssExtractPlugin({
       filename: '[id].styles.css',
       chunkFilename: '[id].styles.css',
       // moduleFilename: (name) => '[id].styles.css'
     }),
-  ]
+  ],
 };

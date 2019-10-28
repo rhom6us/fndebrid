@@ -1,28 +1,27 @@
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import WebpackBar from 'webpackbar';
-import { typescriptRule } from './rules';
-import { isDev, mode, outDir, sourceDir, staticSourceDir, watch, app } from './settings';
-
+import {typescriptRule} from './rules';
+import {isDev, mode, outDir, sourceDir, staticSourceDir, watch, app} from './settings';
 
 export const config: webpack.Configuration = {
   mode,
-  devtool: 'cheap-module-eval-source-map',//'eval-source-map',
+  devtool: 'cheap-module-eval-source-map', //'eval-source-map',
   context: sourceDir,
   entry: {
-    [app]: path.join(sourceDir, 'index.ts')
+    [app]: path.join(sourceDir, 'index.ts'),
   },
   watch,
   output: {
     path: outDir,
-    filename: `[name]${isDev ? "" : ".[contenthash]"}.js`,
-    chunkFilename: `[name]${isDev ? "" : ".[contenthash]"}.js`,
+    filename: `[name]${isDev ? '' : '.[contenthash]'}.js`,
+    chunkFilename: `[name]${isDev ? '' : '.[contenthash]'}.js`,
   },
   stats: {
     warnings: false,
-    warningsFilter: /export .* was not found in/
+    warningsFilter: /export .* was not found in/,
   },
   resolve: {
     alias: {
@@ -31,16 +30,16 @@ export const config: webpack.Configuration = {
       // '~renderer': path.resolve(rendererSourceDir),
       // '~common': path.resolve(commonSourceDir),
       // common: path.resolve(commonSourceDir),
-      'react-dom': '@hot-loader/react-dom'
+      'react-dom': '@hot-loader/react-dom',
     },
-    extensions: ['.js', ".ts", ".json", ".node"]
+    extensions: ['.js', '.ts', '.json', '.node'],
   },
   node: {
     __dirname: true,
-    __filename: true
+    __filename: true,
   },
   optimization: {
-    nodeEnv: "development",
+    nodeEnv: 'development',
     namedModules: true,
     noEmitOnErrors: true,
     // moduleIds: 'hashed',
@@ -62,13 +61,13 @@ export const config: webpack.Configuration = {
       // silent: true
     }),
     new webpack.DefinePlugin({
-      __static: JSON.stringify(staticSourceDir)
+      __static: JSON.stringify(staticSourceDir),
     }),
-    new webpack.EnvironmentPlugin({ NODE_ENV: "development", DEBUG: true })
+    new webpack.EnvironmentPlugin({NODE_ENV: 'development', DEBUG: true}),
   ],
   module: {
     rules: [
       //typescriptRule
-    ]
+    ],
   },
 };

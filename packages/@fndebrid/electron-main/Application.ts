@@ -1,9 +1,7 @@
-
 // import ProtocolHandler from './ProtocolHandler';
 // import configureStore from './configureStore';
 // import StoreHandler from './StoreHandler';
 // import TorrentFileHandler from './TorrentFileHandler';
-
 
 // export const store = configureStore();
 // const storeHandler = new StoreHandler(store);

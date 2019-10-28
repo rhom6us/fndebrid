@@ -2,8 +2,7 @@
 import Webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import config from './configs';
-import { staticSourceDir } from './configs/settings';
-
+import {staticSourceDir} from './configs/settings';
 
 const options: WebpackDevServer.Configuration = {
   contentBase: [

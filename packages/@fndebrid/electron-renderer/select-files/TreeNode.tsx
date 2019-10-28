@@ -1,6 +1,6 @@
 import React from 'react';
-import { groupBy } from 'lodash';
-import { ITreeNode } from '@blueprintjs/core';
+import {groupBy} from 'lodash';
+import {ITreeNode} from '@blueprintjs/core';
 export type TreeNodeId = string | number;
 export type TreeNodeLabel = string | JSX.Element;
 let id = 0;
@@ -27,7 +27,11 @@ export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>>
 
   public label: JSX.Element;
 
-  protected constructor(public readonly id: TreeNodeId, public readonly name: string, public readonly isSelected: boolean) {
+  protected constructor(
+    public readonly id: TreeNodeId,
+    public readonly name: string,
+    public readonly isSelected: boolean,
+  ) {
     this.label = <div>{this.name}</div>;
   }
 
@@ -35,8 +39,7 @@ export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>>
     return Array.from(this._files);
   }
   get _files(): Iterable<FileNode<T>> {
-
-    return (function* (this: TreeNode<T>) {
+    return function*(this: TreeNode<T>) {
       for (const child of this) {
         if (child instanceof FileNode) {
           yield child;
@@ -51,7 +54,7 @@ export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>>
       //     yield* child._files;
       //   }
       // }
-    }).call(this);
+    }.call(this);
   }
 
   // get descendants() {
@@ -91,7 +94,13 @@ export class FolderNode<T> extends TreeNode<T> {
   // public get label(): TreeNodeLabel {
   //   return 'this.name';
   // }
-  constructor(id: TreeNodeId, name: string, isSelected: boolean, public readonly isExpanded: boolean, public readonly childNodes: TreeNode<T>[] = []) {
+  constructor(
+    id: TreeNodeId,
+    name: string,
+    isSelected: boolean,
+    public readonly isExpanded: boolean,
+    public readonly childNodes: TreeNode<T>[] = [],
+  ) {
     super(id, name, isSelected);
   }
   // public get isSelected() {
@@ -104,7 +113,7 @@ export class FolderNode<T> extends TreeNode<T> {
     return Array.from(this._folders);
   }
   get _folders(): Generator<FolderNode<T>> {
-    return (function* (this: FolderNode<T>) {
+    return function*(this: FolderNode<T>) {
       for (const child of this) {
         if (child instanceof FolderNode) {
           yield child;
@@ -116,8 +125,7 @@ export class FolderNode<T> extends TreeNode<T> {
       //     yield* child._folders;
       //   }
       // }
-
-    }).call(this);
+    }.call(this);
   }
   find(name: string): FolderNode<T> | undefined {
     return this.folders.filter(p => p.name === name)[0];
@@ -144,5 +152,4 @@ export class FileNode<T> extends TreeNode<T> {
   constructor(id: TreeNodeId, name: string, isSelected: boolean, public readonly nodeData: T) {
     super(id, name, isSelected);
   }
-
 }

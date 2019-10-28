@@ -1,7 +1,5 @@
-import { Ctor } from '../utilTypes';
-import { ArguementUndefinedError, ArguementFalsyError, ArguementTypeError, InvalidArguementError } from '..';
-
-
+import {Ctor} from '../utilTypes';
+import {ArguementUndefinedError, ArguementFalsyError, ArguementTypeError, InvalidArguementError} from '..';
 
 export function getInstanceTypeName(value: any) {
   if (isUndefined(value)) throw new ArguementUndefinedError('value');
@@ -21,7 +19,7 @@ export function getClassName(value: Ctor) {
   if (!isConstructor(value)) throw new ArguementTypeError('value', 'constructor', value);
   return value.name;
 }
-export function isFunction(value: any): value is Function{
+export function isFunction(value: any): value is Function {
   return value instanceof Function;
 }
 export function isObject(value: any): value is Object {
@@ -50,7 +48,7 @@ export function parseUrl(value: string) {
     throw new InvalidArguementError('url', 'The given value is not a proper url');
   }
 }
-export function validUrl(value: string) { 
+export function validUrl(value: string) {
   try {
     return parseUrl(value).href == value;
   } catch (error) {
@@ -59,8 +57,10 @@ export function validUrl(value: string) {
 }
 export function assertString(value: any) {
   if (!isString(value))
-    throw new TypeError(`Expected a string, got a ${(value && value.constructor && value.constructor.name) || typeof value}`)
+    throw new TypeError(
+      `Expected a string, got a ${(value && value.constructor && value.constructor.name) || typeof value}`,
+    );
 }
 export function assertNever(x: never): never {
-  throw new Error("Unexpected object: " + x);
+  throw new Error('Unexpected object: ' + x);
 }

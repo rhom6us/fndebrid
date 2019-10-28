@@ -27,7 +27,7 @@
 
 import {keys} from 'lodash';
 
-export default function fillShape(source:any, sink:any) {
+export default function fillShape(source: any, sink: any) {
   if (typeof sink === 'function') {
     sink = sink(source); //eslint-disable-line
   }
@@ -38,17 +38,15 @@ export default function fillShape(source:any, sink:any) {
     return undefined;
   }
 
-  let filledObject:any = {};
-  keys(sink).forEach((key) => {
+  let filledObject: any = {};
+  keys(sink).forEach(key => {
     if (source[key] === undefined) {
       return;
-    } else if (typeof sink[key] === 'object'
-      || typeof sink[key] === 'function'
-      || sink[key] === true) {
+    } else if (typeof sink[key] === 'object' || typeof sink[key] === 'function' || sink[key] === true) {
       filledObject[key] = fillShape(source[key], sink[key]);
     } else {
       throw new Error('Values in the sink must be another object, function, or `true`');
     }
   });
   return filledObject;
-};
+}

@@ -1,6 +1,6 @@
-import { isString } from 'util';
-import { Ctor } from './utilTypes';
-import { getInstanceTypeName } from './utils/type-check';
+import {isString} from 'util';
+import {Ctor} from './utilTypes';
+import {getInstanceTypeName} from './utils/type-check';
 
 export class FnError extends Error {
   constructor(message?: string, public readonly data?: any) {
@@ -12,19 +12,21 @@ export class FnError extends Error {
       Object.setPrototypeOf(this, new.target.prototype);
     }
   }
-
 }
 
-export class OperationFailedError extends FnError { }
-export class InvalidOperationError extends FnError { }
-export class UnexpectedStateError extends FnError { }
+export class OperationFailedError extends FnError {}
+export class InvalidOperationError extends FnError {}
+export class UnexpectedStateError extends FnError {}
 export class ArguementError extends FnError {
   constructor(public readonly name: string, message?: string) {
     super(message);
   }
 }
 export class ArguementFalsyError extends ArguementError {
-  constructor(public readonly name: string, message: string = `The value passed for "${name}" did not have a truthy value.`) {
+  constructor(
+    public readonly name: string,
+    message: string = `The value passed for "${name}" did not have a truthy value.`,
+  ) {
     super(name, message);
   }
 }
@@ -52,7 +54,14 @@ export class InvalidArguementError extends ArguementError {
 }
 
 export class ArguementTypeError extends InvalidArguementError {
-  constructor(public readonly name: string, public readonly expectedType: string | Ctor, public readonly actualValue: any, message: string = `The value passed for ${name} was not of the expected type "${isString(expectedType) ? expectedType : getInstanceTypeName(expectedType)}".`) {
+  constructor(
+    public readonly name: string,
+    public readonly expectedType: string | Ctor,
+    public readonly actualValue: any,
+    message: string = `The value passed for ${name} was not of the expected type "${
+      isString(expectedType) ? expectedType : getInstanceTypeName(expectedType)
+    }".`,
+  ) {
     super(name, message);
   }
 }

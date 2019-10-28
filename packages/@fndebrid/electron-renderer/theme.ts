@@ -1,7 +1,6 @@
-
-const white = "#FFFFFF";
-const black = "#161617";
-const gray = "#F8F8F9";
+const white = '#FFFFFF';
+const black = '#161617';
+const gray = '#F8F8F9';
 
 export interface Theme {
   background: string;
@@ -10,14 +9,14 @@ export interface Theme {
 
 const themeLight = {
   background: 'green',
-  body: black
+  body: black,
 };
 
 const themeDark = {
   background: black,
-  body: white
+  body: white,
 };
 
-export default function (mode: 'dark' | 'light'): Theme {
-  return mode === "dark" ? themeDark : themeLight;
-};
+export default function(mode: 'dark' | 'light'): Theme {
+  return mode === 'dark' ? themeDark : themeLight;
+}

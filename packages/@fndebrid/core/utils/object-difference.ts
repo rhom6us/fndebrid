@@ -1,4 +1,4 @@
-import { keys, isEmpty, isObject } from 'lodash';
+import {keys, isEmpty, isObject} from 'lodash';
 
 /*
   Takes the old and the new version of an immutable object and
@@ -9,12 +9,11 @@ import { keys, isEmpty, isObject } from 'lodash';
     {updated: {b: 2}, deleted: {a: true}}
 */
 
+const isShallow = (val: any) => Array.isArray(val) || !isObject(val);
 
-const isShallow = (val:any) => Array.isArray(val) || !isObject(val);
-
-export default function objectDifference(old:any, curr:any) {
-  const updated:any = {};
-  const deleted:any = {};
+export default function objectDifference(old: any, curr: any) {
+  const updated: any = {};
+  const deleted: any = {};
 
   keys(curr).forEach(key => {
     if (old[key] === curr[key]) return;
@@ -30,5 +29,5 @@ export default function objectDifference(old:any, curr:any) {
 
   keys(old).forEach(key => curr[key] === undefined && (deleted[key] = true));
 
-  return { updated, deleted };
-};
+  return {updated, deleted};
+}

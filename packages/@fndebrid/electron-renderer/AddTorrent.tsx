@@ -1,24 +1,24 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { connect, useStore } from 'react-redux';
+import React, {useMemo, useState, useEffect} from 'react';
+import {connect, useStore} from 'react-redux';
 import uuid5 from 'uuid/v5';
 
-import { FileId, MagnetLink, Torrent, TorrentId, ExtendedTorrent } from '@fndebrid/real-debrid';
-import { State, getDispatcher, Dispatch } from '@fndebrid/store';
-import { JobId, jobId } from '@fndebrid/store/torrents/state';
+import {FileId, MagnetLink, Torrent, TorrentId, ExtendedTorrent} from '@fndebrid/real-debrid';
+import {State, getDispatcher, Dispatch} from '@fndebrid/store';
+import {JobId, jobId} from '@fndebrid/store/torrents/state';
 
-import { assertNever } from '@fndebrid/core/utils';
+import {assertNever} from '@fndebrid/core/utils';
 import AddMagnet from './add-magnet';
-import { FileSelect } from './select-files';
-import { Dialog } from './add-magnet/components';
+import {FileSelect} from './select-files';
+import {Dialog} from './add-magnet/components';
 const params = new URL(window.location.href).searchParams;
 const initialJobId = params.get('jobid') as JobId;
 const intitialTorrentId = params.get('torrentid') as TorrentId;
 
-interface IOwnProps { }
+interface IOwnProps {}
 function mapStateToProps(state: State, ownProps: IOwnProps) {
   return {
     jobs: state.torrents.jobs,
-    torrents: state.torrents.entities.torrents
+    torrents: state.torrents.entities.torrents,
   };
 }
 
@@ -32,14 +32,19 @@ function mapDispatchToProps(dispatch: Dispatch, ownProps: IOwnProps) {
     completeJob: dispatcher.completeJob,
     selectFiles: dispatcher.selectFiles,
     deleteTorrent: dispatcher.deleteTorrent.request,
-  }
+  };
 }
 type IDispatchProps = ReturnType<typeof mapDispatchToProps>;
 type IStateProps = ReturnType<typeof mapStateToProps>;
 
 type Props = IStateProps & IDispatchProps & IOwnProps;
 
-function getBody(jobs: Record<JobId, TorrentId>, jobId: JobId | undefined, torrentId: TorrentId | undefined, torrent: Torrent | undefined) {
+function getBody(
+  jobs: Record<JobId, TorrentId>,
+  jobId: JobId | undefined,
+  torrentId: TorrentId | undefined,
+  torrent: Torrent | undefined,
+) {
   if (!torrentId) {
     if (!jobId) {
       return 'add_magnet';
@@ -61,12 +66,14 @@ function getBody(jobs: Record<JobId, TorrentId>, jobId: JobId | undefined, torre
     default:
       return 'complete';
   }
-
 }
-export const AddTorrent = connect(mapStateToProps, mapDispatchToProps)(({ addMagnet, cancelJob, completeJob, deleteTorrent, selectFiles, jobs, torrents }: Props) => {
+export const AddTorrent = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(({addMagnet, cancelJob, completeJob, deleteTorrent, selectFiles, jobs, torrents}: Props) => {
   const [jobId, setJobId] = useState(initialJobId);
   const [aquiredTorrentId, setAquiredTorrentId] = useState(intitialTorrentId);
-  const torrentId = useMemo(() => aquiredTorrentId || jobs[jobId], [aquiredTorrentId, jobs, jobId])
+  const torrentId = useMemo(() => aquiredTorrentId || jobs[jobId], [aquiredTorrentId, jobs, jobId]);
   const torrent = useMemo(() => torrents[torrentId], [torrents, torrentId]);
   useEffect(() => {
     if (torrentId && !aquiredTorrentId) {
@@ -103,19 +110,27 @@ export const AddTorrent = connect(mapStateToProps, mapDispatchToProps)(({ addMag
 
   const displayMode = useMemo(() => getBody(jobs, jobId, torrentId, torrent), [jobs, jobId, torrentId, torrent]);
   return (
-    <Dialog title="fn Debrid" onClose={cancelSetup}>
+    <Dialog title='fn Debrid' onClose={cancelSetup}>
       {(() => {
         switch (displayMode) {
-          case 'add_magnet': return <AddMagnet onSubmit={submitMagnet} onCancel={cancelDownload} />;
-          case 'uploading': return <h3>Uploading your magnet to real-debrid.com...</h3>;
-          case 'magnet_conversion': return <h3>Converting your magnet...</h3>;
-          case 'magnet_error': return <h3>Looks like this magnet isn't working right now. Try again later.</h3>;
-          case 'fetching': return <h3>Fetching torrent details...</h3>
-          case 'waiting_files_selection': return <FileSelect torrent={torrent} onSubmit={submitFileSelection} onCancel={cancelDownload} />;
-          case 'submitting_selection': return <h3>Submitting your file selection to real-debrid.com...</h3>
-          case 'complete': return <h3>Submitted</h3>;
-          default: return assertNever(displayMode);
-
+          case 'add_magnet':
+            return <AddMagnet onSubmit={submitMagnet} onCancel={cancelDownload} />;
+          case 'uploading':
+            return <h3>Uploading your magnet to real-debrid.com...</h3>;
+          case 'magnet_conversion':
+            return <h3>Converting your magnet...</h3>;
+          case 'magnet_error':
+            return <h3>Looks like this magnet isn't working right now. Try again later.</h3>;
+          case 'fetching':
+            return <h3>Fetching torrent details...</h3>;
+          case 'waiting_files_selection':
+            return <FileSelect torrent={torrent} onSubmit={submitFileSelection} onCancel={cancelDownload} />;
+          case 'submitting_selection':
+            return <h3>Submitting your file selection to real-debrid.com...</h3>;
+          case 'complete':
+            return <h3>Submitted</h3>;
+          default:
+            return assertNever(displayMode);
         }
       })()}
     </Dialog>
