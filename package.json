@@ -25,7 +25,6 @@
     "[watch]:main": "yarn workspace @fndebrid/electron-main watch",
     "[watch]:renderer": "yarn workspace @fndebrid/electron-renderer watch",
     "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\"",
-    "pre-commit": "prettier",
     "prettier": "run-p prettier:**",
     "prettier:html": "prettier --write **/*.html",
     "prettier:json": "prettier --write **/*.json",
@@ -35,6 +34,11 @@
     "prettier:yaml": "prettier --write **/*.{yml,yaml}",
     "reinstall": "yarn install --force",
     "typecheck": "lerna exec --parallel -- tsc --noemit"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier"
+    }
   },
   "dependencies": {
     "react-hot-loader": "^4.12.15"
