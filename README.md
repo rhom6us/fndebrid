@@ -7,6 +7,5 @@ While I'm at it, I am additionally creating a section to manage downloads (i.e. 
 
 I may or may not add support for converting non-torrent links.
 
-
 ## Getting Started
 TBD
