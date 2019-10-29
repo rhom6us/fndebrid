@@ -30,7 +30,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "git subtree push --prefix packages/electron-redux-proxy electron-redux-proxy dev"
     }
   },
   "lint-staged": {
