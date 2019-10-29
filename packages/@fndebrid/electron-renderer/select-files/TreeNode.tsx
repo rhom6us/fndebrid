@@ -1,9 +1,11 @@
 import React from 'react';
-import {groupBy} from 'lodash';
+
 import {ITreeNode} from '@blueprintjs/core';
+
+// tslint:disable: max-classes-per-file
 export type TreeNodeId = string | number;
 export type TreeNodeLabel = string | JSX.Element;
-let id = 0;
+
 export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>> {
   //   static groupIt(array: string[][]): TreeNode<string>[] {
   //     const { file, folder } = groupBy(array, p => p.length > 1 ? 'folder' : 'file');
@@ -20,7 +22,7 @@ export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>>
     return new FolderNode<T>(-1, 'root', false, false);
   }
 
-  public abstract readonly childNodes?: TreeNode<T>[];
+  public abstract readonly childNodes?: Array<TreeNode<T>>;
   public abstract readonly hasCaret: boolean;
   public abstract readonly nodeData?: T;
   public abstract readonly isExpanded: boolean;
@@ -60,7 +62,7 @@ export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>>
   // get descendants() {
   //   return Array.from(this._descendants);
   // }
-  *[Symbol.iterator](): Iterator<TreeNode<T>> {
+  public *[Symbol.iterator](): Iterator<TreeNode<T>> {
     yield this;
     if (this.childNodes) {
       for (const child of this.childNodes) {
@@ -99,7 +101,7 @@ export class FolderNode<T> extends TreeNode<T> {
     name: string,
     isSelected: boolean,
     public readonly isExpanded: boolean,
-    public readonly childNodes: TreeNode<T>[] = [],
+    public readonly childNodes: Array<TreeNode<T>> = [],
   ) {
     super(id, name, isSelected);
   }
@@ -127,17 +129,17 @@ export class FolderNode<T> extends TreeNode<T> {
       // }
     }.call(this);
   }
-  find(name: string): FolderNode<T> | undefined {
+  public find(name: string): FolderNode<T> | undefined {
     return this.folders.filter(p => p.name === name)[0];
   }
-  addChild<U extends TreeNode<T>>(child: U) {
+  public addChild<U extends TreeNode<T>>(child: U) {
     this.childNodes.push(child);
     return child;
   }
-  addFolder(id: number, name: string, selected: boolean, expanded: boolean) {
+  public addFolder(id: number, name: string, selected: boolean, expanded: boolean) {
     return this.addChild(new FolderNode<T>(id, name, selected, expanded));
   }
-  addFile(id: number, name: string, selected: boolean, data: T) {
+  public addFile(id: number, name: string, selected: boolean, data: T) {
     return this.addChild(new FileNode<T>(id, name, selected, data));
   }
 }
