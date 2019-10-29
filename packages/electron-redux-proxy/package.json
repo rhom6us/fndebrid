@@ -1,0 +1,57 @@
+{
+  "name": "electron-redux-proxy",
+  "version": "1.0.5",
+  "description": "A store proxy for running over IPC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "yarn build",
+    "prepublishOnly": "yarn test && yarn lint",
+    "preversion": "yarn lint",
+    "version": "yarn format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhom6us/electron-redux-proxy.git"
+  },
+  "keywords": [
+    "electron",
+    "redux",
+    "store",
+    "storeehancer",
+    "proxy",
+    "ipc"
+  ],
+  "author": "Thomas Butler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rhom6us/electron-redux-proxy/issues"
+  },
+  "homepage": "https://github.com/rhom6us/electron-redux-proxy#readme",
+  "peerDependencies": {
+    "electron": "^6.0.12",
+    "redux": "^4.0.4"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/jest": "^24.0.18",
+    "@types/redux": "^3.6.0",
+    "@types/webpack": "^4.39.2",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.1.0",
+    "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {}
+}
