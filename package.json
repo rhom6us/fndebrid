@@ -24,15 +24,17 @@
     "[watch]:fnwebpack": "yarn workspace @fndebrid/webpack watch",
     "[watch]:main": "yarn workspace @fndebrid/electron-main watch",
     "[watch]:renderer": "yarn workspace @fndebrid/electron-renderer watch",
+    "lint-staged": "lint-staged",
     "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\"",
+    "pull:proxy": "git subtree pull --prefix packages/electron-redux-proxy electron-redux-proxy dev",
     "reinstall": "yarn install --force",
     "typecheck": "lerna exec --parallel -- tsc --noemit"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "cross-env HUSKY_SKIP_HOOKS=1 git subtree push --prefix packages/electron-redux-proxy electron-redux-proxy dev",
-      "post-merge": "cross-env HUSKY_SKIP_HOOKS=1 git subtree pull --prefix packages/electron-redux-proxy electron-redux-proxy dev"
+      "post-commit": "yarn pull:proxy",
+      "pre-push": "cross-env HUSKY_SKIP_HOOKS=1 git subtree push --prefix packages/electron-redux-proxy electron-redux-proxy dev"
     }
   },
   "lint-staged": {
