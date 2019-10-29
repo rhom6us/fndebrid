@@ -1,4 +1,4 @@
-import {createReadStream, statSync, ReadStream} from 'fs';
+import {createReadStream, ReadStream, statSync} from 'fs';
 import fetch from 'node-fetch';
 
 import {FnError} from '@fndebrid/core';
@@ -69,7 +69,7 @@ export class RealDebrid {
       },
       body: new URLSearchParams(body),
     });
-    if (response.status == 204) {
+    if (response.status === 204) {
       return;
     }
     const json = await response.json();
