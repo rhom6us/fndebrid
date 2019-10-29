@@ -13,7 +13,11 @@
   },
   "editor.detectIndentation": false,
   "editor.tabSize": 2,
+  "npm.exclude": "packages/**",
   "npm.packageManager": "yarn",
+  "files.associations": {
+    "tslint.json": "jsonc"
+  },
   "search.exclude": {
     "packages/webpack/lib/": true
   }

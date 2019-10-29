@@ -10,6 +10,6 @@ export default <webpack.Configuration>{
   },
   module: {
     ...config.module,
-    rules: [typescriptRule, ...config.module.rules],
+    rules: [typescriptRule, ...config.module!.rules],
   },
 };
