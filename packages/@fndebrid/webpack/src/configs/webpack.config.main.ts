@@ -1,8 +1,9 @@
 import webpack from 'webpack';
-import {config} from './webpack.config.common';
-import {typescriptRule} from './rules';
 
-export default <webpack.Configuration>{
+import {typescriptRule} from './rules';
+import {config} from './webpack.config.common';
+
+export default {
   ...config,
   target: 'electron-main',
   stats: {
@@ -12,4 +13,4 @@ export default <webpack.Configuration>{
     ...config.module,
     rules: [typescriptRule, ...config.module!.rules],
   },
-};
+} as webpack.Configuration;
