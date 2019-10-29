@@ -7,7 +7,6 @@
     "**/node_modules/": true,
     "dist/": true,
     "LICENSE": true,
-    "README.md": true,
     "yarn-error.log": true,
     "yarn.lock": true
   },
