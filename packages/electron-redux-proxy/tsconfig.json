@@ -1,11 +1,6 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "declaration": true,
-    "outDir": "./dist",
-    "strict": true
-  },
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {},
   "include": ["src"],
   "exclude": ["node_modules", "**/__tests__/*"]
 }

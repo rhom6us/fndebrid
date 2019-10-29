@@ -24,6 +24,7 @@
     "dist/**/*"
   ],
   "main": "dist/index.js",
+  "module": "src/index",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
