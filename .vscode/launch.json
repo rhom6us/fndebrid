@@ -10,29 +10,45 @@
   "configurations": [
     {
       "type": "node",
-      "request": "attach",
-      "name": "attach main",
-      "port": 9223,
+      "request": "launch",
+      "name": "Electron Main",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "program": "${workspaceFolder}/dist/main.js",
+      "runtimeArgs": ["--remote-debugging-port=9223", "--debug"],
       "restart": true,
-      "protocol": "inspector",
-      "timeout": 100000
+      "env": {
+        "NODE_ENV": "development",
+        "DEBUG": "true"
+      },
+      "outputCapture": "std",
+      "sourceMaps": true,
+      "outFiles": ["${workspaceRoot}/dist/main.js"],
+      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"],
+      "sourceMapPathOverrides": {
+        "webpack:///./*": "${workspaceRoot}/packages/electron-main/*",
+        "webpack:///../*": "${workspaceRoot}/packages/*"
+      }
     },
     {
       "name": "monitor main",
       "type": "node",
       "request": "launch",
-      "preLaunchTask":"watch main",
+      "preLaunchTask": "watch main",
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
       "windows": {
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon.cmd"
       },
       "args": [
-        "--signal", "SIGUSR2",
+        "--signal",
+        "SIGUSR2",
         "--debug",
-        "--watch", "dist/main/",
-        "--ignore", "src/",
-        "--exec", "\"${workspaceRoot}/node_modules/.bin/electron.cmd --remote-debugging-port=9223 . --debug\""
+        "--watch",
+        "dist/main/",
+        "--ignore",
+        "src/",
+        "--exec",
+        "\"${workspaceRoot}/node_modules/.bin/electron.cmd --remote-debugging-port=9223 . --debug\""
       ],
       "restart": true,
       "env": {
@@ -40,51 +56,44 @@
       },
       "outputCapture": "std",
       "sourceMaps": true,
-      "skipFiles": [
-        "node_modules/**",
-        "<node_internals>/Events.js",
-        "**/async_hooks.js"
-      ],
+      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"],
       "timeout": 100000
     },
-    {
-      "name": "Webpack Main",
-      "type": "node",
-      "request": "launch",
-      "cwd": "${workspaceRoot}",
-      "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
-      "args": [
-        "--progress",
-        "--colors",
-        "--watch",
-        "--config",
-        "webpack/main.babel.js"
-      ],
-      "autoAttachChildProcesses": true,
-      "stopOnEntry": false
-    },
+    // {
+    //   "name": "Webpack Main",
+    //   "type": "node",
+    //   "request": "launch",
+    //   "cwd": "${workspaceRoot}",
+    //   "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
+    //   "args": [
+    //     "--progress",
+    //     "--colors",
+    //     "--watch",
+    //     "--config",
+    //     "webpack/main.babel.js"
+    //   ],
+    //   "autoAttachChildProcesses": true,
+    //   "stopOnEntry": false
+    // },
     {
       "name": "native",
       "type": "node",
       "request": "launch",
-      "preLaunchTask": "build main",
-      "cwd": "${workspaceRoot}",
+      // "preLaunchTask": "build main",
+      "cwd": "${workspaceRoot}/packages/electron-main",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
       "windows": {
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
       },
       "runtimeArgs": ["--remote-debugging-port=9223", ".", "--debug"],
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "DEBUG": "true"
       },
       "outputCapture": "std",
       "sourceMaps": true,
       "outFiles": ["${workspaceRoot}/dist/**/*.js"],
-      "skipFiles": [
-        "node_modules/**",
-        "<node_internals>/Events.js",
-        "**/async_hooks.js"
-      ]
+      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"]
     },
     {
       "name": "Attach - Electron: Renderer",
@@ -93,7 +102,11 @@
       "port": 9223,
       "webRoot": "${workspaceRoot}",
       "timeout": 150000,
-      "sourceMaps": true
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:///./*": "${workspaceRoot}/packages/electron-renderer/*",
+        "webpack:///../*": "${workspaceRoot}/packages/*"
+      }
     },
     {
       "name": "yarn: Renderer",
@@ -104,30 +117,30 @@
       "autoAttachChildProcesses": true,
       "stopOnEntry": false
     },
-    {
-      "name": "Webpack-dev-server: Renderer",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-      "args": [
-        "--progress",
-        "--colors",
-        "--config",
-        "webpack.config.renderer.babel.js"
-      ],
-      "autoAttachChildProcesses": true,
-      "stopOnEntry": false,
+    // {
+    //   "name": "Webpack-dev-server: Renderer",
+    //   "type": "node",
+    //   "request": "launch",
+    //   "program": "${workspaceFolder}/node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    //   "args": [
+    //     "--progress",
+    //     "--colors",
+    //     "--config",
+    //     "webpack.config.renderer.babel.js"
+    //   ],
+    //   "autoAttachChildProcesses": true,
+    //   "stopOnEntry": false,
 
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
-        "webpack:///./*": "${workspaceRoot}/*",
-        "webpack:///*": "*"
-      }
-    },
+    //   "env": {
+    //     "NODE_ENV": "development"
+    //   },
+    //   "sourceMaps": true,
+    //   "sourceMapPathOverrides": {
+    //     "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
+    //     "webpack:///./*": "${workspaceRoot}/*",
+    //     "webpack:///*": "*"
+    //   }
+    // },
     {
       "name": "Webpack-cli: Renderer",
       "type": "node",

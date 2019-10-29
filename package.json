@@ -1,121 +1,62 @@
 {
-  "name": "fn-debrid",
-  "version": "0.0.0",
+  "name": "fndebrid",
+  "version": "1.0.0",
+  "private": true,
+  "repository": "https-//github.com/rhom6us/fndebrid.git",
   "license": "MIT",
-  "main": "dist/main/main.js",
+  "author": "Thomas Butler <thomas@butler.software>",
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "packages/@fndebrid/*"
+    ],
+    "nohoist": [
+      "**/@types/*/**"
+    ]
+  },
   "scripts": {
+    "[build]": "run-p [build]:**",
+    "[build]:main": "yarn workspace @fndebrid/electron-main compile",
+    "[build]:renderer": "yarn workspace @fndebrid/electron-renderer compile",
+    "[serve]": "run-p [serve]:**",
+    "[serve]:renderer": "yarn workspace @fndebrid/electron-renderer serve",
+    "[watch]": "run-p [watch]:**",
+    "[watch]:fnwebpack": "yarn workspace @fndebrid/webpack watch",
+    "[watch]:main": "yarn workspace @fndebrid/electron-main watch",
+    "[watch]:renderer": "yarn workspace @fndebrid/electron-renderer watch",
     "nodemon": "nodemon --watch dist/main/ --ignore src/ --exec \"electron  --remote-debugging-port=9223 . --debug\"",
-    "dist": "yarn build && electron-builder",
-    "dist:broke": "yarn compile && electron-builder --config config/electron-builder.config.json",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "buildasdf": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/all.ts",
-    "build:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/renderer.ts",
-    "watch:renderer": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack-dev-server --config webpack/renderer.ts  --info-verbosity none",
-    "build:main": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --progress --colors --config webpack/main.ts",
-    "watch:main": "cross-env TS_NODE_PROJECT=\"webpack/tsconfig.json\" webpack --watch --progress --colors --config webpack/main.ts --info-verbosity verbose"
+    "reinstall": "yarn install --force",
+    "typecheck": "lerna exec --parallel -- tsc --noemit"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,css,scss,json,md,html,yml,yaml}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "react-hot-loader": "^4.12.15"
+  },
+  "devDependencies": {
+    "husky": "^3.0.9",
+    "lerna": "^3.18.3",
+    "lint-staged": "^9.4.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.18.2",
+    "prettier-plugin-packagejson": "^2.0.1",
+    "tslint": "^5.20.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.6.4"
   },
   "build": {
     "files": [
       "dist/",
       "package.json"
     ]
-  },
-  "browserslist": [
-    "electron 6.0.12",
-    "current node"
-  ],
-  "dependencies": {
-    "@blueprintjs/core": "^3.19.1",
-    "@blueprintjs/icons": "^3.11.0",
-    "@emotion/core": "^10.0.21",
-    "@emotion/styled": "^10.0.17",
-    "@hot-loader/react-dom": "^16.10.2",
-    "classnames": "^2.2.6",
-    "devtron": "^1.4.0",
-    "dotenv-webpack": "^1.7.0",
-    "electron-debug": "^3.0.1",
-    "electron-devtools-installer": "^2.2.4",
-    "electron-redux-proxy": "^1.0.5",
-    "electron-store": "^5.0.0",
-    "emotion-theming": "^10.0.19",
-    "lodash": "^4.17.15",
-    "normalize.css": "^8.0.1",
-    "parse-torrent": "^7.0.1",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-hot-loader": "^4.12.15",
-    "react-redux": "^7.1.1",
-    "react-resize-detector": "^4.2.1",
-    "react-router-static": "^1.0.0",
-    "redux": "^4.0.4",
-    "redux-saga": "^1.1.1",
-    "source-map-support": "^0.5.13",
-    "typesafe-actions": "^4.4.2",
-    "uuid": "^3.3.3",
-    "winreg": "^1.2.4"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.6.3",
-    "@babel/preset-env": "^7.6.3",
-    "@types/classnames": "^2.2.9",
-    "@types/electron-devtools-installer": "^2.2.0",
-    "@types/html-webpack-plugin": "^3.2.1",
-    "@types/lodash": "^4.14.141",
-    "@types/mini-css-extract-plugin": "^0.8.0",
-    "@types/node": "^12.11.1",
-    "@types/node-fetch": "^2.5.2",
-    "@types/node-powershell": "^3.1.0",
-    "@types/parse-torrent": "^5.8.3",
-    "@types/react-dom": "^16.9.1",
-    "@types/react-redux": "^7.1.4",
-    "@types/react-resize-detector": "^4.0.2",
-    "@types/redux-saga": "^0.10.5",
-    "@types/remote-redux-devtools": "^0.5.3",
-    "@types/uuid": "^3.4.5",
-    "@types/webpack": "^4.39.4",
-    "@types/webpack-dev-server": "^3.1.7",
-    "@types/webpackbar": "^2.6.0",
-    "@types/winreg": "^1.2.30",
-    "abort-controller": "^3.0.0",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-emotion": "^10.0.21",
-    "clean-webpack-plugin": "^3.0.0",
-    "cross-env": "^6.0.3",
-    "css-hot-loader": "^1.4.4",
-    "css-loader": "^3.2.0",
-    "electron": "^6.0.12",
-    "electron-builder": "^21.2.0",
-    "fibers": "^4.0.1",
-    "file-loader": "^4.2.0",
-    "fork-ts-checker-webpack-plugin": "^1.5.0",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.8.0",
-    "node-fetch": "^2.6.0",
-    "node-loader": "^0.6.0",
-    "node-powershell": "^4.0.0",
-    "node-sass": "^4.12.0",
-    "nodemon": "^1.19.4",
-    "postcss-import": "^12.0.1",
-    "postcss-loader": "^3.0.0",
-    "postcss-preset-env": "^6.7.0",
-    "reflect-metadata": "^0.1.13",
-    "remote-redux-devtools": "^0.5.16",
-    "sass": "^1.22.12",
-    "sass-loader": "^8.0.0",
-    "style-loader": "^1.0.0",
-    "ts-loader": "^6.2.0",
-    "ts-node": "^8.4.1",
-    "tsconfig-paths": "^3.9.0",
-    "type-fest": "^0.8.1",
-    "typescript": "^3.6.4",
-    "url-loader": "^2.2.0",
-    "utf-8-validate": "^5.0.2",
-    "webpack": "^4.41.0",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.2",
-    "webpack-match-plugin": "^1.0.3",
-    "webpackbar": "^4.0.0",
-    "yarn": "^1.19.1"
   }
 }

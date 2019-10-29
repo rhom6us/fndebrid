@@ -1,0 +1,49 @@
+{
+  "name": "@fndebrid/electron-renderer",
+  "version": "1.0.0",
+  "private": true,
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "compile": "fnbuild",
+    "serve": "fnserve",
+    "watch": "fnbuild --watch"
+  },
+  "browserslist": [
+    "chrome 78.0"
+  ],
+  "dependencies": {
+    "@blueprintjs/core": "^3.19.1",
+    "@emotion/core": "^10.0.21",
+    "@emotion/styled": "^10.0.17",
+    "@fndebrid/core": "*",
+    "@fndebrid/real-debrid": "*",
+    "@fndebrid/store": "*",
+    "@hot-loader/react-dom": "^16.10.2",
+    "classnames": "^2.2.6",
+    "electron-redux-proxy": "*",
+    "emotion-theming": "^10.0.19",
+    "lodash": "^4.17.15",
+    "normalize.css": "^8.0.1",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-hot-loader": "^4.12.15",
+    "react-redux": "^7.1.1",
+    "react-resize-detector": "^4.2.1",
+    "react-router-static": "^1.0.0",
+    "redux": "^4.0.4",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@fndebrid/webpack": "*",
+    "@types/classnames": "^2.2.9",
+    "@types/lodash": "^4.14.144",
+    "@types/prop-types": "^15.7.3",
+    "@types/react": "^16.9.9",
+    "@types/react-dom": "^16.9.2",
+    "@types/react-redux": "^7.1.5",
+    "@types/react-resize-detector": "^4.0.2",
+    "@types/redux": "^3.6.0",
+    "@types/uuid": "^3.4.5"
+  }
+}
