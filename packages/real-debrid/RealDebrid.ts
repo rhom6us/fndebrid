@@ -1,10 +1,21 @@
 import {createReadStream, ReadStream, statSync} from 'fs';
+import {groupBy} from 'lodash';
 import fetch from 'node-fetch';
 
 import {FnError} from '@fndebrid/core';
 
 import {Authorizor} from './Authorizor';
-import {ExtendedTorrent, FileId, Link, LinkInfo, MagnetLink, Torrent, TorrentId} from './types';
+import {
+  ExtendedTorrent,
+  FileId,
+  HashAvailability,
+  Link,
+  LinkInfo,
+  MagnetLink,
+  Torrent,
+  TorrentHash,
+  TorrentId,
+} from './types';
 import {makeUrl} from './util';
 
 export class RealDebridError extends FnError {
@@ -147,5 +158,16 @@ export class RealDebrid {
     // TODO: pagination params
     // TODO: X-Total-Count response header
     return this._get<Array<LinkInfo & {generated: Date}>>('downloads');
+  }
+
+  public async instantAvailability(hash: TorrentHash) {
+    const result = await this._get<HashAvailability>(`torrents/instantAvailability/${hash}`);
+    const hashResult = result[hash];
+    if (!hashResult) {
+      return [];
+    }
+    return Object.keys(hashResult)
+      .flatMap(key => hashResult[key])
+      .map(p => Object.keys(p) as FileId[]);
   }
 }
