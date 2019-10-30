@@ -1,6 +1,5 @@
 import fetch from 'node-fetch';
-
-import {ArgumentFalsyError} from '../RealDebridError';
+import {ArgumentFalsyError} from '../RealDebridError/RealDebridError';
 import {ClientId, CodeInfo, Credentials, DeviceCode, RefreshToken, TokenInfo} from '../types';
 import {makeUrl} from '../util';
 

@@ -19,5 +19,12 @@
   },
   "search.exclude": {
     "packages/webpack/lib/": true
-  }
+  },
+  "importSorter.sortConfiguration.customOrderingRules.rules": [
+    {
+      "regex": "^[@]",
+      "orderLevel": 0
+    }
+  ],
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 180
 }

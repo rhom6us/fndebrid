@@ -1,8 +1,7 @@
-import parseTorrent from 'parse-torrent';
-import {promisify} from 'util';
-
 import {InvalidArguementError, OperationFailedError} from '@fndebrid/core';
-
+import parseTorrent from 'parse-torrent';
+import {URL, URLSearchParams} from 'url';
+import {promisify} from 'util';
 import {MagnetLink} from './types';
 
 export function makeUrl(base: URL, path: string, params: Record<string, any> = {}) {
@@ -22,7 +21,7 @@ export async function getInfoHashAsync(filePath: string) {
     return result.infoHash;
   } catch (e) {
     if (e instanceof Error) {
-      if (e.message == 'Invalid torrent identifier') {
+      if (e.message === 'Invalid torrent identifier') {
         throw new InvalidArguementError('link', e.message);
       }
     }
@@ -34,7 +33,7 @@ export function getInfoHash(torrent: MagnetLink | Buffer) {
     return parseTorrent(torrent).infoHash!;
   } catch (e) {
     if (e instanceof Error) {
-      if (e.message == 'Invalid torrent identifier') {
+      if (e.message === 'Invalid torrent identifier') {
         throw new InvalidArguementError('link', e.message);
       }
     }

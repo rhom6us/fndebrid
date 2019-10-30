@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import path from 'path';
 import {URL, URLSearchParams} from 'url';
 import {Authorizor} from './Authorizor';
+import {getApiError} from './RealDebridError';
 import {
   ExtendedTorrent,
   FileId,
@@ -16,12 +17,6 @@ import {
 } from './types';
 import {makeUrl} from './util';
 
-export class RealDebridError extends FnError {
-  constructor(public readonly url: string, error: {error: string; error_code: number}) {
-    super(url, error);
-    Object.freeze(error);
-  }
-}
 // tslint:disable-next-line: max-classes-per-file
 export class RealDebrid {
   constructor(
@@ -41,15 +36,17 @@ export class RealDebrid {
     params: Record<string, any> = {},
     includeMeta: boolean = false,
   ): Promise<T | [T, Record<string, string[]>]> {
-    const response = await fetch(makeUrl(this.base, path, params), {
+    const url = makeUrl(this.base, path, params);
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await this.authorizor.getToken()}`,
       },
     });
     const json = await response.json();
-    if (json.error) {
-      throw new RealDebridError(path, json);
+    if (json.error_code) {
+      const ApiError = getApiError(json.error_code);
+      throw new ApiError(json.error, url);
     }
     if (!includeMeta) {
       return json;
@@ -57,20 +54,23 @@ export class RealDebrid {
     return [json, response.headers.raw()];
   }
   public async _delete<T = void>(path: string, params: Record<string, string> = {}): Promise<T> {
-    const response = await fetch(makeUrl(this.base, path, params), {
+    const url = makeUrl(this.base, path, params);
+    const response = await fetch(url, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${await this.authorizor.getToken()}`,
       },
     });
     const json = await response.json();
-    if (json.error) {
-      throw new RealDebridError(path, json);
+    if (json.error_code) {
+      const ApiError = getApiError(json.error_code);
+      throw new ApiError(json.error, url);
     }
     return json;
   }
   public async _post<T = void>(path: string, body: Record<string, string> = {}): Promise<T | undefined> {
-    const response = await fetch(makeUrl(this.base, path), {
+    const url = makeUrl(this.base, path);
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         // 'Content-Type': 'application/json',
@@ -82,14 +82,16 @@ export class RealDebrid {
       return;
     }
     const json = await response.json();
-    if (json.error) {
-      throw new RealDebridError(path, json);
+    if (json.error_code) {
+      const ApiError = getApiError(json.error_code);
+      throw new ApiError(json.error, url, body);
     }
     return json;
   }
 
   public async _put<T = void>(path: string, body: ReadStream, extraHeaders: Record<string, string> = {}): Promise<T> {
-    const response = await fetch(makeUrl(this.base, path), {
+    const url = makeUrl(this.base, path);
+    const response = await fetch(url, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/x-bittorrent',
@@ -100,8 +102,9 @@ export class RealDebrid {
     });
 
     const json = await response.json();
-    if (json.error) {
-      throw new RealDebridError(path, json);
+    if (json.error_code) {
+      const ApiError = getApiError(json.error_code);
+      throw new ApiError(json.error, url, '<stream>');
     }
     return json;
   }
