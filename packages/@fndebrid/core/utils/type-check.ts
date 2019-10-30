@@ -1,3 +1,4 @@
+import {URL} from 'url';
 import {ArgumentFalsyError, ArgumentTypeError, ArgumentUndefinedError, InvalidArgumentError} from '../';
 import {Ctor} from '../utilTypes';
 
