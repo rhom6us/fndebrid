@@ -5,7 +5,8 @@
   "rules": {
     "object-literal-sort-keys": false,
     "interface-name": false,
-    "curly": false
+    "curly": false,
+    "no-shadowed-variable": false
   },
   "rulesDirectory": []
 }

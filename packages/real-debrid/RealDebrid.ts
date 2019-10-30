@@ -1,9 +1,7 @@
-import {createReadStream, ReadStream, statSync} from 'fs';
-import {groupBy} from 'lodash';
+import fs, {createReadStream, ReadStream, statSync, WriteStream} from 'fs';
 import fetch from 'node-fetch';
-
-import {FnError} from '@fndebrid/core';
-
+import path from 'path';
+import {URL, URLSearchParams} from 'url';
 import {Authorizor} from './Authorizor';
 import {
   ExtendedTorrent,
@@ -141,7 +139,7 @@ export class RealDebrid {
     const readStream = createReadStream(filePath);
     // var stringContent = fs.readFileSync('foo.txt', 'utf8');
     // var bufferContent = fs.readFileSync(filePath)
-    return this._put<{id: TorrentId}>('torrents/addTorrent', readStream as any, {
+    return this._put<{id: TorrentId}>('torrents/addTorrent', readStream, {
       'Content-length': fileSizeInBytes.toString(),
     })!;
   }
@@ -169,5 +167,29 @@ export class RealDebrid {
     return Object.keys(hashResult)
       .flatMap(key => hashResult[key])
       .map(p => Object.keys(p) as FileId[]);
+  }
+
+  public async downloadFile(linkInfo: LinkInfo, dir: string) {
+    const fileName = path.basename(linkInfo.download);
+    const destination = path.join(dir, fileName);
+    const [writeStream, position] = await getWriteStream(destination);
+
+    const result = await fetch(linkInfo.download, {});
+    result.body.pipe(writeStream);
+  }
+}
+
+async function getWriteStream(path: string): Promise<[WriteStream, number]> {
+  try {
+    const handle = await fs.promises.open(path, 'a+');
+    const stat = await fs.promises.fstat(handle);
+    const stream = fs.createWriteStream(undefined as any, {
+      fd: handle.fd,
+      start: stat.size,
+      flags: 'a',
+    });
+    return [stream, stat.size];
+  } catch (error) {
+    return [fs.createWriteStream(path), 0];
   }
 }
