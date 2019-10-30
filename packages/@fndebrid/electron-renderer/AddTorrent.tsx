@@ -1,6 +1,6 @@
 import {assertNever} from '@fndebrid/core/utils';
 import {FileId, MagnetLink, Torrent, TorrentId} from '@fndebrid/real-debrid';
-import {Dispatch, getDispatcher, State} from '@fndebrid/store';
+import {getDispatcher, State} from '@fndebrid/store';
 import {JobId} from '@fndebrid/store/real-debrid';
 import React, {useEffect, useMemo, useState} from 'react';
 import {connect} from 'react-redux';
@@ -21,7 +21,7 @@ function mapStateToProps(state: State, ownProps: IOwnProps) {
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch, ownProps: IOwnProps) {
+function mapDispatchToProps(dispatch: any, ownProps: IOwnProps) {
   const dispatcher = getDispatcher(dispatch);
   return {
     addMagnet(magnet: MagnetLink, jobId: JobId) {
@@ -72,8 +72,12 @@ export const AddTorrent = connect(
 )(({addMagnet, cancelJob, completeJob, deleteTorrent, selectFiles, jobs, torrents}: Props) => {
   const [jobId, setJobId] = useState(initialJobId);
   const [aquiredTorrentId, setAquiredTorrentId] = useState(intitialTorrentId);
-  const torrentId = useMemo(() => aquiredTorrentId || jobs[jobId], [aquiredTorrentId, jobs, jobId]);
-  const torrent = useMemo(() => torrents[torrentId], [torrents, torrentId]);
+  const torrentId = useMemo(() => aquiredTorrentId || (jobs[jobId] && jobs[jobId].torrentId) || undefined, [
+    aquiredTorrentId,
+    jobs,
+    jobId,
+  ]);
+  const torrent = useMemo(() => (torrentId && torrents[torrentId]) || undefined, [torrents, torrentId]);
   useEffect(() => {
     if (torrentId && !aquiredTorrentId) {
       setAquiredTorrentId(torrentId);
@@ -91,7 +95,7 @@ export const AddTorrent = connect(
     setJobId(jobId);
   }
   function submitFileSelection(files: FileId[]) {
-    selectFiles.request([torrentId, files]);
+    selectFiles.request([torrentId!, files]);
     completeJob(jobId);
   }
   function cancelDownload() {
@@ -123,7 +127,7 @@ export const AddTorrent = connect(
           case 'fetching':
             return <h3>Fetching torrent details...</h3>;
           case 'waiting_files_selection':
-            return <FileSelect torrent={torrent} onSubmit={submitFileSelection} onCancel={cancelDownload} />;
+            return <FileSelect torrent={torrent!} onSubmit={submitFileSelection} onCancel={cancelDownload} />;
           case 'submitting_selection':
             return <h3>Submitting your file selection to real-debrid.com...</h3>;
           case 'complete':

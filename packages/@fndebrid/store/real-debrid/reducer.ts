@@ -1,7 +1,7 @@
-import {createReducer, ActionType} from 'typesafe-actions';
+import {ExtendedTorrent, MaybeExtendedTorrent, Torrent, TorrentId} from '@fndebrid/real-debrid';
+import {ActionType, createReducer} from 'typesafe-actions';
 import * as actions from './actions';
-import {State, defaultState} from './state';
-import {TorrentId, Torrent, ExtendedTorrent, MaybeExtendedTorrent} from '@fndebrid/real-debrid';
+import {defaultState, State} from './state';
 
 declare global {
   interface Array<T> {
@@ -53,19 +53,42 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
       }),
     }),
   )
-  .handleAction(actions.fetchTorrents.failure, (state, {payload: errors}) => f({...state, loading: false, errors}))
-
+  .handleAction(actions.fetchTorrents.failure, (state, {payload: errors}) =>
+    f({
+      ...state,
+      loading: false,
+      errors,
+    }),
+  )
+  .handleAction(actions.setInfoHash, (state, {payload: {jobId, infoHash}}) =>
+    f({
+      ...state,
+      jobs: f({
+        ...state.jobs,
+        [jobId]: f({
+          ...state.jobs[jobId],
+          infoHash,
+        }),
+      }),
+    }),
+  )
   .handleAction([actions.addMagnet.success, actions.addTorrentFile.success], (state, {payload: [torrentId, jobId]}) =>
     f({
       ...state,
       jobs: f({
         ...state.jobs,
-        [jobId]: torrentId,
+        [jobId]: f({
+          ...state.jobs[jobId],
+          torrentId,
+        }),
       }),
     }),
   )
   .handleAction([actions.addMagnet.failure, actions.addTorrentFile.failure], (state, {payload: errors}) =>
-    f({...state, errors}),
+    f({
+      ...state,
+      errors,
+    }),
   )
 
   .handleAction(actions.fetchTorrent.success, (state, {payload: torrent}) =>

@@ -1,4 +1,4 @@
-import {ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId} from '@fndebrid/real-debrid';
+import {ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentHash, TorrentId} from '@fndebrid/real-debrid';
 import {createAction, createAsyncAction} from 'typesafe-actions';
 import {JobId} from './state';
 
@@ -37,4 +37,8 @@ export const addTorrentFile = createAsyncAction(
   'torrents/add-torrent-file/request',
   'torrents/add-torrent-file/success',
   'torrents/add-torrent-file/error',
-)<{filePath: string; jobId: JobId}, [TorrentId, JobId], string>();
+)<[string, JobId], [TorrentId, JobId], string>();
+
+export const setInfoHash = createAction('torrents/set-info-hash', action => (jobId: JobId, infoHash: TorrentHash) =>
+  action({jobId, infoHash}),
+);
