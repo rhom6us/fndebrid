@@ -65,7 +65,7 @@ function* fetchTorrent_request() {
 }
 function* fetchTorrent_success() {
   yield takeEvery(fetchTorrent.success, function*({payload: {id, status}}) {
-    if (status == 'magnet_conversion') {
+    if (status === 'magnet_conversion') {
       yield delay(1500);
       yield put(fetchTorrent.request(id));
     }
