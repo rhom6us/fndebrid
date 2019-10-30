@@ -1,6 +1,6 @@
 import {isString} from 'util';
-import {Ctor} from './utilTypes';
 import {getInstanceTypeName} from './utils/type-check';
+import {Ctor} from './utilTypes';
 
 export class FnError extends Error {
   constructor(message?: string, public readonly data?: any) {
@@ -17,12 +17,12 @@ export class FnError extends Error {
 export class OperationFailedError extends FnError {}
 export class InvalidOperationError extends FnError {}
 export class UnexpectedStateError extends FnError {}
-export class ArguementError extends FnError {
+export class ArgumentError extends FnError {
   constructor(public readonly name: string, message?: string) {
     super(message);
   }
 }
-export class ArguementFalsyError extends ArguementError {
+export class ArgumentFalsyError extends ArgumentError {
   constructor(
     public readonly name: string,
     message: string = `The value passed for "${name}" did not have a truthy value.`,
@@ -30,30 +30,30 @@ export class ArguementFalsyError extends ArguementError {
     super(name, message);
   }
 }
-export class ArguementNullOrUndefinedError extends ArguementFalsyError {
+export class ArgumentNullOrUndefinedError extends ArgumentFalsyError {
   constructor(public readonly name: string, message: string = `The value passed for "${name}" was null or undefined.`) {
     super(name, message);
   }
 }
-export class ArguementUndefinedError extends ArguementNullOrUndefinedError {
+export class ArgumentUndefinedError extends ArgumentNullOrUndefinedError {
   constructor(public readonly name: string, message: string = `The value passed for "${name}" was undefined.`) {
     super(name, message);
   }
 }
 
-export class ArguementNullError extends ArguementNullOrUndefinedError {
+export class ArgumentNullError extends ArgumentNullOrUndefinedError {
   constructor(public readonly name: string, message: string = `The value passed for "${name}" was null.`) {
     super(name, message);
   }
 }
 
-export class InvalidArguementError extends ArguementError {
+export class InvalidArgumentError extends ArgumentError {
   constructor(public readonly name: string, message: string = `The value passed for ${name} was not valid.`) {
     super(name, message);
   }
 }
 
-export class ArguementTypeError extends InvalidArguementError {
+export class ArgumentTypeError extends InvalidArgumentError {
   constructor(
     public readonly name: string,
     public readonly expectedType: string | Ctor,

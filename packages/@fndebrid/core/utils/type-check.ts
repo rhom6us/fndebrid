@@ -1,8 +1,8 @@
+import {ArgumentFalsyError, ArgumentTypeError, ArgumentUndefinedError, InvalidArgumentError} from '../';
 import {Ctor} from '../utilTypes';
-import {ArguementUndefinedError, ArguementFalsyError, ArguementTypeError, InvalidArguementError} from '..';
 
 export function getInstanceTypeName(value: any) {
-  if (isUndefined(value)) throw new ArguementUndefinedError('value');
+  if (isUndefined(value)) throw new ArgumentUndefinedError('value');
   if (isObject(value) && !isFunction(value)) {
     return value.constructor.name;
   }
@@ -15,8 +15,8 @@ export function isConstructor(value: any) {
   return isFunction(value) && 'prototype' in value && /^[A-Z]/.test(value.name);
 }
 export function getClassName(value: Ctor) {
-  if (!value) throw new ArguementFalsyError('value');
-  if (!isConstructor(value)) throw new ArguementTypeError('value', 'constructor', value);
+  if (!value) throw new ArgumentFalsyError('value');
+  if (!isConstructor(value)) throw new ArgumentTypeError('value', 'constructor', value);
   return value.name;
 }
 export function isFunction(value: any): value is Function {
@@ -40,12 +40,12 @@ export function isString(value: any): value is string {
   return typeof value === 'string';
 }
 export function parseUrl(value: string) {
-  if (!value) throw new ArguementFalsyError('value');
-  if (!isString(value)) throw new ArguementTypeError('value', 'string', value);
+  if (!value) throw new ArgumentFalsyError('value');
+  if (!isString(value)) throw new ArgumentTypeError('value', 'string', value);
   try {
     return new URL(value);
   } catch (error) {
-    throw new InvalidArguementError('url', 'The given value is not a proper url');
+    throw new InvalidArgumentError('url', 'The given value is not a proper url');
   }
 }
 export function validUrl(value: string) {
