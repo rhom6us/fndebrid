@@ -1,16 +1,11 @@
+import {isDev} from '@fndebrid/core';
+import {FileId, TorrentId} from '@fndebrid/real-debrid';
 import {BrowserWindow, ipcMain, webFrame} from 'electron';
 import path from 'path';
-import {format as formatUrl} from 'url';
-import {isDev} from '@fndebrid/core';
+import {format as formatUrl, URLSearchParams} from 'url';
 import uuid5 from 'uuid/v5';
-import {FileId, TorrentId} from '@fndebrid/real-debrid';
 import {showWindow} from './file-selection';
 
-declare global {
-  interface Element {
-    computedStyleMap(): CSSStyleDeclaration;
-  }
-}
 type WindowName = 'Main' | 'Preferences' | 'AddTorrent';
 export const windows: {[K in WindowName]?: BrowserWindow} = {};
 

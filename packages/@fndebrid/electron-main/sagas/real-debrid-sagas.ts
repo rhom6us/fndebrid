@@ -1,10 +1,10 @@
-import {promisify} from 'util';
+import {Unpack} from '@fndebrid/core';
+import {Authorizor, RealDebrid} from '@fndebrid/real-debrid';
+import {addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, selectFiles} from '@fndebrid/store/actions';
 import {shell} from 'electron';
-import {all, call, delay, fork, put, take, takeEvery, takeLatest, select} from 'redux-saga/effects';
-import {Unpack, setImmediateAsync} from '@fndebrid/core';
-import {Authorizor, RealDebrid, TorrentStatus} from '@fndebrid/real-debrid';
-import {addMagnet, addTorrentFile, fetchTorrent, fetchTorrents, selectFiles} from '@fndebrid/store/torrents/actions';
 import Store from 'electron-store';
+import {all, call, delay, fork, put, takeEvery, takeLatest} from 'redux-saga/effects';
+
 const storage = new Store();
 type Yield<T> = Unpack<T>;
 

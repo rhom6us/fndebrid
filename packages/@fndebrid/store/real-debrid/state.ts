@@ -1,5 +1,6 @@
 import {isString, Opaque, parseUrl} from '@fndebrid/core';
 import {File, MaybeExtendedTorrent, TorrentId} from '@fndebrid/real-debrid';
+import {URL} from 'url';
 import {isUndefined} from 'util';
 import uuid4 from 'uuid/v4';
 import uuid5 from 'uuid/v5';

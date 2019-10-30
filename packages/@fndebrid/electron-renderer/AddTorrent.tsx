@@ -1,15 +1,14 @@
-import React, {useMemo, useState, useEffect} from 'react';
-import {connect, useStore} from 'react-redux';
-import uuid5 from 'uuid/v5';
-
-import {FileId, MagnetLink, Torrent, TorrentId, ExtendedTorrent} from '@fndebrid/real-debrid';
-import {State, getDispatcher, Dispatch} from '@fndebrid/store';
-import {JobId, jobId} from '@fndebrid/store/torrents/state';
-
 import {assertNever} from '@fndebrid/core/utils';
+import {FileId, MagnetLink, Torrent, TorrentId} from '@fndebrid/real-debrid';
+import {Dispatch, getDispatcher, State} from '@fndebrid/store';
+import {JobId} from '@fndebrid/store/real-debrid';
+import React, {useEffect, useMemo, useState} from 'react';
+import {connect} from 'react-redux';
+import uuid5 from 'uuid/v5';
 import AddMagnet from './add-magnet';
-import {FileSelect} from './select-files';
 import {Dialog} from './add-magnet/components';
+import {FileSelect} from './select-files';
+
 const params = new URL(window.location.href).searchParams;
 const initialJobId = params.get('jobid') as JobId;
 const intitialTorrentId = params.get('torrentid') as TorrentId;
@@ -17,8 +16,8 @@ const intitialTorrentId = params.get('torrentid') as TorrentId;
 interface IOwnProps {}
 function mapStateToProps(state: State, ownProps: IOwnProps) {
   return {
-    jobs: state.torrents.jobs,
-    torrents: state.torrents.entities.torrents,
+    jobs: state.realDebrid.jobs,
+    torrents: state.realDebrid.entities.torrents,
   };
 }
 

@@ -1,12 +1,12 @@
 import {combineReducers, Dispatch as ReduxDispatch, Store as ReduxStore} from 'redux';
 import {ActionType} from 'typesafe-actions';
+import {Dispatcher, getDispatcher} from './dispatcher';
 import * as preferences from './preferences';
-import * as torrents from './torrents';
+import * as realDebrid from './real-debrid';
 
-import {getDispatcher, Dispatcher} from './dispatcher';
 export {getDispatcher, Dispatcher};
 export interface State {
-  torrents: torrents.State;
+  realDebrid: realDebrid.State;
   preferences: preferences.State;
 }
 
@@ -15,6 +15,6 @@ export type TypeConstant = Action['type'];
 export type Dispatch = ReduxDispatch<Action>;
 export type Store = ReduxStore<State, Action>;
 export const reducer = combineReducers<State>({
-  torrents: torrents.reducer,
+  realDebrid: realDebrid.reducer,
   preferences: preferences.reducer,
 });

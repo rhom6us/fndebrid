@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import {connect, MapDispatchToPropsFunction, MapStateToProps, useStore} from 'react-redux';
 import {TorrentId} from '@fndebrid/real-debrid';
 import {State} from '@fndebrid/store';
 import * as actions from '@fndebrid/store/actions';
+import React, {useState} from 'react';
+import {connect, MapDispatchToPropsFunction, MapStateToProps, useStore} from 'react-redux';
 
 interface IOwnProps {}
 interface IStateProps {
@@ -49,7 +49,7 @@ const mapStateToProps: MapStateToProps<IStateProps, IOwnProps, State> = function
   console.log(state);
   return {
     downloadLocation: state.preferences.downloadLocation,
-    torrents: state.torrents.torrents,
+    torrents: state.realDebrid.torrents,
   };
 };
 const mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IOwnProps> = function(dispatch, ownProps) {

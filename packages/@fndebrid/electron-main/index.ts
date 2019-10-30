@@ -1,16 +1,15 @@
+import {DEBUG, isDev} from '@fndebrid/core';
+import {MagnetLink} from '@fndebrid/real-debrid';
+import {jobId} from '@fndebrid/store/real-debrid';
 import {app} from 'electron';
 // import debug from 'electron-debug';
 import Store from 'electron-store';
+import fs from 'fs';
 import path from 'path';
+import {Dispatcher, getDispatcher} from '../store/dispatcher';
 import {createAppIcon} from './app-icon';
 import configureStore from './configureStore';
-import {Dispatcher, getDispatcher} from '../store/dispatcher';
-import {showPreferences, showAddMagnet} from './windows';
-import {MagnetLink} from '@fndebrid/real-debrid';
-import uuid5 from 'uuid/v5';
-import {jobId} from '@fndebrid/store/torrents';
-import {isDev, DEBUG} from '@fndebrid/core';
-import fs from 'fs';
+import {showAddMagnet} from './windows';
 
 if (isDev || DEBUG) {
   const programPath = path.resolve(process.argv.filter(p => p.endsWith('main.js'))[0]);

@@ -4,9 +4,9 @@
     ".gitignore": true,
     ".yarn": true,
     ".yarnrc": true,
+    "**/LICENSE": true,
     "**/node_modules/": true,
     "dist/": true,
-    "LICENSE": true,
     "yarn-error.log": true,
     "yarn.lock": true
   },
