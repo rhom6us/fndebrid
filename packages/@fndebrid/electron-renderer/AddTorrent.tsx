@@ -78,10 +78,11 @@ export const AddTorrent = connect(
     jobId,
   ]);
   const torrent = useMemo(() => (torrentId && torrents[torrentId]) || undefined, [torrents, torrentId]);
+  const caches = useMemo(() => (jobs[jobId] && jobs[jobId].caches) || undefined, [jobs, jobId]);
   useEffect(() => {
+    // initially, torrentId is derived from jobId, but that job will go away at the end so we first remember it here
     if (torrentId && !aquiredTorrentId) {
       setAquiredTorrentId(torrentId);
-      console.log('setAquiredTorrentId', torrentId);
     }
   }, [torrentId, aquiredTorrentId]);
   useEffect(() => {
@@ -127,7 +128,9 @@ export const AddTorrent = connect(
           case 'fetching':
             return <h3>Fetching torrent details...</h3>;
           case 'waiting_files_selection':
-            return <FileSelect torrent={torrent!} onSubmit={submitFileSelection} onCancel={cancelDownload} />;
+            return (
+              <FileSelect torrent={torrent!} caches={caches} onSubmit={submitFileSelection} onCancel={cancelDownload} />
+            );
           case 'submitting_selection':
             return <h3>Submitting your file selection to real-debrid.com...</h3>;
           case 'complete':

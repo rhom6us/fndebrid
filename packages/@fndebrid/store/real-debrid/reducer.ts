@@ -72,6 +72,18 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
       }),
     }),
   )
+  .handleAction(actions.getCaches.success, (state, {payload: [caches, jobId]}) =>
+    f({
+      ...state,
+      jobs: f({
+        ...state.jobs,
+        [jobId]: f({
+          ...state.jobs[jobId],
+          caches,
+        }),
+      }),
+    }),
+  )
   .handleAction([actions.addMagnet.success, actions.addTorrentFile.success], (state, {payload: [torrentId, jobId]}) =>
     f({
       ...state,

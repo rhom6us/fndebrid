@@ -38,6 +38,11 @@ export const addTorrentFile = createAsyncAction(
   'torrents/add-torrent-file/success',
   'torrents/add-torrent-file/error',
 )<[string, JobId], [TorrentId, JobId], string>();
+export const getCaches = createAsyncAction(
+  'torrents/get-caches/request',
+  'torrents/get-caches/success',
+  'torrents/get-caches/error',
+)<[TorrentHash, JobId], [FileId[][], JobId], Error>();
 
 export const setInfoHash = createAction('torrents/set-info-hash', action => (jobId: JobId, infoHash: TorrentHash) =>
   action({jobId, infoHash}),

@@ -5,6 +5,7 @@ import {
   addTorrentFile,
   fetchTorrent,
   fetchTorrents,
+  getCaches,
   selectFiles,
   setInfoHash,
 } from '@fndebrid/store/actions';
@@ -61,6 +62,17 @@ export function* saga() {
         yield takeEvery([addMagnet.request, addTorrentFile.request], function*({payload: [data, jobId]}) {
           const hash: TorrentHash = yield getInfoHashAsync(data);
           yield put(setInfoHash(jobId, hash));
+          yield put(getCaches.request([hash, jobId]));
+        });
+      },
+      function* getCaches_request() {
+        yield takeEvery(getCaches.request, function*({payload: [hash, jobId]}) {
+          try {
+            const caches: Yield<typeof api.instantAvailability> = yield api.instantAvailability(hash);
+            yield put(getCaches.success([caches, jobId]));
+          } catch (error) {
+            yield put(getCaches.failure(error));
+          }
         });
       },
 
