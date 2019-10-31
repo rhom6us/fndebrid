@@ -20,18 +20,6 @@ if (isDev || DEBUG) {
     });
     app.quit();
   });
-  process.once('SIGTERM', function() {
-    app.quit();
-    process.kill(process.pid, 'SIGTERM');
-  });
-  process.once('SIGHUP', function() {
-    app.quit();
-    process.kill(process.pid, 'SIGHUP');
-  });
-  process.once('SIGUSR2', function() {
-    app.quit();
-    process.kill(process.pid, 'SIGUSR2');
-  });
 }
 const storage = new Store();
 
