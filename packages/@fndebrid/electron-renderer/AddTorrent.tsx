@@ -1,5 +1,5 @@
 import {assertNever} from '@fndebrid/core/utils';
-import {FileId, MagnetLink, Torrent, TorrentId} from '@fndebrid/real-debrid';
+import {ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId} from '@fndebrid/real-debrid';
 import {getDispatcher, State} from '@fndebrid/store';
 import {JobId} from '@fndebrid/store/real-debrid';
 import React, {useEffect, useMemo, useState} from 'react';
@@ -77,7 +77,10 @@ export const AddTorrent = connect(
     jobs,
     jobId,
   ]);
-  const torrent = useMemo(() => (torrentId && torrents[torrentId]) || undefined, [torrents, torrentId]);
+  const torrent = useMemo(() => (torrentId && (torrents[torrentId] as ExtendedTorrent)) || undefined, [
+    torrents,
+    torrentId,
+  ]);
   const caches = useMemo(() => (jobs[jobId] && jobs[jobId].caches) || undefined, [jobs, jobId]);
   useEffect(() => {
     // initially, torrentId is derived from jobId, but that job will go away at the end so we first remember it here

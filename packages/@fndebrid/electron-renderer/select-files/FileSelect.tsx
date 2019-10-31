@@ -1,11 +1,11 @@
 import {Button, H1} from '@blueprintjs/core';
-import {FileId, MaybeExtendedTorrent} from '@fndebrid/real-debrid';
-import React, {useState} from 'react';
+import {ExtendedTorrent, FileId} from '@fndebrid/real-debrid';
+import React, {useRef, useState} from 'react';
 import {Dialog} from '../add-magnet/components';
 import {FileTree} from './FileTree';
 
 interface IOwnProps {
-  torrent: MaybeExtendedTorrent;
+  torrent: ExtendedTorrent;
   caches: FileId[][] | undefined;
   onSubmit: (files: FileId[]) => void;
   onCancel: () => void;
@@ -15,12 +15,24 @@ export const FileSelect: React.FC<IOwnProps> = ({torrent, caches, onSubmit, onCa
   function submit() {
     onSubmit(selectedFileIds);
   }
+  const emmiter = useRef<(ids: FileId[]) => void>();
+  function selectCache(index: number) {
+    emmiter.current!(caches![index]);
+  }
   return (
     <>
       <Dialog.Body>
         <H1>File Select</H1>
-        {caches && <em>{caches!.length} caches available!</em>}
-        <FileTree files={torrent.files} onSelectionChanged={setSelectedFileIds} />
+        {caches && (
+          <ul style={{display: 'inline'}}>
+            {caches.map((cache, index) => (
+              <li style={{display: 'inline'}}>
+                <a onClick={() => selectCache(index)}>Cache {index} </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        <FileTree files={torrent.files} onSelectionChanged={setSelectedFileIds} selectionSetter={emmiter} />
       </Dialog.Body>
       <Dialog.Footer>
         <Dialog.Footer.Actions>
