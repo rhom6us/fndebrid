@@ -25,8 +25,8 @@
       "outFiles": ["${workspaceRoot}/dist/main.js"],
       "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"],
       "sourceMapPathOverrides": {
-        "webpack:///./*": "${workspaceRoot}/packages/electron-main/*",
-        "webpack:///../*": "${workspaceRoot}/packages/*"
+        "webpack:///./*": "${workspaceRoot}/packages/@fndebrid/electron-main/*",
+        "webpack:///../*": "${workspaceRoot}/packages/@fndebrid/*"
       }
     },
     {
@@ -104,8 +104,8 @@
       "timeout": 150000,
       "sourceMaps": true,
       "sourceMapPathOverrides": {
-        "webpack:///./*": "${workspaceRoot}/packages/electron-renderer/*",
-        "webpack:///../*": "${workspaceRoot}/packages/*"
+        "webpack:///./*": "${workspaceRoot}/packages/@fndebrid/electron-renderer/*",
+        "webpack:///../*": "${workspaceRoot}/packages/@fndebrid/*"
       }
     },
     {
