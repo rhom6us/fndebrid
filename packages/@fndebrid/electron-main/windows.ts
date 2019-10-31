@@ -28,6 +28,7 @@ function showDialog<T>(
   return new Promise<T>((resolve, reject) => {
     const callbackId = uuid5(`http://fndebrid.butler.software/${route}`, uuid5.URL);
     const window = new BrowserWindow({
+      show: false,
       alwaysOnTop: true,
       frame: false,
       closable: true,
@@ -46,6 +47,9 @@ function showDialog<T>(
       },
     });
     dialogs.add(window);
+    window.once('ready-to-show', () => {
+      window.show();
+    });
     if (options.devTools) {
       window.webContents.once('dom-ready', () => {
         window.webContents.openDevTools();
@@ -54,7 +58,6 @@ function showDialog<T>(
 
     if (isDev) {
       const search = new URLSearchParams({...query, route}).toString();
-      console.log(search);
       window.loadURL(`http://localhost:9080/?${search}`);
     } else {
       console.log(__dirname);
@@ -91,13 +94,16 @@ function createWindow(
     windows[route]!.focus();
     return windows[route];
   }
-  const window = new BrowserWindow({
-    webPreferences: {nodeIntegration: true},
 
+  const window = new BrowserWindow({
+    show: false,
+    webPreferences: {nodeIntegration: true},
     alwaysOnTop: true,
     ...options,
   });
-
+  window.once('ready-to-show', () => {
+    window.show();
+  });
   if (options.devTools) {
     window.webContents.once('dom-ready', () => {
       window.webContents.openDevTools();
