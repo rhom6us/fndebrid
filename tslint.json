@@ -1,12 +1,19 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "extends": ["tslint:recommended", "tslint-config-prettier", "tslint-react-hooks"],
   "jsRules": {},
+
   "rules": {
     "object-literal-sort-keys": false,
     "interface-name": false,
     "curly": false,
-    "no-shadowed-variable": false
+    "no-shadowed-variable": false,
+    "react-hooks-nesting": {
+      "severity": "error", // "error", "warning", "default" or "off"
+      "options": {
+        "detect-hooks-from-non-react-namespace": true
+      }
+    }
   },
   "rulesDirectory": []
 }
