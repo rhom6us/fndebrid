@@ -1,13 +1,15 @@
 import {Classes, ITreeNode, Tree} from '@blueprintjs/core';
 import {File, FileId} from '@fndebrid/real-debrid';
 import {groupBy} from 'lodash';
-import React, {MutableRefObject, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {forwardRef, RefForwardingComponent, useCallback, useImperativeHandle, useMemo, useState} from 'react';
 import {TreeNode as FnTreeNode, TreeNodeId} from './TreeNode';
 
-interface IOwnProps {
+export interface FileTreeProps {
   files: File[];
   onSelectionChanged: (fileIds: FileId[]) => void;
-  selectionSetter: MutableRefObject<((ids: FileId[]) => void) | undefined>;
+}
+export interface FileTreeInputHandles {
+  setSelections(ids: FileId[]): void;
 }
 function buildTree(fnFiles: File[], selections: Set<TreeNodeId>, expansions: Set<TreeNodeId>) {
   let id = 0;
@@ -28,68 +30,83 @@ function buildTree(fnFiles: File[], selections: Set<TreeNodeId>, expansions: Set
   }
   return rootNode;
 }
-export const FileTree: React.FC<IOwnProps> = ({files, onSelectionChanged, selectionSetter}) => {
+const FileTree: RefForwardingComponent<FileTreeInputHandles, FileTreeProps> = ({files, onSelectionChanged}, ref) => {
   // tslint:disable-next-line: variable-name
-  const [selections, _setSelections] = useState(new Set<TreeNodeId>());
-  const [expansions, setExpansions] = useState(new Set<TreeNodeId>());
+  const [_selections, _setSelections] = useState(new Set<TreeNodeId>());
+  // tslint:disable-next-line: variable-name
+  const [_expansions, setExpansions] = useState(new Set<TreeNodeId>());
 
-  const rootNode = useMemo(() => buildTree(files, selections, expansions), [files, selections, expansions]);
+  const rootNode = useMemo(() => buildTree(files, _selections, _expansions), [files, _selections, _expansions]);
 
   const setSelections = useCallback(
-    (selections: Set<TreeNodeId>) => {
-      const {selectedFolders, unselectedFolders} = groupBy(rootNode.folders, folder =>
-        selections.has(folder.id) ? 'selectedFolders' : 'unselectedFolders',
-      );
-      // tslint:disable-next-line: no-unused-expression
-      unselectedFolders &&
-        unselectedFolders
-          .filter(folder => folder.files.every(node => selections.has(node.id)))
-          .forEach(node => selections.add(node.id));
-      // tslint:disable-next-line: no-unused-expression
-      selectedFolders &&
-        selectedFolders
-          .filter(folder => !folder.files.every(node => selections.has(node.id)))
-          .forEach(node => selections.delete(node.id));
+    (fn: (selections: Set<TreeNodeId>) => Set<TreeNodeId>) => {
+      _setSelections(s => {
+        const selections = fn(s);
 
-      _setSelections(new Set(selections));
-      const selectedFileIds = rootNode.files.filter(node => selections.has(node.id)).map(node => node.nodeData.id);
-      onSelectionChanged(selectedFileIds);
+        const {selectedFolders, unselectedFolders} = groupBy(rootNode.folders, folder =>
+          selections.has(folder.id) ? 'selectedFolders' : 'unselectedFolders',
+        );
+        // tslint:disable-next-line: no-unused-expression
+        unselectedFolders &&
+          unselectedFolders
+            .filter(folder => folder.files.every(node => selections.has(node.id)))
+            .forEach(node => selections.add(node.id));
+        // tslint:disable-next-line: no-unused-expression
+        selectedFolders &&
+          selectedFolders
+            .filter(folder => !folder.files.every(node => selections.has(node.id)))
+            .forEach(node => selections.delete(node.id));
+
+        const selectedFileIds = rootNode.files.filter(node => selections.has(node.id)).map(node => node.nodeData.id);
+        onSelectionChanged(selectedFileIds);
+        return new Set(selections);
+      });
     },
     [rootNode, _setSelections, onSelectionChanged],
   );
 
-  useEffect(() => {
-    selectionSetter.current = sels => {
-      const files = rootNode.files;
-      // tslint:disable-next-line: triple-equals
-      const selectedNodeIds = sels.map(sel => files.filter(file => file.nodeData.id == sel)[0].id);
-      setSelections(new Set(selectedNodeIds));
-    };
-  }, [rootNode, selectionSetter, setSelections]);
+  useImperativeHandle(
+    ref,
+    () => ({
+      setSelections(ids) {
+        const files = rootNode.files;
+        // tslint:disable-next-line: triple-equals
+        const selectedNodeIds = ids.map(sel => files.filter(file => file.nodeData.id == sel)[0].id);
+        setSelections(_ => new Set(selectedNodeIds));
+      },
+    }),
+    [setSelections, rootNode.files],
+  );
 
-  function handleNodeClick(node: FnTreeNode<File>, nodePath: number[], e: React.MouseEvent<HTMLElement>) {
-    const selected = !!!node.isSelected;
-    if (selected) {
-      for (const {id} of node) {
-        selections.add(id);
-      }
-    } else {
-      for (const {id} of node) {
-        selections.delete(id);
-      }
-    }
-    setSelections(selections);
-  }
+  const handleNodeClick = useCallback(
+    (node: FnTreeNode<File>, nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
+      const selected = !!!node.isSelected;
+      setSelections(selections => {
+        if (selected) {
+          //   return selections.with(node.id);
+          // }
+          // return selections.without(node.id);
+          for (const {id} of node) {
+            selections.add(id);
+          }
+        } else {
+          for (const {id} of node) {
+            selections.delete(id);
+          }
+        }
+        return selections;
+      });
+    },
+    [setSelections],
+  );
 
-  function handleNodeCollapse(node: ITreeNode) {
-    expansions.delete(node.id);
-    setExpansions(new Set(expansions));
-  }
+  const handleNodeCollapse = useCallback((node: ITreeNode) => {
+    setExpansions(expansions => expansions.without(node.id));
+  }, []);
 
-  function handleNodeExpand(node: ITreeNode) {
-    expansions.add(node.id);
-    setExpansions(new Set(expansions));
-  }
+  const handleNodeExpand = useCallback((node: ITreeNode) => {
+    setExpansions(expansions => expansions.with(node.id));
+  }, []);
 
   return (
     <Tree
@@ -101,3 +118,4 @@ export const FileTree: React.FC<IOwnProps> = ({files, onSelectionChanged, select
     />
   );
 };
+export default forwardRef(FileTree);
