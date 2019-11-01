@@ -1,6 +1,7 @@
 import {Button, H1} from '@blueprintjs/core';
 import {ExtendedTorrent, FileId} from '@fndebrid/real-debrid';
-import React, {useCallback, useRef, useState} from 'react';
+import {intersection} from 'lodash';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {Dialog} from '../add-magnet/components';
 import FileTree from './FileTree';
 
@@ -22,6 +23,12 @@ export const FileSelect: React.FC<IOwnProps> = ({torrent, caches, onSubmit, onCa
     },
     [caches],
   );
+  const selectedCacheIndex = useMemo(() => {
+    if (!caches) return -1;
+    return caches.findIndex(
+      cache => cache.length === selections.length && intersection(cache, selections).length === cache.length,
+    );
+  }, [caches, selections]);
   return (
     <>
       <Dialog.Body>
@@ -32,7 +39,11 @@ export const FileSelect: React.FC<IOwnProps> = ({torrent, caches, onSubmit, onCa
           <ul>
             {caches.map((cache, index) => (
               <li style={{display: 'inline'}}>
-                <a onClick={() => selectCache(index)}>Cache {index} </a>
+                {index === selectedCacheIndex ? (
+                  <span>Cache {index}&nbsp;</span>
+                ) : (
+                  <a onClick={() => selectCache(index)}>Cache {index}&nbsp;</a>
+                )}
               </li>
             ))}
           </ul>
