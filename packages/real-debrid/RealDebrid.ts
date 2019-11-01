@@ -169,7 +169,7 @@ export class RealDebrid {
     }
     return Object.keys(hashResult)
       .flatMap(key => hashResult[key])
-      .map(p => Object.keys(p) as FileId[]);
+      .map(p => Object.keys(p).map(p => +p) as FileId[]);
   }
 
   public async downloadFile(linkInfo: LinkInfo, dir: string) {

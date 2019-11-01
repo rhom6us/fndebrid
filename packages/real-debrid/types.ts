@@ -3,7 +3,7 @@ import {Opaque} from '@fndebrid/core';
 export type TorrentId = Opaque<string, 'torrent_id'>;
 export type MagnetLink = Opaque<string, 'magnet_link'>;
 export type TorrentHash = Opaque<string, 'torrent_hash'>;
-export type FileId = Opaque<string, 'file_id'>;
+export type FileId = Opaque<number, 'file_id'>;
 export type Link = Opaque<string, 'link'>;
 export type ClientId = Opaque<string, 'client_id'>;
 export type ClientSecret = Opaque<string, 'client_secret'>;

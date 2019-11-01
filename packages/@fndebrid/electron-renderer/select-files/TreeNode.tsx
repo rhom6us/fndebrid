@@ -1,6 +1,5 @@
-import React from 'react';
-
 import {ITreeNode} from '@blueprintjs/core';
+import React from 'react';
 
 // tslint:disable: max-classes-per-file
 export type TreeNodeId = string | number;
@@ -19,21 +18,18 @@ export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>>
   //   const preparedPaths = paths.map(p => p.split('/').filter(Boolean));
   //   const results =  groupIt(preparedPaths);
   public static createRoot<T>() {
-    return new FolderNode<T>(-1, 'root', false, false);
+    return new FolderNode<T>(-1, 'root', false);
   }
 
   public abstract readonly childNodes?: Array<TreeNode<T>>;
   public abstract readonly hasCaret: boolean;
   public abstract readonly nodeData?: T;
   public abstract readonly isExpanded: boolean;
+  public abstract readonly isSelected: boolean;
 
   public label: JSX.Element;
 
-  protected constructor(
-    public readonly id: TreeNodeId,
-    public readonly name: string,
-    public readonly isSelected: boolean,
-  ) {
+  protected constructor(public readonly id: TreeNodeId, public readonly name: string) {
     this.label = <div>{this.name}</div>;
   }
 
@@ -96,21 +92,25 @@ export class FolderNode<T> extends TreeNode<T> {
   // public get label(): TreeNodeLabel {
   //   return 'this.name';
   // }
+  public isSelected = false;
   constructor(
     id: TreeNodeId,
     name: string,
-    isSelected: boolean,
     public readonly isExpanded: boolean,
     public readonly childNodes: Array<TreeNode<T>> = [],
   ) {
-    super(id, name, isSelected);
+    super(id, name);
   }
-  // public get isSelected() {
-  //   return this.childNodes.every(p => p.isSelected);
-  // }
-  // public set isSelected(value) {
-  //   this.childNodes.forEach(p => p.isSelected = true);
-  // }
+  // this dumb function is here bc the TreeView component I'm using can't read get properties, so I have to do this instead...
+  public finalize() {
+    this.folders.forEach(folder => {
+      if (folder.files.every(file => file.isSelected)) {
+        folder.isSelected = true;
+      }
+    });
+    return this;
+  }
+
   get folders() {
     return Array.from(this._folders);
   }
@@ -136,8 +136,8 @@ export class FolderNode<T> extends TreeNode<T> {
     this.childNodes.push(child);
     return child;
   }
-  public addFolder(id: number, name: string, selected: boolean, expanded: boolean) {
-    return this.addChild(new FolderNode<T>(id, name, selected, expanded));
+  public addFolder(id: number, name: string, expanded: boolean) {
+    return this.addChild(new FolderNode<T>(id, name, expanded));
   }
   public addFile(id: number, name: string, selected: boolean, data: T) {
     return this.addChild(new FileNode<T>(id, name, selected, data));
@@ -151,7 +151,7 @@ export class FileNode<T> extends TreeNode<T> {
   // public get label(): TreeNodeLabel {
   //   return this.name;
   // }
-  constructor(id: TreeNodeId, name: string, isSelected: boolean, public readonly nodeData: T) {
-    super(id, name, isSelected);
+  constructor(id: TreeNodeId, name: string, public readonly isSelected: boolean, public readonly nodeData: T) {
+    super(id, name);
   }
 }
