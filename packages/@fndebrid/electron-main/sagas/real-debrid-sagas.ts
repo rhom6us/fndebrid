@@ -1,4 +1,4 @@
-import {Unpack} from '@fndebrid/core';
+import {assertNever, Unpack} from '@fndebrid/core';
 import {Authorizor, getInfoHash, getInfoHashAsync, RealDebrid, TorrentHash} from '@fndebrid/real-debrid';
 import {
   addMagnet,
@@ -6,12 +6,14 @@ import {
   fetchTorrent,
   fetchTorrents,
   getCaches,
+  pollTorrents,
   selectFiles,
   setInfoHash,
 } from '@fndebrid/store/actions';
 import {shell} from 'electron';
 import Store from 'electron-store';
-import {all, call, delay, fork, put, takeEvery, takeLatest} from 'redux-saga/effects';
+import {all, call, cancel, delay, fork, put, take, takeEvery, takeLatest} from 'redux-saga/effects';
+import {ActionType, getType} from 'typesafe-actions';
 
 const storage = new Store();
 type Yield<T> = Unpack<T>;
@@ -20,15 +22,58 @@ const auth = new Authorizor(async (url: string) => shell.openExternal(url), stor
 const api = new RealDebrid(auth);
 
 const getErrorMsg = (err: any) =>
-  err instanceof Error ? err.stack! : typeof err === 'string' ? err : 'An unknown error has occured';
+  err instanceof Error
+    ? err
+    : typeof err === 'string'
+    ? new Error(err)
+    : Object.assign(new Error('An unknown error has occured. See the data property for potential details'), {
+        data: err,
+      });
 
 export function* saga() {
   yield all(
     [
+      function* pollTorrents_loop() {
+        while (true) {
+          const {
+            payload: {interval},
+          }: ActionType<typeof pollTorrents.request> = yield take(pollTorrents.request);
+          const task = yield fork(function*() {
+            let errorCount = 0;
+            while (true) {
+              yield put(fetchTorrents.request({activeOnly: true}));
+              const {
+                type,
+                payload,
+              }: ActionType<typeof fetchTorrents.success> | ActionType<typeof fetchTorrents.failure> = yield take([
+                fetchTorrents.success,
+                fetchTorrents.failure,
+              ]);
+              switch (type) {
+                case getType(fetchTorrents.success):
+                  errorCount = 0;
+                  break;
+                case getType(fetchTorrents.failure):
+                  if (errorCount++ >= 3) {
+                    yield put(pollTorrents.failure(getErrorMsg(payload)));
+                    yield cancel();
+                    return;
+                  }
+                  break;
+                default:
+                  assertNever(type);
+              }
+              yield delay(interval);
+            }
+          });
+          yield take(pollTorrents.cancel);
+          yield cancel(task);
+        }
+      },
       function* fetchTorrents_request() {
-        yield takeLatest(fetchTorrents.request, function*() {
+        yield takeLatest(fetchTorrents.request, function*({payload: {activeOnly}}) {
           try {
-            const torrents: Yield<typeof api.torrents> = yield call([api, api.torrents]);
+            const torrents: Yield<typeof api.torrents> = yield api.torrents(activeOnly);
 
             yield put(fetchTorrents.success(torrents));
           } catch (err) {
@@ -70,13 +115,13 @@ export function* saga() {
           try {
             const caches: Yield<typeof api.instantAvailability> = yield api.instantAvailability(hash);
             yield put(getCaches.success([caches, jobId]));
-          } catch (error) {
-            yield put(getCaches.failure(error));
+          } catch (err) {
+            yield put(getCaches.failure(getErrorMsg(err)));
           }
         });
       },
 
-      function* addTorrentMagnet_success() {
+      function* addMagnet_addTorrent_success() {
         yield takeEvery([addMagnet.success, addTorrentFile.success], function*({payload: [torrentId, jobId]}) {
           yield put(fetchTorrent.request(torrentId));
         });

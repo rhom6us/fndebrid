@@ -8,7 +8,7 @@ export const deleteTorrent = createAsyncAction(
   'real-debrid/deleteTorrent/request',
   'real-debrid/deleteTorrent/success',
   'real-debrid/deleteTorrent/error',
-)<TorrentId, TorrentId, string>();
+)<TorrentId, TorrentId, Error>();
 export const selectFiles = createAsyncAction(
   'real-debrid/selectFiles/request',
   'real-debrid/selectFiles/success',
@@ -19,25 +19,25 @@ export const fetchTorrent = createAsyncAction(
   'real-debrid/fetch/request',
   'real-debrid/fetch/success',
   'real-debrid/fetch/error',
-)<TorrentId, ExtendedTorrent, string>();
+)<TorrentId, ExtendedTorrent, Error>();
 
 export const fetchTorrents = createAsyncAction(
   'real-debrid/fetch-all/request',
   'real-debrid/fetch-all/success',
   'real-debrid/fetch-all/error',
-)<undefined, Torrent[], string>();
+)<{activeOnly: boolean}, Torrent[], Error>();
 
 export const addMagnet = createAsyncAction(
   'real-debrid/add-magnet/request',
   'real-debrid/add-magnet/success',
   'real-debrid/add-magnet/error',
-)<[MagnetLink, JobId], [TorrentId, JobId], string>();
+)<[MagnetLink, JobId], [TorrentId, JobId], Error>();
 
 export const addTorrentFile = createAsyncAction(
   'real-debrid/add-torrent-file/request',
   'real-debrid/add-torrent-file/success',
   'real-debrid/add-torrent-file/error',
-)<[string, JobId], [TorrentId, JobId], string>();
+)<[string, JobId], [TorrentId, JobId], Error>();
 export const getCaches = createAsyncAction(
   'real-debrid/get-caches/request',
   'real-debrid/get-caches/success',
@@ -46,9 +46,10 @@ export const getCaches = createAsyncAction(
 
 export const pollTorrents = createAsyncAction(
   'real-debrid/pollTorrents/request',
-  'real-debrid/pollTorrents/success',
-  'real-debrid/pollTorrents/error',
-)<{interval: number}, undefined, Error>();
+  'real-debrid/pollTorrents/success [NEVER]',
+  'real-debrid/pollTorrents/error [NEVER]',
+  'real-debrid/pollTorrents/cancel',
+)<{interval: number}, never, Error, undefined>();
 export const setInfoHash = createAction('real-debrid/set-info-hash', action => (jobId: JobId, infoHash: TorrentHash) =>
   action({jobId, infoHash}),
 );

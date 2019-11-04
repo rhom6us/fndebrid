@@ -55,7 +55,7 @@ const mapStateToProps: MapStateToProps<IStateProps, IOwnProps, State> = function
 const mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IOwnProps> = function(dispatch, ownProps) {
   return {
     loadTorrents() {
-      dispatch(actions.fetchTorrents.request());
+      dispatch(actions.fetchTorrents.request({activeOnly: false}));
     },
     setDownloadLocation(downloadLocation: string) {
       dispatch(actions.setPreferences({downloadLocation}));
