@@ -76,26 +76,6 @@
     //   "stopOnEntry": false
     // },
     {
-      "name": "native",
-      "type": "node",
-      "request": "launch",
-      // "preLaunchTask": "build main",
-      "cwd": "${workspaceRoot}/packages/electron-main",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
-      "windows": {
-        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
-      },
-      "runtimeArgs": ["--remote-debugging-port=9223", ".", "--debug"],
-      "env": {
-        "NODE_ENV": "development",
-        "DEBUG": "true"
-      },
-      "outputCapture": "std",
-      "sourceMaps": true,
-      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
-      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"]
-    },
-    {
       "name": "Attach - Electron: Renderer",
       "type": "chrome",
       "request": "attach",
@@ -113,9 +93,19 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/yarn/bin/yarn.js",
-      "args": ["watch:renderer"],
+      "args": ["workspace", "@fndebrid/electron-renderer", "serve"],
       "autoAttachChildProcesses": true,
-      "stopOnEntry": false
+      "stopOnEntry": false,
+      "serverReadyAction": {
+        "pattern": "Starting server on http://localhost:([0-9]+)",
+        "action": "debugWithChrome",
+        "webRoot": "${workspaceFolder}"
+      },
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:///./*": "${workspaceRoot}/packages/@fndebrid/electron-renderer/*",
+        "webpack:///../*": "${workspaceRoot}/packages/@fndebrid/*"
+      }
     },
     // {
     //   "name": "Webpack-dev-server: Renderer",
