@@ -1,25 +1,12 @@
-import {
-  H1,
-  InputGroup,
-  Card,
-  H5,
-  Button,
-  ButtonGroup,
-  AnchorButton,
-  Classes,
-  FormGroup,
-  ControlGroup,
-} from '@blueprintjs/core';
-import React, {useState, useEffect, useLayoutEffect, isValidElement} from 'react';
-import {TitleBar, Dialog} from './components';
-import styled from '@emotion/styled';
-import {handleStringChange} from '../helpers';
-import uuid5 from 'uuid/v5';
-import {ipcRenderer, clipboard} from 'electron';
-import {Flex} from './components/Flex';
-import {connect} from 'react-redux';
-import {MagnetLink} from '@fndebrid/real-debrid';
+import {Button, H5, InputGroup} from '@blueprintjs/core';
 import {isDev} from '@fndebrid/core';
+import {MagnetLink} from '@fndebrid/real-debrid';
+import {clipboard} from 'electron';
+import React, {useEffect, useState} from 'react';
+import uuid5 from 'uuid/v5';
+import {handleStringChange} from '../helpers';
+import {Dialog} from './components';
+
 const callbackId = uuid5(`http://fndebrid.butler.software/AddMagnet`, uuid5.URL);
 function tryReadClipboard() {
   try {
@@ -27,6 +14,7 @@ function tryReadClipboard() {
     if (isMagnetLink(clipText)) {
       return clipText;
     }
+    // tslint:disable-next-line: no-empty
   } catch (error) {}
   return '';
 }
@@ -34,6 +22,7 @@ function isMagnetLink(magnet: string) {
   try {
     const url = new URL(magnet);
     return url.protocol === 'magnet:';
+    // tslint:disable-next-line: no-empty
   } catch (e) {}
   return false;
 }
