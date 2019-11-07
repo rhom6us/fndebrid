@@ -1,22 +1,12 @@
 import {ITreeNode} from '@blueprintjs/core';
 import React from 'react';
+import {formatBytes} from './util';
 
 // tslint:disable: max-classes-per-file
 export type TreeNodeId = string | number;
 export type TreeNodeLabel = string | JSX.Element;
 
 export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>> {
-  //   static groupIt(array: string[][]): TreeNode<string>[] {
-  //     const { file, folder } = groupBy(array, p => p.length > 1 ? 'folder' : 'file');
-
-  //     const folderMap = groupBy(folder, p => p[0]);
-
-  //     const files = file && file.map(p => p[0]).map(p => new FileNode(id++, p, p));
-  //     const folders = Object.keys(folderMap).map(name => new FolderNode(id++, name, TreeNode.groupIt(folderMap[name].map(p => p.slice(1)))));
-  //     return [...files, ...folders];
-  //   }
-  //   const preparedPaths = paths.map(p => p.split('/').filter(Boolean));
-  //   const results =  groupIt(preparedPaths);
   public static createRoot<T>() {
     return new FolderNode<T>(-1, 'root', false);
   }
@@ -43,21 +33,9 @@ export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>>
           yield child;
         }
       }
-      // if (this instanceof FileNode) {
-      //   yield this;
-      //   return;
-      // }
-      // if (this.childNodes) {
-      //   for (const child of this.childNodes) {
-      //     yield* child._files;
-      //   }
-      // }
     }.call(this);
   }
 
-  // get descendants() {
-  //   return Array.from(this._descendants);
-  // }
   public *[Symbol.iterator](): Iterator<TreeNode<T>> {
     yield this;
     if (this.childNodes) {
@@ -66,32 +44,10 @@ export abstract class TreeNode<T> implements ITreeNode<T>, Iterable<TreeNode<T>>
       }
     }
   }
-  // get _descendants(): Iterable<TreeNode<T>> {
-  //   const tree = this;
-  //   return ({
-  //     *[Symbol.iterator]() {
-  //       if (tree.childNodes) {
-  //         for (const child of tree.childNodes) {
-  //           yield* child._descendants;
-  //         }
-  //       }
-  //     }
-  //   });
-  // return (function* (this: TreeNode<T>) {
-  //   if (this.childNodes) {
-  //     for (const child of this.childNodes) {
-  //       yield* child._descendants;
-  //     }
-  //   }
-  // }).call(this);
-  // }
 }
 export class FolderNode<T> extends TreeNode<T> {
   public readonly hasCaret = true;
   public readonly nodeData?: undefined;
-  // public get label(): TreeNodeLabel {
-  //   return 'this.name';
-  // }
   public isSelected = false;
   constructor(
     id: TreeNodeId,
@@ -121,12 +77,6 @@ export class FolderNode<T> extends TreeNode<T> {
           yield child;
         }
       }
-
-      // if (this.childNodes) {
-      //   for (const child of this.childNodes.filter(node => node instanceof FolderNode) as FolderNode<T>[]) {
-      //     yield* child._folders;
-      //   }
-      // }
     }.call(this);
   }
   public find(name: string): FolderNode<T> | undefined {
@@ -139,19 +89,26 @@ export class FolderNode<T> extends TreeNode<T> {
   public addFolder(id: number, name: string, expanded: boolean) {
     return this.addChild(new FolderNode<T>(id, name, expanded));
   }
-  public addFile(id: number, name: string, selected: boolean, data: T) {
-    return this.addChild(new FileNode<T>(id, name, selected, data));
+  public addFile(id: number, name: string, selected: boolean, data: T, size: number) {
+    return this.addChild(new FileNode<T>(id, name, selected, data, size));
   }
 }
 export class FileNode<T> extends TreeNode<T> {
   public readonly childNodes?: undefined;
   public readonly hasCaret = false;
   public readonly isExpanded = false;
-
-  // public get label(): TreeNodeLabel {
-  //   return this.name;
-  // }
-  constructor(id: TreeNodeId, name: string, public readonly isSelected: boolean, public readonly nodeData: T) {
+  constructor(
+    id: TreeNodeId,
+    name: string,
+    public readonly isSelected: boolean,
+    public readonly nodeData: T,
+    size: number,
+  ) {
     super(id, name);
+    this.label = (
+      <div>
+        {this.name} <small>({formatBytes(size)})</small>
+      </div>
+    );
   }
 }

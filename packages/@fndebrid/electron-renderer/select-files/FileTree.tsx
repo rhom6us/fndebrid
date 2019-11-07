@@ -26,7 +26,7 @@ function buildTree(fnFiles: File[], selections: FileId[], expansions: Set<TreeNo
         currentFolder.find(proposedFolderName) || currentFolder.addFolder(++id, proposedFolderName, expansions.has(id));
     }
 
-    currentFolder.addFile(++id, file, includes(selections, fnFile.id), fnFile);
+    currentFolder.addFile(++id, file, includes(selections, fnFile.id), fnFile, fnFile.bytes);
   }
   return rootNode.finalize();
 }

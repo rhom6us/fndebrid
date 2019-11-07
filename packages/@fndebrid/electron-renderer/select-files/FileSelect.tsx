@@ -4,6 +4,7 @@ import {intersection} from 'lodash';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {Dialog} from '../add-magnet/components';
 import FileTree from './FileTree';
+import {formatBytes} from './util';
 
 interface IOwnProps {
   torrent: ExtendedTorrent;
@@ -13,6 +14,13 @@ interface IOwnProps {
 }
 export const FileSelect: React.FC<IOwnProps> = ({torrent, caches, onSubmit, onCancel}) => {
   const [selections, setSelections] = useState<FileId[]>([]);
+  const totalSize = useMemo(
+    () =>
+      formatBytes(
+        torrent.files.filter(file => selections.includes(file.id)).reduce((sum, file) => sum + file.bytes, 0),
+      ),
+    [selections, torrent.files],
+  );
   const submit = useCallback(() => {
     onSubmit(selections);
   }, [onSubmit, selections]);
@@ -49,6 +57,7 @@ export const FileSelect: React.FC<IOwnProps> = ({torrent, caches, onSubmit, onCa
           </ul>
         )}
         <FileTree files={torrent.files} onSelectionsChanged={setSelections} selections={selections} />
+        {totalSize} selected
       </Dialog.Body>
       <Dialog.Footer>
         <Dialog.Footer.Actions>
