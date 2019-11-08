@@ -2,19 +2,23 @@ name: Node CI
 
 on: [push]
 
-jobs:  
+jobs:
   build:
     runs-on: ubuntu-latest
     env:
       CI: true
+    strategy:
+      matrix:
+        node_version: [12]
     steps:
     - uses: actions/checkout@v1
-    - uses: "docker://node:12"
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v1
       with:
-        cmd: invalid
-    - uses: "docker://node:12"
-      with:
-        cmd: yarn workspace @fndebrid/electron-main compile
-    - uses: "docker://node:12"
-      with:
-        cmd: yarn workspace @fndebrid/electron-renderer compile
+        version: ${{ matrix.node_version }}
+
+    - name: yarn install, yarn lint, yarn test, yarn build
+      run: |
+        yarn install
+        yarn workspace @fndebrid/electron-main compile
+        yarn workspace @fndebrid/electron-renderer compile
