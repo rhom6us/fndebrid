@@ -1,7 +1,7 @@
+import {InvalidOperationError} from '@fndebrid/core';
 import {app} from 'electron';
 import path from 'path';
 import {Associator} from './Associator';
-import {InvalidOperationError} from '@fndebrid/core';
 
 export class ProtocolHandler extends Associator {
   constructor(private protocol: string = 'magnet') {

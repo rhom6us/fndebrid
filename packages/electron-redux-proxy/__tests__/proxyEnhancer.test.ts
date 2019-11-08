@@ -1,4 +1,4 @@
-import { proxyEnhancer, createStore } from '../src';
+import { createStore, proxyEnhancer } from '../src';
 
 test('proxyEnhancer exports', () => {
   expect(proxyEnhancer).toBeDefined();

@@ -1,6 +1,6 @@
-import {createReducer, ActionType} from 'typesafe-actions';
-import {State, defaultState} from './state';
+import {ActionType, createReducer} from 'typesafe-actions';
 import * as actions from './actions';
+import {defaultState, State} from './state';
 
 export const reducer = createReducer<State, ActionType<typeof actions>>(defaultState)
   .handleAction(actions.setPreferences, (state, {payload}) => ({...state, ...payload}))

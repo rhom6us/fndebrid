@@ -1,6 +1,7 @@
-import {createAction, ActionType, createAsyncAction} from 'typesafe-actions';
-import State from './state';
+import {ActionType, createAction, createAsyncAction} from 'typesafe-actions';
 import {AsyncActionCreator, createBetterAsyncAction} from '../better-async-creator';
+import State from './state';
+
 // import { createBetterAsyncAction as createAsyncAction } from "../better-async-creator";
 
 export const chooseDownloadLocation = createAction('preferences/choose-download-location', action => () => action());

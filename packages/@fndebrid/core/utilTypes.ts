@@ -1,4 +1,5 @@
 import {Merge as MergeFest} from 'type-fest';
+
 export type Opaque<Type, Scope extends string> = Type & {readonly __name__: Scope; readonly __opaque__: unique symbol};
 export type Uuid = Opaque<string, 'uuid'>;
 export type Await<T> = T extends Promise<infer U> ? U : T;

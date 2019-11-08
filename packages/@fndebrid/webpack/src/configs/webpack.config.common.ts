@@ -4,7 +4,7 @@ import path from 'path';
 import webpack from 'webpack';
 import WebpackBar from 'webpackbar';
 import {typescriptRule} from './rules';
-import {isDev, mode, outDir, sourceDir, staticSourceDir, watch, app} from './settings';
+import {app, isDev, mode, outDir, sourceDir, staticSourceDir, watch} from './settings';
 
 export const config: webpack.Configuration = {
   mode,

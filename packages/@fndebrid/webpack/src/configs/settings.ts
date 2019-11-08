@@ -1,4 +1,5 @@
 import path from 'path';
+
 export const mode = <'production' | 'development'>process.env.NODE_ENV || 'development';
 export const isDev = mode != 'production';
 export const sourceDir = path.resolve('.');

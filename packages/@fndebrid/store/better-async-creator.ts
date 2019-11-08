@@ -1,9 +1,4 @@
-import {
-  TypeConstant,
-  AsyncActionBuilder,
-  // ActionBuilderMap,
-} from 'typesafe-actions';
-import {createStandardAction, ActionCreator, TypeMeta} from 'typesafe-actions';
+import {ActionCreator, AsyncActionBuilder, createStandardAction, TypeConstant, TypeMeta} from 'typesafe-actions';
 import {ActionBuilderConstructor} from 'typesafe-actions/dist/type-helpers';
 
 export type AsyncActionCreator<

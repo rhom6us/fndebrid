@@ -2,18 +2,18 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import webpack from 'webpack';
-import {config} from './webpack.config.common';
 import {
   fontRule,
   globalStylesheetRule,
   htmlRule,
   imageRule,
   nodeRule,
-  stylesheetRule,
-  scriptRule,
   reactTypescriptRule,
+  scriptRule,
+  stylesheetRule,
 } from './rules';
-import {staticSourceDir, app} from './settings';
+import {app, staticSourceDir} from './settings';
+import {config} from './webpack.config.common';
 
 export default <webpack.Configuration>{
   ...config,

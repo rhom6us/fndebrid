@@ -1,5 +1,5 @@
 import {ActionCreator as TsActionsActionCreator, TypeConstant} from 'typesafe-actions';
-import {Dispatch, Store} from '.';
+import {Dispatch, Store} from './';
 import * as actions from './actions';
 
 type ActionCreator = TsActionsActionCreator<TypeConstant>;

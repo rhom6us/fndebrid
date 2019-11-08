@@ -1,9 +1,10 @@
-import {all, fork, takeLatest, put, call, select} from 'redux-saga/effects';
+import {Unpack} from '@fndebrid/core';
+import * as actions from '@fndebrid/store/preferences/actions';
+import {app, BrowserWindow, dialog} from 'electron';
+import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import ProtocolHandler from '../ProtocolHandler';
 import torrentFileHandler from '../torrent-file-associator';
-import {app, dialog, BrowserWindow} from 'electron';
-import * as actions from '@fndebrid/store/preferences/actions';
-import {Unpack} from '@fndebrid/core';
+
 // import { protocolHandler, torrentFileHandler } from '../../Application';
 
 type Yield<T> = Unpack<T>;

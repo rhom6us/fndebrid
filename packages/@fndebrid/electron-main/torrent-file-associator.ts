@@ -1,6 +1,6 @@
+import {RegistryHive as Registry} from '@fndebrid/core/registry';
 // import Registry from 'winreg';
 import path from 'path';
-import {RegistryHive as Registry} from '@fndebrid/core/registry';
 
 async function setAssReg(ns: string, ext: string, execPath: string) {
   const nsPath = Registry.HKCU.withPath('Software/Classes').withPath(ns);

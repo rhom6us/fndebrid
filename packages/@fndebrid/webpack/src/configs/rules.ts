@@ -1,4 +1,5 @@
 import {
+  babelLoader,
   cssHotLoader,
   cssHotModuleLoader,
   cssLoader,
@@ -8,9 +9,9 @@ import {
   postcssLoader,
   sassLoader,
   tsLoader,
-  babelLoader,
 } from './loaders';
 import {isDev} from './settings';
+
 import MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 export const typescriptRule = {

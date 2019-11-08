@@ -1,7 +1,7 @@
 // @flow
 
 import fs from 'fs';
-import {streamWithProgress, ByteProgressCallback} from './streamWithProgress';
+import {ByteProgressCallback, streamWithProgress} from './streamWithProgress';
 
 // Public: Download a file and store it on a file system using streaming with appropriate progress callback.
 //

@@ -1,4 +1,4 @@
-import {keys, isObject} from 'lodash';
+import {isObject, keys} from 'lodash';
 
 const isShallow = (val: any) => Array.isArray(val) || !isObject(val);
 
