@@ -1,10 +1,5 @@
 name: BuildCI
- 
-on:
-  push:
-      # Sequence of patterns matched against refs/heads
-      branches:    
-        - dev 
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,14 +9,14 @@ jobs:
       matrix:
         node_version: [12]
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node_version }}
-      uses: actions/setup-node@v1
-      with:
-        version: ${{ matrix.node_version }}
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          version: ${{ matrix.node_version }}
 
-    - name: yarn install, yarn lint, yarn test, yarn build
-      run: |
-        yarn install
-        yarn workspace @fndebrid/electron-main compile
-        yarn workspace @fndebrid/electron-renderer compile
+      - name: yarn install, yarn lint, yarn test, yarn build
+        run: |
+          yarn install
+          yarn workspace @fndebrid/electron-main compile
+          yarn workspace @fndebrid/electron-renderer compile
