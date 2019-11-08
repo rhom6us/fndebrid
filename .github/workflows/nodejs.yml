@@ -4,27 +4,17 @@ on: [push]
 
 jobs:  
   build:
-    name: Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.8.1]
+    env:
+      CI: true
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - uses: "docker://node:12"
       with:
-        node-version: ${{ matrix.node-version }}
-    - uses: nuxt/actions-yarn@master
+        cmd: yarn install
+    - uses: "docker://node:12"
       with:
-        args: install # will run `yarn install` command
-    - uses: nuxt/actions-yarn@master
+        cmd: yarn workspace @fndebrid/electron-main compile
+    - uses: "docker://node:12"
       with:
-        args: workspace @fndebrid/electron-main compile
-      env:
-        CI: true
-    - uses: nuxt/actions-yarn@master
-      with:
-        args: workspace @fndebrid/electron-renderer compile
-      env:
-        CI: true
+        cmd: yarn workspace @fndebrid/electron-renderer compile
