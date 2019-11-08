@@ -1,3 +1,4 @@
+![CI Build Status](https://github.com/rhom6us/fndebrid/workflows/BuildCI/badge.svg)
 # fnDebrid
 > A real-debrid desktop app.
 
