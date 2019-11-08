@@ -83,7 +83,7 @@ export const imageLoader = {
 export const tsLoader = {
   loader: 'ts-loader',
   options: {
-    transpileOnly: false,
+    transpileOnly: true,
     allowTsInNodeModules: false,
     // projectReferences: true,
     // appendTsSuffixTo: [{}],
