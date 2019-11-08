@@ -22,7 +22,7 @@ if (isDev || DEBUG) {
   });
 }
 const storage = new Store();
-
+fu.bar = baz.hello.world + asdf;
 function appReady() {
   createAppIcon();
 
