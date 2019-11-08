@@ -8,23 +8,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12.8.1]
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: borales/actions-yarn@v2.0.0
+    - uses: nuxt/actions-yarn@master
       with:
-        cmd: install # will run `yarn install` command
-    - uses: borales/actions-yarn@v2.0.0
+        args: install # will run `yarn install` command
+    - uses: nuxt/actions-yarn@master
       with:
-        cmd: workspace @fndebrid/electron-main compile
+        args: workspace @fndebrid/electron-main compile
       env:
         CI: true
-    - uses: borales/actions-yarn@v2.0.0
+    - uses: nuxt/actions-yarn@master
       with:
-        cmd: workspace @fndebrid/electron-renderer compile
+        args: workspace @fndebrid/electron-renderer compile
       env:
         CI: true
