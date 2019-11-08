@@ -1,6 +1,6 @@
-import {Navbar, Button, Alignment, Classes} from '@blueprintjs/core';
-import React from 'react';
+import {Alignment, Button, Classes, Navbar} from '@blueprintjs/core';
 import styled from '@emotion/styled';
+import React from 'react';
 
 const DraggableNavBar = styled(Navbar)`
   -webkit-user-select: none;

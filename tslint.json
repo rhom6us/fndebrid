@@ -9,7 +9,7 @@
     "curly": false,
     "no-shadowed-variable": false,
     "react-hooks-nesting": {
-      "severity": "error", // "error", "warning", "default" or "off"
+      "severity": "off", // "error", "warning", "default" or "off"
       "options": {
         "detect-hooks-from-non-react-namespace": true
       }

@@ -1,10 +1,8 @@
-import React from 'react';
-import configureStore from '../configureStore';
-import {useTheme} from '../ThemeContext';
-import Demo from './Demo';
 import styled from '@emotion/styled';
-
-const store = configureStore();
+import React from 'react';
+import {useStore} from 'react-redux';
+import {useTheme} from '../../ThemeContext';
+import {Demo} from './Demo';
 
 const Wrapper = styled('div')``;
 
@@ -12,8 +10,9 @@ const Wrapper = styled('div')``;
 //   ${reset}
 //   /* other styles */
 // `
-export default ({}) => {
+export const Main = ({}) => {
   const themeState = useTheme();
+  const store = useStore();
   return (
     <Wrapper>
       <h1>yee haw</h1>

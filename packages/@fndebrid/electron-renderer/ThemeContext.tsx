@@ -1,13 +1,14 @@
-import React from 'react';
-import {ThemeProvider as EmotionThemeProvider} from 'emotion-theming';
-import styledInternal, {CreateStyled} from '@emotion/styled';
-import theme, {Theme} from './theme';
 import {Classes} from '@blueprintjs/core';
+import styled, {CreateStyled} from '@emotion/styled';
 import classNames from 'classnames';
-import styles from './bpjs/core';
-import styled from '@emotion/styled';
-import ResizeDetector from 'react-resize-detector';
 import {ipcRenderer} from 'electron';
+import {ThemeProvider as EmotionThemeProvider} from 'emotion-theming';
+import React from 'react';
+import ResizeDetector from 'react-resize-detector';
+import styles from './bpjs/core';
+import theme, {Theme} from './theme';
+
+// tslint:disable-next-line: no-empty
 export const ThemeContext = React.createContext({dark: true, toggle: () => {}});
 export const useTheme = () => React.useContext(ThemeContext);
 

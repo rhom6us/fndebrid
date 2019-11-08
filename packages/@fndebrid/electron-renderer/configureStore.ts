@@ -1,5 +1,5 @@
-import {Store} from 'redux';
 import {createStore} from 'electron-redux-proxy';
+import {Store} from 'redux';
 
 // let store: any;//Store<State>;
 // store = new StoreProxy();

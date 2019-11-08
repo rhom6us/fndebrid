@@ -1,31 +1,14 @@
 import {Button, H5, InputGroup} from '@blueprintjs/core';
 import {isDev} from '@fndebrid/core';
 import {MagnetLink} from '@fndebrid/real-debrid';
-import {clipboard} from 'electron';
 import React, {useEffect, useState} from 'react';
 import uuid5 from 'uuid/v5';
-import {handleStringChange} from '../helpers';
-import {Dialog} from './components';
+import {Dialog} from '../../../components';
+import {handleStringChange} from '../../../helpers';
+import {isMagnetLink, tryReadClipboard} from './util';
 
 const callbackId = uuid5(`http://fndebrid.butler.software/AddMagnet`, uuid5.URL);
-function tryReadClipboard() {
-  try {
-    const clipText = clipboard.readText();
-    if (isMagnetLink(clipText)) {
-      return clipText;
-    }
-    // tslint:disable-next-line: no-empty
-  } catch (error) {}
-  return '';
-}
-function isMagnetLink(magnet: string) {
-  try {
-    const url = new URL(magnet);
-    return url.protocol === 'magnet:';
-    // tslint:disable-next-line: no-empty
-  } catch (e) {}
-  return false;
-}
+
 interface IOwnProps {
   onSubmit: (magnetLink: MagnetLink) => void;
   onCancel: () => void;

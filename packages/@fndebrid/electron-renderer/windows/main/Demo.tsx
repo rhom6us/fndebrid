@@ -17,10 +17,8 @@ interface IDispatchProps {
 
 export type Props = IOwnProps & IStateProps & IDispatchProps;
 
-const Myfc: React.FC<Props> = props => {
+const DemoInternal: React.FC<Props> = props => {
   const [pendingValue, setPendingValue] = useState(props.downloadLocation);
-
-  const store = useStore();
 
   const submitChange = () => {
     props.setDownloadLocation(pendingValue);
@@ -62,7 +60,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IOwnProps> 
   };
 };
 
-export default connect(
+export const Demo = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Myfc);
+)(DemoInternal);

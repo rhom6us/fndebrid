@@ -5,14 +5,15 @@ import {JobId} from '@fndebrid/store/real-debrid';
 import React, {useEffect, useMemo, useState} from 'react';
 import {connect} from 'react-redux';
 import uuid5 from 'uuid/v5';
+import {Dialog} from '../../components';
 import AddMagnet from './add-magnet';
-import {Dialog} from './add-magnet/components';
-import {FileSelect} from './select-files';
+import FileSelect from './file-select';
 
 const params = new URL(window.location.href).searchParams;
 const initialJobId = params.get('jobid') as JobId;
 const intitialTorrentId = params.get('torrentid') as TorrentId;
 
+// tslint:disable-next-line: no-empty-interface
 interface IOwnProps {}
 function mapStateToProps(state: State, ownProps: IOwnProps) {
   return {

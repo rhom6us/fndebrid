@@ -1,9 +1,9 @@
 import {Button, H1} from '@blueprintjs/core';
 import {ExtendedTorrent, FileId} from '@fndebrid/real-debrid';
 import {intersection} from 'lodash';
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {Dialog} from '../add-magnet/components';
-import FileTree from './FileTree';
+import React, {useCallback, useMemo, useState} from 'react';
+import {Dialog} from '../../../components';
+import {FileTree} from './FileTree';
 import {formatBytes} from './util';
 
 interface IOwnProps {

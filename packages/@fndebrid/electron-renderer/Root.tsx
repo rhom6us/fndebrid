@@ -2,11 +2,9 @@ import React from 'react';
 import {hot} from 'react-hot-loader';
 import {Provider} from 'react-redux';
 import {Router} from 'react-router-static';
-import {AddTorrent} from './AddTorrent';
 import configureStore from './configureStore';
-import Main from './main';
-import Preferences from './preferences';
 import {ThemeProvider} from './ThemeContext';
+import {AddTorrent, Main, Preferences} from './windows';
 
 const store = configureStore();
 

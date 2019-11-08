@@ -1,8 +1,8 @@
 import {Classes, ITreeNode, Tree} from '@blueprintjs/core';
 import {File, FileId} from '@fndebrid/real-debrid';
-import {difference, includes, union} from 'lodash';
+import {difference, union} from 'lodash';
 import React, {FC, useCallback, useMemo, useState} from 'react';
-import {TreeNode as FnTreeNode, TreeNodeId} from './TreeNode';
+import {buildTree, FnTreeNode, TreeNodeId} from './models';
 
 export interface FileTreeProps {
   files: File[];
@@ -10,34 +10,14 @@ export interface FileTreeProps {
   onSelectionsChanged: (fileIds: FileId[]) => void;
 }
 
-function buildTree(fnFiles: File[], selections: FileId[], expansions: Set<TreeNodeId>) {
-  let id = 0;
-  const rootNode = FnTreeNode.createRoot<File>();
-
-  for (const fnFile of fnFiles) {
-    const [file, ...folders] = fnFile.path
-      .split('/')
-      .filter(Boolean)
-      .reverse();
-    let currentFolder = rootNode;
-    while (folders.length) {
-      const proposedFolderName = folders.pop()!;
-      currentFolder =
-        currentFolder.find(proposedFolderName) || currentFolder.addFolder(++id, proposedFolderName, expansions.has(id));
-    }
-
-    currentFolder.addFile(++id, file, includes(selections, fnFile.id), fnFile, fnFile.bytes);
-  }
-  return rootNode.finalize();
-}
-const FileTree: FC<FileTreeProps> = ({files, selections, onSelectionsChanged}) => {
+export const FileTree: FC<FileTreeProps> = ({files, selections, onSelectionsChanged}) => {
   // tslint:disable-next-line: variable-name
   const [_expansions, setExpansions] = useState(new Set<TreeNodeId>());
 
   const rootNode = useMemo(() => buildTree(files, selections, _expansions), [files, selections, _expansions]);
 
   const handleNodeClick = useCallback(
-    (node: FnTreeNode<File>, nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
+    (node: FnTreeNode, nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
       const selected = !!!node.isSelected;
       const allDescendants = node.files.map(file => file.nodeData.id);
       if (selected) {
@@ -67,4 +47,3 @@ const FileTree: FC<FileTreeProps> = ({files, selections, onSelectionsChanged}) =
     />
   );
 };
-export default FileTree;

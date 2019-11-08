@@ -12,19 +12,21 @@ import {
   TagInput,
 } from '@blueprintjs/core';
 import styled from '@emotion/styled';
+import {Action, Dispatch, getDispatcher, State} from '@fndebrid/store';
+import {AutoDeleteTorrentFileOption} from '@fndebrid/store/preferences';
 import {remote} from 'electron';
 import React, {useEffect} from 'react';
 import {connect, MapDispatchToPropsFunction, MapStateToProps} from 'react-redux';
 import {handleBooleanChange, handleStringChange} from '../../helpers';
-import {AutoDeleteTorrentFileOption} from '@fndebrid/store/preferences';
-import {getDispatcher, State, Action, Dispatch} from '@fndebrid/store';
+
 const app = remote.app;
+// tslint:disable-next-line: no-empty-interface
 interface IOwnProps {}
 
-const mapStateToProps = function(state: State, ownProps: IOwnProps) {
+function mapStateToProps(state: State, ownProps: IOwnProps) {
   return state.preferences;
-};
-const mapDispatchToProps = function(dispatch: Dispatch, ownProps: IOwnProps) {
+}
+function mapDispatchToProps(dispatch: Dispatch, ownProps: IOwnProps) {
   const dispatcher = getDispatcher(dispatch);
   return {
     ...dispatcher,
@@ -36,14 +38,14 @@ const mapDispatchToProps = function(dispatch: Dispatch, ownProps: IOwnProps) {
       dispatcher.setPreferences({autoDeleteTorrentFile}),
     setAutoDownloadTorrents: (autoDownloadTorrents: boolean) => dispatcher.setPreferences({autoDownloadTorrents}),
     setAutoSelectFiles(autoSelectFiles: 'none' | 'all_files' | 'largest_files' | 'pattern', pattern?: string) {
-      if (autoSelectFiles == 'pattern') return dispatcher.setAutoSelectFilesPattern(pattern!);
+      if (autoSelectFiles === 'pattern') return dispatcher.setAutoSelectFilesPattern(pattern!);
 
       return dispatcher.setAutoSelectFiles(autoSelectFiles);
     },
     setAutoSubmitAutoSelectedFiles: (autoSubmitAutoSelectedFiles: boolean) =>
       dispatcher.setPreferences({autoSubmitAutoSelectedFiles}),
   };
-};
+}
 
 const SubRadioGroup = styled(RadioGroup)`
   padding-left: 20px;
@@ -56,7 +58,7 @@ const RootElement = styled('section')({
 const ListContainer = styled('div')({
   display: 'flex',
   flexWrap: 'wrap',
-  justifyContent: 'space-between', //'center',
+  justifyContent: 'space-between', // 'center',
   alignItems: 'stretch',
   padding: '25px 0',
 });
@@ -66,11 +68,17 @@ const ListItem = styled(FormGroup)({
   flexBasis: '40%',
   margin: '0 20px',
 });
-const Preferences: React.FC<
-  IOwnProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>
-> = props => {
+export type StateProps = ReturnType<typeof mapStateToProps>;
+export type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+export type Props = IOwnProps & StateProps & DispatchProps;
+export const Preferences = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)((props => {
   useEffect(() => {
-    props.downloadLocation || props.setDefaultDownloadLocation();
+    if (!props.downloadLocation) {
+      props.setDefaultDownloadLocation();
+    }
   });
   return (
     <RootElement>
@@ -109,10 +117,10 @@ const Preferences: React.FC<
         />
         <Switch
           label='Automatically delete torrent files...'
-          checked={props.autoDeleteTorrentFile != 'never'}
+          checked={props.autoDeleteTorrentFile !== 'never'}
           onChange={handleBooleanChange(value => props.setAutoDeleteTorrentFile(value ? 'torrent_added' : 'never'))}
         />
-        {props.autoDeleteTorrentFile != 'never' && (
+        {props.autoDeleteTorrentFile !== 'never' && (
           <SubRadioGroup
             onChange={handleStringChange(props.setAutoDeleteTorrentFile as any)}
             selectedValue={props.autoDeleteTorrentFile}>
@@ -158,8 +166,4 @@ const Preferences: React.FC<
       </Callout>
     </RootElement>
   );
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Preferences);
+}) as React.FC<Props>);

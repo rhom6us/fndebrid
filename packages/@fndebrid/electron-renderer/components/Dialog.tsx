@@ -1,6 +1,6 @@
-import {Dialog as BpDialog, Classes} from '@blueprintjs/core';
-import React, {PropsWithChildren} from 'react';
+import {Classes, Dialog as BpDialog} from '@blueprintjs/core';
 import styled from '@emotion/styled';
+import React, {PropsWithChildren} from 'react';
 
 const HeightBpDialog = styled(BpDialog)`
   height: 100vh;
