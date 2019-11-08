@@ -1,3 +1,4 @@
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import {
   babelLoader,
   cssHotLoader,
@@ -12,16 +13,15 @@ import {
 } from './loaders';
 import {isDev} from './settings';
 
-import MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
+//#region code
 export const typescriptRule = {
-  test: /\.tsx?$/i,
-  exclude: /node_modules\/(?!@fndebrid\b)/i,
+  test: /\.ts$/i,
+  exclude: /node_modules/i,
   use: [tsLoader],
 };
 export const reactTypescriptRule = {
   test: /\.tsx?$/i,
-  //include: /node_modules/i,
+  exclude: /node_modules/i,
   use: ['react-hot-loader/webpack', tsLoader],
 };
 export const scriptRule = {
@@ -33,6 +33,9 @@ export const nodeRule = {
   test: /\.node$/i,
   use: 'node-loader',
 };
+//#endregion
+
+//#region styles
 export const globalStylesheetRule = {
   test: /\b(global|vars)\.s?css$/i,
   use: [...(isDev ? [cssHotLoader] : []), MiniCssExtractPlugin.loader, cssLoader, postcssLoader, sassLoader],
@@ -48,7 +51,9 @@ export const stylesheetRule = {
     sassLoader,
   ],
 };
+//#endregion
 
+//#region assets
 export const imageRule = {
   test: /\.(png|jpg|gif)$/i,
   use: [imageLoader],
@@ -63,3 +68,4 @@ export const htmlRule = {
   test: /\.(html)$/i,
   use: ['html-loader'],
 };
+//#endregion

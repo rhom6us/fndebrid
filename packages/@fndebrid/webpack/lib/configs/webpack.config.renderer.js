@@ -23,9 +23,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var html_webpack_plugin_1 = __importDefault(require("html-webpack-plugin"));
 var mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
-var webpack_config_common_1 = require("./webpack.config.common");
 var rules_1 = require("./rules");
-exports.default = __assign(__assign({}, webpack_config_common_1.config), { target: 'electron-renderer', resolve: __assign(__assign({}, webpack_config_common_1.config.resolve), { extensions: __spreadArrays(webpack_config_common_1.config.resolve.extensions, ['.tsx', '.css', '.scss']) }), module: __assign(__assign({}, webpack_config_common_1.config.module), { rules: __spreadArrays(webpack_config_common_1.config.module.rules, [
+var webpack_config_common_1 = __importDefault(require("./webpack.config.common"));
+exports.default = __assign(__assign({}, webpack_config_common_1.default), { target: 'electron-renderer', resolve: __assign(__assign({}, webpack_config_common_1.default.resolve), { extensions: __spreadArrays(webpack_config_common_1.default.resolve.extensions, ['.tsx', '.css', '.scss']) }), module: __assign(__assign({}, webpack_config_common_1.default.module), { rules: __spreadArrays(webpack_config_common_1.default.module.rules, [
             rules_1.reactTypescriptRule,
             rules_1.nodeRule,
             rules_1.globalStylesheetRule,
@@ -33,7 +33,7 @@ exports.default = __assign(__assign({}, webpack_config_common_1.config), { targe
             rules_1.imageRule,
             rules_1.fontRule,
             rules_1.htmlRule,
-        ]) }), plugins: __spreadArrays(webpack_config_common_1.config.plugins, [
+        ]) }), plugins: __spreadArrays(webpack_config_common_1.default.plugins, [
         new html_webpack_plugin_1.default({
             title: 'Webpack App',
             // template: `!!html-loader?minimize=false&url=false!${path.resolve(rendererSourceDir, 'template.html')}`,
@@ -53,4 +53,4 @@ exports.default = __assign(__assign({}, webpack_config_common_1.config), { targe
             chunkFilename: '[id].styles.css',
         }),
     ]) });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoid2VicGFjay5jb25maWcucmVuZGVyZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvY29uZmlncy93ZWJwYWNrLmNvbmZpZy5yZW5kZXJlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLDRFQUFvRDtBQUNwRCxvRkFBMkQ7QUFHM0QsaUVBQStDO0FBQy9DLGlDQVNpQjtBQUdqQixrQkFBZSxzQkFDViw4QkFBTSxLQUNULE1BQU0sRUFBRSxtQkFBbUIsRUFDM0IsT0FBTyx3QkFDRiw4QkFBTSxDQUFDLE9BQU8sS0FDakIsVUFBVSxpQkFBTSw4QkFBTSxDQUFDLE9BQU8sQ0FBQyxVQUFVLEdBQUUsTUFBTSxFQUFFLE1BQU0sRUFBRSxPQUFPLE9BRXBFLE1BQU0sd0JBQ0QsOEJBQU0sQ0FBQyxNQUFNLEtBQ2hCLEtBQUssaUJBQ0EsOEJBQU0sQ0FBQyxNQUFNLENBQUMsS0FBSztZQUN0QiwyQkFBbUI7WUFDbkIsZ0JBQVE7WUFDUiw0QkFBb0I7WUFDcEIsc0JBQWM7WUFDZCxpQkFBUztZQUNULGdCQUFRO1lBQ1IsZ0JBQVE7ZUFHWixPQUFPLGlCQUNGLDhCQUFNLENBQUMsT0FBTztRQUNqQixJQUFJLDZCQUFpQixDQUFDO1lBQ3BCLEtBQUssRUFBRSxhQUFhO1lBQ3BCLDBHQUEwRztZQUMxRyxRQUFRLEVBQUssT0FBTyxVQUFPO1lBQzNCLHFCQUFxQjtZQUNyQixNQUFNLEVBQUUsTUFBTTtZQUNkLG1CQUFtQjtZQUNuQixNQUFNLEVBQUUsS0FBSztZQUNiLHFCQUFxQjtZQUNyQixvREFBb0Q7WUFDcEQsSUFBSSxFQUFFO2dCQUNKLFFBQVEsRUFBRSx1REFBdUQ7YUFDbEU7U0FDRixDQUFDO1FBQ0YsSUFBSSxpQ0FBb0IsQ0FBQztZQUN2QixRQUFRLEVBQUUsaUJBQWlCO1lBQzNCLGFBQWEsRUFBRSxpQkFBaUI7U0FFakMsQ0FBQztTQUVMLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoid2VicGFjay5jb25maWcucmVuZGVyZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvY29uZmlncy93ZWJwYWNrLmNvbmZpZy5yZW5kZXJlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLDRFQUFvRDtBQUNwRCxvRkFBMkQ7QUFHM0QsaUNBUWlCO0FBQ2pCLGtGQUE2QztBQUU3QyxrQkFBZSxzQkFDViwrQkFBTSxLQUNULE1BQU0sRUFBRSxtQkFBbUIsRUFDM0IsT0FBTyx3QkFDRiwrQkFBTSxDQUFDLE9BQU8sS0FDakIsVUFBVSxpQkFBTSwrQkFBTSxDQUFDLE9BQU8sQ0FBQyxVQUFVLEdBQUUsTUFBTSxFQUFFLE1BQU0sRUFBRSxPQUFPLE9BRXBFLE1BQU0sd0JBQ0QsK0JBQU0sQ0FBQyxNQUFNLEtBQ2hCLEtBQUssaUJBQ0EsK0JBQU0sQ0FBQyxNQUFNLENBQUMsS0FBSztZQUN0QiwyQkFBbUI7WUFDbkIsZ0JBQVE7WUFDUiw0QkFBb0I7WUFDcEIsc0JBQWM7WUFDZCxpQkFBUztZQUNULGdCQUFRO1lBQ1IsZ0JBQVE7ZUFHWixPQUFPLGlCQUNGLCtCQUFNLENBQUMsT0FBTztRQUNqQixJQUFJLDZCQUFpQixDQUFDO1lBQ3BCLEtBQUssRUFBRSxhQUFhO1lBQ3BCLDBHQUEwRztZQUMxRyxRQUFRLEVBQUssT0FBTyxVQUFPO1lBQzNCLHFCQUFxQjtZQUNyQixNQUFNLEVBQUUsTUFBTTtZQUNkLG1CQUFtQjtZQUNuQixNQUFNLEVBQUUsS0FBSztZQUNiLHFCQUFxQjtZQUNyQixvREFBb0Q7WUFDcEQsSUFBSSxFQUFFO2dCQUNKLFFBQVEsRUFBRSx1REFBdUQ7YUFDbEU7U0FDRixDQUFDO1FBQ0YsSUFBSSxpQ0FBb0IsQ0FBQztZQUN2QixRQUFRLEVBQUUsaUJBQWlCO1lBQzNCLGFBQWEsRUFBRSxpQkFBaUI7U0FFakMsQ0FBQztTQUVvQixDQUFDIn0=

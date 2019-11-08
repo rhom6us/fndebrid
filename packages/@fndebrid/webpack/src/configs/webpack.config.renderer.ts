@@ -9,13 +9,11 @@ import {
   imageRule,
   nodeRule,
   reactTypescriptRule,
-  scriptRule,
   stylesheetRule,
 } from './rules';
-import {app, staticSourceDir} from './settings';
-import {config} from './webpack.config.common';
+import config from './webpack.config.common';
 
-export default <webpack.Configuration>{
+export default {
   ...config,
   target: 'electron-renderer',
   resolve: {
@@ -57,4 +55,4 @@ export default <webpack.Configuration>{
       // moduleFilename: (name) => '[id].styles.css'
     }),
   ],
-};
+} as webpack.Configuration;

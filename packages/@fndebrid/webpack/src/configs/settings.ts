@@ -1,11 +1,11 @@
 import path from 'path';
 
-export const mode = <'production' | 'development'>process.env.NODE_ENV || 'development';
-export const isDev = mode != 'production';
+export type Environment = 'production' | 'development';
+export type App = 'main' | 'renderer';
+export type Command = 'fnbuild' | 'fnwatch' | 'fnserve';
+export const isDev = process.env.NODE_ENV !== 'production';
 export const sourceDir = path.resolve('.');
-export const [, app] = sourceDir.match(/electron-(main|renderer)[\\\/]?$/i) as [string, 'main' | 'renderer'];
 
-export const watch = process.argv.some(p => p == '--watch');
 // This will be running from "./packages/@fndebrid/electron-main/" or the like.
 // Get back up to the root dir
 export const rootDir = path.join(sourceDir, '../../../');

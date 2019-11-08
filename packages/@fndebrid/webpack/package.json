@@ -4,11 +4,11 @@
   "private": true,
   "description": "> TODO: description",
   "homepage": "https://github.com/rhom6us/fndebrid#readme",
-  "license": "\r",
   "author": "Thomas Butler <thomas@butler.software>",
   "bin": {
-    "fnbuild": "./lib/webpack.js",
-    "fnserve": "./lib/webpack-dev-server.js"
+    "fnbuild": "./lib/fnbuild.js",
+    "fnserve": "./lib/fnserve.js",
+    "fnwatch": "./lib/fnwatch.js"
   },
   "scripts": {
     "compile": "tsc",

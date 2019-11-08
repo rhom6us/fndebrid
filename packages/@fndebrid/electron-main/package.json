@@ -5,8 +5,8 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "compile": "fnbuild",
-    "watch": "fnbuild --watch"
+    "compile": "fnbuild main development",
+    "watch": "fnwatch main development"
   },
   "browserslist": [
     "node 12.8"

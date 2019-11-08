@@ -4,16 +4,12 @@ import path from 'path';
 import webpack from 'webpack';
 import WebpackBar from 'webpackbar';
 import {typescriptRule} from './rules';
-import {app, isDev, mode, outDir, sourceDir, staticSourceDir, watch} from './settings';
+import {isDev, outDir, sourceDir, staticSourceDir} from './settings';
 
-export const config: webpack.Configuration = {
-  mode,
-  devtool: 'cheap-module-eval-source-map', //'eval-source-map',
+export default {
+  devtool: 'cheap-module-eval-source-map', // 'eval-source-map',
   context: sourceDir,
-  entry: {
-    [app]: path.join(sourceDir, 'index.ts'),
-  },
-  watch,
+  entry: path.join(sourceDir, 'index.ts'),
   output: {
     path: outDir,
     filename: `[name]${isDev ? '' : '.[contenthash]'}.js`,
@@ -67,7 +63,7 @@ export const config: webpack.Configuration = {
   ],
   module: {
     rules: [
-      //typescriptRule
+      // typescriptRule
     ],
   },
-};
+} as webpack.Configuration;

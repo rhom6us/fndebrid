@@ -4,17 +4,20 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "killzor",
-      "command": "powershell.exe -encodedCommand dwBtAGkAYwAgAFAAYQB0AGgAIAB3AGkAbgAzADIAXwBwAHIAbwBjAGUAcwBzACAAVwBoAGUAcgBlACAAIgBDAG8AbQBtAGEAbgBkAEwAaQBuAGUAIABMAGkAawBlACAAJwAlAHcAZQBiAHAAYQBjAGsALQBkAGUAdgAtAHMAZQByAHYAZQByACUAJwAiACAAQwBhAGwAbAAgAFQAZQByAG0AaQBuAGEAdABlAA==",
-      "type": "shell",
-      "group": "build",
-      "isBackground": false
+      "label": "launch-it-all",
+      "dependsOn": ["[watch]\tmain", "[serve]\trenderer"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
-      "label": "monitor main",
+      "label": "[watch]\tmain",
       "type": "npm",
-      "script": "nodemon",
+      "script": "[watch]:main",
       "group": "build",
+      "isBackground": true,
+      "problemMatcher": ["$ts-checker-webpack-watch"],
       "presentation": {
         "echo": true,
         "reveal": "always",
@@ -26,12 +29,10 @@
       }
     },
     {
-      "label": "[watch]\tmain",
+      "label": "monitor main",
       "type": "npm",
-      "script": "[watch]:main",
+      "script": "nodemon",
       "group": "build",
-      "isBackground": true,
-      "problemMatcher": ["$ts-checker-webpack-watch"],
       "presentation": {
         "echo": true,
         "reveal": "always",

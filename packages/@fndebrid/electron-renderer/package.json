@@ -5,9 +5,9 @@
   "license": "ISC",
   "main": "index.js",
   "scripts": {
-    "compile": "fnbuild",
-    "serve": "fnserve",
-    "watch": "fnbuild --watch"
+    "compile": "fnbuild renderer development",
+    "serve": "fnserve renderer development",
+    "watch": "fnwatch renderer development"
   },
   "browserslist": [
     "chrome 78.0"

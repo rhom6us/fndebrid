@@ -1,7 +1,6 @@
-const postcssPresetEnv = require('postcss-preset-env');
-const postcssImport = require('postcss-import');
-
-const isDev = process.env.NODE_ENV === 'development';
+import postcssImport = require('postcss-import');
+import postcssPresetEnv = require('postcss-preset-env');
+import {isDev} from './settings';
 
 export const cssModuleLoader = {
   loader: 'css-loader',
