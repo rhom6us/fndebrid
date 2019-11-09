@@ -1,14 +1,12 @@
 {
   "files.exclude": {
-    ".github": true,
-    ".gitignore": true,
+    ".github/FUNDING.yml": true,
+    ".github/ISSUE_TEMPLATE": true,
+    ".vscode/settings.json": true,
     ".yarn": true,
-    ".yarnrc": true,
     "**/LICENSE": true,
-    "**/node_modules/": true,
-    "dist/": true,
-    "yarn-error.log": true,
-    "yarn.lock": true
+    "**/node_modules": true,
+    "dist/": true
   },
   "editor.detectIndentation": false,
   "editor.tabSize": 2,
