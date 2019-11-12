@@ -2,7 +2,6 @@ name: BuildCI
 on: [push]
 env:
   CI: 'true'
-  NODE_ENV: production
 jobs:
   build-main:
     strategy:
@@ -17,6 +16,8 @@ jobs:
           version: ${{ matrix.node_version }}
       - run: yarn install
       - run: yarn workspace @fndebrid/electron-main compile
+        env:
+          NODE_ENV: production
   build-renderer:
     strategy:
       matrix:
@@ -30,3 +31,5 @@ jobs:
           version: ${{ matrix.node_version }}
       - run: yarn install
       - run: yarn workspace @fndebrid/electron-renderer compile
+        env:
+          NODE_ENV: production
