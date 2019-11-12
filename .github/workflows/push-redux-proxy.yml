@@ -1,0 +1,8 @@
+name: push-redux-proxy
+on: [push]
+jobs:
+  subtree-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: git subtree push --prefix packages/electron-redux-proxy electron-redux-proxy dev

@@ -27,9 +27,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "post-commit": "yarn pull:proxy",
-      "pre-push": "cross-env HUSKY_SKIP_HOOKS=1 git subtree push --prefix packages/electron-redux-proxy electron-redux-proxy dev"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
