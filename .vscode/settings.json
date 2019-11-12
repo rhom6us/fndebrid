@@ -1,12 +1,25 @@
 {
   "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    ".gitignore": true,
+    "**/*.csproj.user": true,
+    "**/bin/": true,
+    "**/obj/": true,
+    "**/Properties/Resources.resx": true,
+    "yarn.lock": true,
     ".github/FUNDING.yml": true,
     ".github/ISSUE_TEMPLATE": true,
-    ".vscode/settings.json": true,
+    ".vscode/settings.json": false,
     ".yarn": true,
     "**/LICENSE": true,
     "**/node_modules": true,
-    "dist/": true
+    "dist/": true,
+    "packages/@fndebrid/webpack/lib": false,
+    "*.log.json": true
   },
   "editor.detectIndentation": false,
   "editor.tabSize": 2,
@@ -24,5 +37,6 @@
       "orderLevel": 0
     }
   ],
-  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 180
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 180,
+  "explorerExclude.backup": null
 }
