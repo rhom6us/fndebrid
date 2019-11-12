@@ -5,4 +5,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: git subtree push --prefix packages/electron-redux-proxy electron-redux-proxy dev
+      - run: git subtree push --prefix packages/electron-redux-proxy https://github.com/rhom6us/electron-redux-proxy.git dev
