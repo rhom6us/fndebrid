@@ -3,8 +3,6 @@ on: [push]
 jobs:
   subtree-push:
     runs-on: ubuntu-latest
-    env:
-      PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
     steps:
       - uses: actions/checkout@v1
-      - run: git subtree push --prefix packages/electron-redux-proxy https://$PUSH_TOKEN@github.com/rhom6us/electron-redux-proxy.git dev
+      - run: git subtree push --prefix packages/electron-redux-proxy https://${{ secrets.PUSH_TOKEN }}@github.com/rhom6us/electron-redux-proxy.git dev
