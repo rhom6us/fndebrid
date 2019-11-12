@@ -18,7 +18,7 @@
     "**/LICENSE": true,
     "**/node_modules": true,
     "dist/": true,
-    "packages/@fndebrid/webpack/lib": false,
+    "packages/@fndebrid/webpack/lib": true,
     "*.log.json": true
   },
   "editor.detectIndentation": false,
