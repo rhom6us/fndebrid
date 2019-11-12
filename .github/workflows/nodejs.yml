@@ -1,22 +1,34 @@
 name: BuildCI
 on: [push]
+env:
+  CI: true
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      CI: true
+  build-main:
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         node_version: [12]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v1
         with:
           version: ${{ matrix.node_version }}
-
-      - name: yarn install, yarn lint, yarn test, yarn build
+      - name: yarn install, yarn build
         run: |
           yarn install
           yarn workspace @fndebrid/electron-main compile
-          yarn workspace @fndebrid/electron-renderer compile
+  build-renderer:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node_version: [12]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          version: ${{ matrix.node_version }}
+      - run: yarn install
+      - run: yarn workspace @fndebrid/electron-renderer compile
