@@ -14,7 +14,7 @@
     {
       "label": "[watch]\tmain",
       "type": "npm",
-      "script": "[watch]:main",
+      "script": "main:serve",
       "group": "build",
       "isBackground": true,
       "problemMatcher": ["$ts-checker-webpack-watch"],
@@ -25,28 +25,13 @@
         "panel": "dedicated",
         "showReuseMessage": false,
         "clear": true,
-        "group": "huzza"
-      }
-    },
-    {
-      "label": "monitor main",
-      "type": "npm",
-      "script": "nodemon",
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": false,
-        "clear": true,
-        "group": "huzza"
+        "group": "serve"
       }
     },
     {
       "type": "npm",
       "label": "[serve]\trenderer",
-      "script": "[serve]:renderer",
+      "script": "renderer:serve",
       "isBackground": true,
       "problemMatcher": ["$ts-checker-webpack-watch"],
       "presentation": {
@@ -56,41 +41,59 @@
         "panel": "dedicated",
         "showReuseMessage": false,
         "clear": true,
-        "group": "huzza"
+        "group": "serve"
       }
     },
     {
       "type": "npm",
       "label": "[build]\tmain",
-      "script": "[build]:main",
+      "script": "main:build",
       "group": "build",
-      "problemMatcher": ["$ts-checker-webpack"]
+      "problemMatcher": ["$ts-checker-webpack"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "group": "compile"
+      }
     },
     {
       "type": "npm",
       "label": "[build]\trenderer",
-      "script": "[build]:renderer",
+      "script": "renderer:build",
       "group": "build",
-      "problemMatcher": ["$ts-checker-webpack"]
+      "problemMatcher": ["$ts-checker-webpack"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true,
+        "group": "compile"
+      }
     },
     {
       "type": "npm",
       "label": "[watch]\tfnwebpack",
-      "script": "[watch]:fnwebpack",
+      "script": "fnwebpack:watch",
       "runOptions": {
         "runOn": "folderOpen"
       },
       "isBackground": true,
       "group": "build",
-      "problemMatcher": ["$ts-checker-webpack-watch"]
-    },
-    {
-      "type": "npm",
-      "label": "[watch]\trenderer",
-      "script": "[watch]:renderer",
-      "isBackground": true,
-      "group": "build",
-      "problemMatcher": ["$ts-checker-webpack-watch"]
+      "problemMatcher": ["$ts-checker-webpack-watch"],
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": true
+      }
     },
     {
       "type": "npm",

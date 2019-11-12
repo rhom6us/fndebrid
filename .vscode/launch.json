@@ -3,7 +3,7 @@
   "compounds": [
     {
       "name": "Compound main",
-      "configurations": ["monitor main", "Attach - Electron: Renderer"],
+      "configurations": ["Electron Main", "Attach - Electron: Renderer"],
       "timeout": 100000
     }
   ],
@@ -12,6 +12,7 @@
       "type": "node",
       "request": "launch",
       "name": "Electron Main",
+      "preLaunchTask": "[watch]\tmain",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "program": "${workspaceFolder}/dist/main.js",
       "runtimeArgs": ["--remote-debugging-port=9223", "--debug"],
@@ -30,53 +31,8 @@
       }
     },
     {
-      "name": "monitor main",
-      "type": "node",
-      "request": "launch",
-      "preLaunchTask": "watch main",
-      "cwd": "${workspaceRoot}",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon",
-      "windows": {
-        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/nodemon.cmd"
-      },
-      "args": [
-        "--signal",
-        "SIGUSR2",
-        "--debug",
-        "--watch",
-        "dist/main/",
-        "--ignore",
-        "src/",
-        "--exec",
-        "\"${workspaceRoot}/node_modules/.bin/electron.cmd --remote-debugging-port=9223 . --debug\""
-      ],
-      "restart": true,
-      "env": {
-        "DEBUG": "true"
-      },
-      "outputCapture": "std",
-      "sourceMaps": true,
-      "skipFiles": ["node_modules/**", "<node_internals>/Events.js", "**/async_hooks.js"],
-      "timeout": 100000
-    },
-    // {
-    //   "name": "Webpack Main",
-    //   "type": "node",
-    //   "request": "launch",
-    //   "cwd": "${workspaceRoot}",
-    //   "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
-    //   "args": [
-    //     "--progress",
-    //     "--colors",
-    //     "--watch",
-    //     "--config",
-    //     "webpack/main.babel.js"
-    //   ],
-    //   "autoAttachChildProcesses": true,
-    //   "stopOnEntry": false
-    // },
-    {
       "name": "Attach - Electron: Renderer",
+      "preLaunchTask": "[serve]\trenderer",
       "type": "chrome",
       "request": "attach",
       "port": 9223,
@@ -87,59 +43,6 @@
         "webpack:///./*": "${workspaceRoot}/packages/@fndebrid/electron-renderer/*",
         "webpack:///../*": "${workspaceRoot}/packages/@fndebrid/*"
       }
-    },
-    {
-      "name": "yarn: Renderer",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/node_modules/yarn/bin/yarn.js",
-      "args": ["workspace", "@fndebrid/electron-renderer", "serve"],
-      "autoAttachChildProcesses": true,
-      "stopOnEntry": false,
-      "serverReadyAction": {
-        "pattern": "Starting server on http://localhost:([0-9]+)",
-        "action": "debugWithChrome",
-        "webRoot": "${workspaceFolder}"
-      },
-      "sourceMaps": true,
-      "sourceMapPathOverrides": {
-        "webpack:///./*": "${workspaceRoot}/packages/@fndebrid/electron-renderer/*",
-        "webpack:///../*": "${workspaceRoot}/packages/@fndebrid/*"
-      }
-    },
-    // {
-    //   "name": "Webpack-dev-server: Renderer",
-    //   "type": "node",
-    //   "request": "launch",
-    //   "program": "${workspaceFolder}/node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    //   "args": [
-    //     "--progress",
-    //     "--colors",
-    //     "--config",
-    //     "webpack.config.renderer.babel.js"
-    //   ],
-    //   "autoAttachChildProcesses": true,
-    //   "stopOnEntry": false,
-
-    //   "env": {
-    //     "NODE_ENV": "development"
-    //   },
-    //   "sourceMaps": true,
-    //   "sourceMapPathOverrides": {
-    //     "webpack:///./~/*": "${workspaceRoot}/node_modules/*",
-    //     "webpack:///./*": "${workspaceRoot}/*",
-    //     "webpack:///*": "*"
-    //   }
-    // },
-    {
-      "name": "Webpack-cli: Renderer",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/node_modules/webpack-cli/bin/cli.js",
-      "args": ["--config", "webpack.config.renderer.babel.js"],
-      "outFiles": ["${workspaceRoot}/dist/**/*.js"],
-      "autoAttachChildProcesses": true,
-      "stopOnEntry": false
     }
   ]
 }
