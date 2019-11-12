@@ -2,6 +2,7 @@ name: BuildCI
 on: [push]
 env:
   CI: true
+  NODE_ENV: production 
 jobs:
   build-main:
     strategy:
@@ -11,14 +12,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node_version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
           version: ${{ matrix.node_version }}
-      - name: yarn install, yarn build
-        run: |
-          yarn install
-          yarn workspace @fndebrid/electron-main compile
+      - run: yarn install
+      - run: yarn workspace @fndebrid/electron-main compile
   build-renderer:
     strategy:
       matrix:
