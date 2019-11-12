@@ -2,7 +2,7 @@ name: push-redux-proxy
 on:
   push:
     paths:
-      - '**/packages/electron-redux-proxy/**'
+    - 'packages/electron-redux-proxy/**'
 jobs:
   subtree-push:
     runs-on: ubuntu-latest
