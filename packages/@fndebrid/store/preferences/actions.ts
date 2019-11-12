@@ -1,33 +1,17 @@
 import {ActionType, createAction, createAsyncAction} from 'typesafe-actions';
-import {AsyncActionCreator, createBetterAsyncAction} from '../better-async-creator';
 import State from './state';
 
 // import { createBetterAsyncAction as createAsyncAction } from "../better-async-creator";
 
-export const chooseDownloadLocation = createAction('preferences/choose-download-location', action => () => action());
+export const chooseDownloadLocation = createAction('preferences/choose-download-location')();
 
-export const setPreferences = createAction('preferences/set-preferences', action => (preferences: Partial<State>) =>
-  action(preferences),
-);
-export const whiteListFile = createAction('preferences/whitelist-file', action => (file: string) => action({file}));
-export const unWhiteListFile = createAction('preferences/un-whitelist-file', action => (file: string) =>
-  action({file}),
-);
-export const blackListFile = createAction('preferences/blacklist-file', action => (file: string) => action({file}));
-export const unBlackListFile = createAction('preferences/un-blalist-file', action => (file: string) => action({file}));
+export const setPreferences = createAction('preferences/set-preferences')<Partial<State>>();
+export const whiteListFile = createAction('preferences/whitelist-file')<string>();
+export const unWhiteListFile = createAction('preferences/un-whitelist-file')<string>();
+export const blackListFile = createAction('preferences/blacklist-file')<string>();
+export const unBlackListFile = createAction('preferences/un-blalist-file')<string>();
 
-export const setAutoSelectFilesPattern = createAction(
-  'preferences/set-autoselect-files',
-  action => (autoSelectFilesPattern: string) => action({autoSelectFilesPattern}),
-);
-export const setAutoSelectFiles = createAction(
-  'preferences/set-autoselect-files',
-  action => (autoSelectFiles: 'none' | 'all_files' | 'largest_files') => action({autoSelectFiles}),
-);
-export const associateMagnetLinks = createAction('preferences/associate-magnet-links', action => (associate: boolean) =>
-  action(associate),
-);
-export const associateTorrentFiles = createAction(
-  'preferences/associate-torrent-files',
-  action => (associate: boolean) => action(associate),
-);
+export const setAutoSelectFilesPattern = createAction('preferences/set-autoselect-files-pattern')<string>();
+export const setAutoSelectFiles = createAction('preferences/set-autoselect-files')<'none' | 'all_files' | 'largest_files'>();
+export const associateMagnetLinks = createAction('preferences/associate-magnet-links')<boolean>();
+export const associateTorrentFiles = createAction('preferences/associate-torrent-files')<boolean>();

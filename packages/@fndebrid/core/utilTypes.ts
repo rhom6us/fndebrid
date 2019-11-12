@@ -1,6 +1,6 @@
 import {Merge as MergeFest} from 'type-fest';
 
-export type Opaque<Type, Scope extends string> = Type & {readonly __name__: Scope; readonly __opaque__: unique symbol};
+export type Opaque<Type, Scope extends string> = Type & {readonly __name__: Scope};
 export type Uuid = Opaque<string, 'uuid'>;
 export type Await<T> = T extends Promise<infer U> ? U : T;
 export type Ctor<TInstance = any, TArgs extends any[] = any[]> = new (...args: TArgs) => TInstance;
@@ -18,7 +18,7 @@ export type NonFunctionKeys<T extends object> = {
   [K in keyof T]-?: NeverNullOrUndefined<T[K]> extends Function ? never : K;
 }[keyof T];
 
-type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X ? 1 : 2) extends (<T>() => T extends Y ? 1 : 2) ? A : B;
+type IfEquals<X, Y, A = X, B = never> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2 ? A : B;
 
 export type WritableKeys<T extends object> = {
   [P in keyof T]-?: IfEquals<{[Q in P]: T[P]}, {-readonly [Q in P]: T[P]}, P>;
@@ -60,16 +60,7 @@ type UnpackableMap =
   | Unpackable<any>
   | Record<
       any,
-      | Unpackable<any>
-      | Record<
-          any,
-          | Unpackable<any>
-          | Record<
-              any,
-              | Unpackable<any>
-              | Record<any, Unpackable<any> | Record<any, Unpackable<any> | Record<any, Unpackable<any>>>>
-            >
-        >
+      Unpackable<any> | Record<any, Unpackable<any> | Record<any, Unpackable<any> | Record<any, Unpackable<any> | Record<any, Unpackable<any> | Record<any, Unpackable<any>>>>>>
     >;
 export type UnpackMap<T extends UnpackableMap> = T extends Unpackable<infer R>
   ? R

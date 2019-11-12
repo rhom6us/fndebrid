@@ -8,32 +8,23 @@ declare global {
     toKeyed<K extends string | number | symbol>(keySelector: (item: T) => K): Record<K, T>;
   }
 }
-Array.prototype.toKeyed = function toKeyed<T, K extends string | number | symbol>(
-  this: T[],
-  keySelector: (entity: T) => K,
-): Record<K, T> {
-  return this.reduce(
-    (result, item) => {
-      result[keySelector(item)] = item;
-      return result;
-    },
-    {} as Record<K, T>,
-  );
+Array.prototype.toKeyed = function toKeyed<T, K extends string | number | symbol>(this: T[], keySelector: (entity: T) => K): Record<K, T> {
+  return this.reduce((result, item) => {
+    result[keySelector(item)] = item;
+    return result;
+  }, {} as Record<K, T>);
 };
 
 function mergeTorrents(stateTorrent: MaybeExtendedTorrent, fetchedTorrent: Torrent): MaybeExtendedTorrent {
   return {
     ...stateTorrent,
     ...fetchedTorrent,
-    status:
-      fetchedTorrent.status == 'magnet_conversion' && stateTorrent.status == 'waiting_files_selection'
-        ? stateTorrent.status
-        : fetchedTorrent.status,
+    status: fetchedTorrent.status === 'magnet_conversion' && stateTorrent.status === 'waiting_files_selection' ? stateTorrent.status : fetchedTorrent.status,
   };
 }
 
 export const reducer = createReducer<State, ActionType<typeof actions>>(defaultState)
-  .handleAction([actions.cancelJob, actions.completeJob], (state, {payload: {jobId}}) => {
+  .handleAction([actions.cancelJob, actions.completeJob], (state, {payload: jobId}) => {
     const {[jobId]: _, ...jobs} = state.jobs;
     return f({
       ...state,
@@ -124,7 +115,7 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
     const {[torrentId]: deletedFiles, ...files} = state.entities.files;
     return f({
       ...state,
-      torrents: f(state.torrents.filter(p => p != torrentId)),
+      torrents: f(state.torrents.filter(p => p !== torrentId)),
       entities: f({
         ...state.entities,
         torrents: f(torrents),
