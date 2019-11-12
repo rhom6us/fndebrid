@@ -9,7 +9,7 @@ import path from 'path';
 import {Dispatcher, getDispatcher} from '../store/dispatcher';
 import {createAppIcon} from './app-icon';
 import configureStore from './configureStore';
-import {showAddMagnet} from './windows';
+import {showAddMagnet, showTorrents} from './windows';
 
 if (isDev || DEBUG) {
   const programPath = path.resolve(process.argv.filter(p => p.endsWith('main.js'))[0]);
@@ -27,7 +27,7 @@ function appReady() {
   createAppIcon();
 
   if (isDev) {
-    showAddMagnet();
+    showTorrents();
   }
 }
 function appSecondInstance(dispatcher: Dispatcher) {

@@ -6,7 +6,7 @@ import {format as formatUrl, URLSearchParams} from 'url';
 import uuid5 from 'uuid/v5';
 import {showWindow} from './file-selection';
 
-type WindowName = 'Main' | 'Preferences' | 'AddTorrent';
+type WindowName = 'Main' | 'Preferences' | 'AddTorrent' | 'Torrents';
 export const windows: {[K in WindowName]?: BrowserWindow} = {};
 
 const dialogs = new Set<BrowserWindow>();
@@ -20,11 +20,7 @@ ipcMain.on('please-resize', async (event, size: {width?: number; height?: number
   const y = size.height ? Math.floor(zoom * size.height) : contentY;
   win.setContentSize(x, y, true);
 });
-function showDialog<T>(
-  route: WindowName,
-  options: Electron.BrowserWindowConstructorOptions & {devTools?: boolean} = {devTools: isDev},
-  query: any,
-) {
+function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstructorOptions & {devTools?: boolean} = {devTools: isDev}, query: any) {
   return new Promise<T>((resolve, reject) => {
     const callbackId = uuid5(`http://fndebrid.butler.software/${route}`, uuid5.URL);
     const window = new BrowserWindow({
@@ -147,6 +143,13 @@ export function showAddMagnet() {
   );
 }
 export const showMain = () => createWindow('Main');
+export const showTorrents = () =>
+  createWindow('Torrents', {
+    alwaysOnTop: true,
+    resizable: true,
+    height: 600,
+    width: 400,
+  });
 export const showPreferences = () =>
   createWindow('Preferences', {
     alwaysOnTop: false,

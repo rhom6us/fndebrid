@@ -1,6 +1,6 @@
 import {app, Menu, Tray} from 'electron';
 import path from 'path';
-import {showAddMagnet, showMain, showPreferences} from './windows';
+import {showAddMagnet, showMain, showPreferences, showTorrents} from './windows';
 
 export let appIcon: Tray | undefined;
 
@@ -15,6 +15,10 @@ export function createAppIcon() {
       {
         label: 'Show Main Window',
         click: showMain,
+      },
+      {
+        label: 'Show Torrents',
+        click: showTorrents,
       },
       {
         label: 'Add magnet link',

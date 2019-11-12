@@ -4,14 +4,14 @@ import {Provider} from 'react-redux';
 import {Router} from 'react-router-static';
 import configureStore from './configureStore';
 import {ThemeProvider} from './ThemeContext';
-import {AddTorrent, Main, Preferences} from './windows';
+import {AddTorrent, Main, Preferences, Torrents} from './windows';
 
 const store = configureStore();
 
 const Root: React.FC = () => (
   <ThemeProvider>
     <Provider store={store}>
-      <Router routes={{Main, Preferences, AddTorrent}} />
+      <Router routes={{Main, Preferences, AddTorrent, Torrents}} />
     </Provider>
   </ThemeProvider>
 );
