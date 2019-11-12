@@ -4,12 +4,7 @@ jobs:
   subtree-push:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PUSH_TOKEN: ${{ secrets.PUSH_TOKEN }}
     steps:
       - uses: actions/checkout@v1
-      - run: |
-          echo ${GITHUB_TOKEN}
-          echo $GITHUB_TOKEN
-          echo $PUSH_TOKEN
-          git subtree push --prefix packages/electron-redux-proxy https://$PUSH_TOKEN@github.com/rhom6us/electron-redux-proxy.git dev
+      - run: git subtree push --prefix packages/electron-redux-proxy https://$PUSH_TOKEN@github.com/rhom6us/electron-redux-proxy.git dev
