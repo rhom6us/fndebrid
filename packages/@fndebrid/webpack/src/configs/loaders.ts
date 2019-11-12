@@ -83,8 +83,7 @@ export const imageLoader = {
 export const tsLoader = {
   loader: 'ts-loader',
   options: {
-    transpileOnly: true,
-    allowTsInNodeModules: false,
+    transpileOnly: isDev,
     // projectReferences: true,
     // appendTsSuffixTo: [{}],
     // configFile: "C:\\dev\\fndebrid\\tsconfig.json"

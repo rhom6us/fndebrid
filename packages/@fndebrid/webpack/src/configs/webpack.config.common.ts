@@ -7,7 +7,7 @@ import {typescriptRule} from './rules';
 import {isDev, outDir, sourceDir, staticSourceDir} from './settings';
 
 export default {
-  devtool: 'cheap-module-eval-source-map', // 'eval-source-map',
+  devtool: isDev ? 'cheap-module-eval-source-map' : undefined, // 'eval-source-map',
   context: sourceDir,
   entry: path.join(sourceDir, 'index.ts'),
   output: {
@@ -35,7 +35,7 @@ export default {
     __filename: true,
   },
   optimization: {
-    nodeEnv: 'development',
+    nodeEnv: process.env.NODE_ENV,
     namedModules: true,
     noEmitOnErrors: true,
     // moduleIds: 'hashed',
@@ -51,15 +51,20 @@ export default {
     // },
   },
   plugins: [
-    new WebpackBar(),
+    ...(isDev
+      ? [
+          new WebpackBar(),
+          new ForkTsCheckerWebpackPlugin({
+            // silent: true
+          }),
+        ]
+      : []),
     // new CleanWebpackPlugin() as any,
-    new ForkTsCheckerWebpackPlugin({
-      // silent: true
-    }),
+
     new webpack.DefinePlugin({
       __static: JSON.stringify(staticSourceDir),
     }),
-    new webpack.EnvironmentPlugin({NODE_ENV: 'development', DEBUG: true}),
+    new webpack.EnvironmentPlugin({NODE_ENV: 'development'}),
   ],
   module: {
     rules: [
