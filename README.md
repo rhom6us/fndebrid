@@ -1,3 +1,3 @@
 # electron-redux-proxy
 
-A redux store proxy for running over IPC
+A proxy redux store for accessing a store in the main process from a renderer process
