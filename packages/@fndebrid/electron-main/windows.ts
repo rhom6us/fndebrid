@@ -20,7 +20,11 @@ ipcMain.on('please-resize', async (event, size: {width?: number; height?: number
   const y = size.height ? Math.floor(zoom * size.height) : contentY;
   win.setContentSize(x, y, true);
 });
-function showDialog<T>(route: WindowName, options: Electron.BrowserWindowConstructorOptions & {devTools?: boolean} = {devTools: isDev}, query: any) {
+function showDialog<T>(
+  route: WindowName,
+  options: Electron.BrowserWindowConstructorOptions & {devTools?: boolean} = {devTools: isDev},
+  query: any,
+) {
   return new Promise<T>((resolve, reject) => {
     const callbackId = uuid5(`http://fndebrid.butler.software/${route}`, uuid5.URL);
     const window = new BrowserWindow({
@@ -145,7 +149,7 @@ export function showAddMagnet() {
 export const showMain = () => createWindow('Main');
 export const showTorrents = () =>
   createWindow('Torrents', {
-    alwaysOnTop: true,
+    alwaysOnTop: false,
     resizable: true,
     height: 600,
     width: 400,
