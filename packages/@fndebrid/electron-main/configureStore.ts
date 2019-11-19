@@ -9,7 +9,7 @@ export default function configureStore(/*history: History,*/ initialState?: FnSt
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
-    reducer, //connectRouter(history)(rootReducer),
+    reducer, // connectRouter(history)(rootReducer),
     initialState as any,
     compose(
       proxyEnhancer,

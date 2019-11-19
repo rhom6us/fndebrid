@@ -43,10 +43,11 @@ function appWindowAllClosed() {
     // app.quit();
   }
 }
+// tslint:disable: no-empty
 function appWillQuit() {}
 function appBeforeQuit() {}
 function appQuit() {}
-
+// tslint:enable: no-empty
 const [store, dispatcher] = setupRedux();
 function initializeApp(app: Electron.App) {
   if (!app.requestSingleInstanceLock()) {
