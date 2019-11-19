@@ -1,6 +1,9 @@
 import {Opaque} from '@fndebrid/core';
 
 export type TorrentId = Opaque<string, 'torrent_id'>;
+export function TorrentId(id: string) {
+  return id as TorrentId;
+}
 export type MagnetLink = Opaque<string, 'magnet_link'>;
 export type TorrentHash = Opaque<string, 'torrent_hash'>;
 export type FileId = Opaque<number, 'file_id'>;

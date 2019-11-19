@@ -12,7 +12,7 @@ import {
   TagInput,
 } from '@blueprintjs/core';
 import styled from '@emotion/styled';
-import {Action, Dispatch, getDispatcher, State} from '@fndebrid/store';
+import {FnDispatch, FnState, getDispatcher} from '@fndebrid/store';
 import {AutoDeleteTorrentFileOption} from '@fndebrid/store/preferences';
 import {remote} from 'electron';
 import React, {useEffect} from 'react';
@@ -23,27 +23,27 @@ const app = remote.app;
 // tslint:disable-next-line: no-empty-interface
 interface IOwnProps {}
 
-function mapStateToProps(state: State, ownProps: IOwnProps) {
+function mapStateToProps(state: FnState, ownProps: IOwnProps) {
   return state.preferences;
 }
-function mapDispatchToProps(dispatch: Dispatch, ownProps: IOwnProps) {
+function mapDispatchToProps(dispatch: FnDispatch, ownProps: IOwnProps) {
   const dispatcher = getDispatcher(dispatch);
   return {
-    ...dispatcher,
-    setDefaultDownloadLocation: () => dispatcher.setPreferences({downloadLocation: app.getPath('downloads')}),
-    setWhiteList: (fileWhiteList: string[]) => dispatcher.setPreferences({fileWhiteList}),
-    setBlackList: (fileBlackList: string[]) => dispatcher.setPreferences({fileBlackList}),
-    setAutoDeleteServer: (autoDeleteServer: boolean) => dispatcher.setPreferences({autoDeleteServer}),
+    ...dispatcher.preferences,
+    setDefaultDownloadLocation: () => dispatcher.preferences.setPreferences({downloadLocation: app.getPath('downloads')}),
+    setWhiteList: (fileWhiteList: string[]) => dispatcher.preferences.setPreferences({fileWhiteList}),
+    setBlackList: (fileBlackList: string[]) => dispatcher.preferences.setPreferences({fileBlackList}),
+    setAutoDeleteServer: (autoDeleteServer: boolean) => dispatcher.preferences.setPreferences({autoDeleteServer}),
     setAutoDeleteTorrentFile: (autoDeleteTorrentFile: AutoDeleteTorrentFileOption) =>
-      dispatcher.setPreferences({autoDeleteTorrentFile}),
-    setAutoDownloadTorrents: (autoDownloadTorrents: boolean) => dispatcher.setPreferences({autoDownloadTorrents}),
+      dispatcher.preferences.setPreferences({autoDeleteTorrentFile}),
+    setAutoDownloadTorrents: (autoDownloadTorrents: boolean) => dispatcher.preferences.setPreferences({autoDownloadTorrents}),
     setAutoSelectFiles(autoSelectFiles: 'none' | 'all_files' | 'largest_files' | 'pattern', pattern?: string) {
-      if (autoSelectFiles === 'pattern') return dispatcher.setAutoSelectFilesPattern(pattern!);
+      if (autoSelectFiles === 'pattern') return dispatcher.preferences.setAutoSelectFilesPattern(pattern!);
 
-      return dispatcher.setAutoSelectFiles(autoSelectFiles);
+      return dispatcher.preferences.setAutoSelectFiles(autoSelectFiles);
     },
     setAutoSubmitAutoSelectedFiles: (autoSubmitAutoSelectedFiles: boolean) =>
-      dispatcher.setPreferences({autoSubmitAutoSelectedFiles}),
+      dispatcher.preferences.setPreferences({autoSubmitAutoSelectedFiles}),
   };
 }
 
@@ -135,10 +135,7 @@ export const Preferences = connect(
       <Callout title='Uploads'>
         FnDebrid can automatically select files base on the follow whitelist and blacklist.
         <ListContainer>
-          <ListItem
-            label='Always include files matching any of these patterns:'
-            helperText='helper text'
-            labelInfo='labelInfo'>
+          <ListItem label='Always include files matching any of these patterns:' helperText='helper text' labelInfo='labelInfo'>
             <TagInput
               className={Classes.FILL}
               addOnBlur={true}
@@ -149,10 +146,7 @@ export const Preferences = connect(
             />
           </ListItem>
 
-          <ListItem
-            label='Always exclude files matching any of these patterns:'
-            helperText='helper text'
-            labelInfo='labelInfo'>
+          <ListItem label='Always exclude files matching any of these patterns:' helperText='helper text' labelInfo='labelInfo'>
             <TagInput
               className={Classes.FILL}
               addOnBlur={true}

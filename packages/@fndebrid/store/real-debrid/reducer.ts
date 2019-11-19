@@ -1,25 +1,51 @@
-import {ExtendedTorrent, MaybeExtendedTorrent, Torrent, TorrentId} from '@fndebrid/real-debrid';
+import {ExtendedTorrent, MaybeExtendedTorrent, Torrent, TorrentId, TorrentStatus} from '@fndebrid/real-debrid';
+import {groupBy, union} from 'lodash';
 import {ActionType, createReducer} from 'typesafe-actions';
 import * as actions from './actions';
 import {defaultState, State} from './state';
 
 declare global {
   interface Array<T> {
-    toKeyed<K extends string | number | symbol>(keySelector: (item: T) => K): Record<K, T>;
+    toKeyed<K extends string | number | symbol>(keySelector: (item: T) => K): Record<K, Readonly<T>>;
+    toLookup<K extends string | number | symbol, V>(
+      keySelector: (item: T) => K,
+      valueSelector: (item: T) => V,
+    ): Record<K, readonly V[]>;
   }
 }
-Array.prototype.toKeyed = function toKeyed<T, K extends string | number | symbol>(this: T[], keySelector: (entity: T) => K): Record<K, T> {
+
+Array.prototype.toKeyed = function toKeyed<T, K extends string | number | symbol, V = T>(
+  this: T[],
+  keySelector: (item: T) => K,
+): any {
   return this.reduce((result, item) => {
-    result[keySelector(item)] = item;
+    result[keySelector(item)] = f(item);
     return result;
-  }, {} as Record<K, T>);
+  }, {} as any);
+};
+Array.prototype.toLookup = function toLookup<T, K extends string | number | symbol, V>(
+  keySelector: (item: T) => K,
+  valueSelector: (item: T) => V,
+): Record<K, V[]> {
+  const map = groupBy(this, keySelector);
+  const result: any = {};
+  for (const key in map) {
+    result[key] = f(map[key].map(valueSelector).map(f));
+  }
+  return result;
 };
 
 function mergeTorrents(stateTorrent: MaybeExtendedTorrent, fetchedTorrent: Torrent): MaybeExtendedTorrent {
+  if (!stateTorrent) {
+    return fetchedTorrent;
+  }
   return {
     ...stateTorrent,
     ...fetchedTorrent,
-    status: fetchedTorrent.status === 'magnet_conversion' && stateTorrent.status === 'waiting_files_selection' ? stateTorrent.status : fetchedTorrent.status,
+    status:
+      fetchedTorrent.status === 'magnet_conversion' && stateTorrent.status === 'waiting_files_selection'
+        ? stateTorrent.status
+        : fetchedTorrent.status,
   };
 }
 
@@ -31,26 +57,46 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
       jobs: f(jobs),
     });
   })
-  .handleAction(actions.fetchTorrents.request, state => f({...state, loading: true}))
+  .handleAction([actions.fetchAllTorrents.request, actions.fetchActiveTorrents.request], state => f({...state, loading: true}))
+  .handleAction([actions.fetchAllTorrents.failure, actions.fetchActiveTorrents.failure], (state, {payload: errors}) =>
+    f({...state, loading: false, errors}),
+  )
 
-  .handleAction(actions.fetchTorrents.success, (state, {payload: torrents}) =>
-    f({
+  .handleAction(actions.fetchAllTorrents.success, (state, {payload: torrents}) => {
+    return f({
       ...state,
       loading: false,
-      torrents: f(torrents.map(p => p.id)),
+      torrents: f(torrents.map(t => t.id)),
       entities: f({
         ...state.entities,
-        torrents: f(torrents.map(t => f(mergeTorrents(state.entities.torrents[t.id], t))).toKeyed(t => t.id)),
+        torrents: f(
+          torrents
+            .map(torrent => f(mergeTorrents(state.entities.torrents[torrent.id], torrent)))
+            .reduce((map, torrent) => f({...map, [torrent.id]: torrent}), {}),
+        ),
       }),
-    }),
-  )
-  .handleAction(actions.fetchTorrents.failure, (state, {payload: errors}) =>
-    f({
+    });
+  })
+  .handleAction(actions.fetchActiveTorrents.success, (state, {payload: torrents}) => {
+    const newTorrents = torrents.reduce(
+      (map, torrent) =>
+        f({
+          ...map,
+          [torrent.id]: f(mergeTorrents(map[torrent.id], torrent)),
+        }),
+      state.entities.torrents,
+    );
+
+    return f({
       ...state,
       loading: false,
-      errors,
-    }),
-  )
+      torrents: f(Object.keys(newTorrents).map(TorrentId)),
+      entities: f({
+        ...state.entities,
+        torrents: newTorrents,
+      }),
+    });
+  })
   .handleAction(actions.setInfoHash, (state, {payload: {jobId, infoHash}}) =>
     f({
       ...state,

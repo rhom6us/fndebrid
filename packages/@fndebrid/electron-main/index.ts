@@ -1,12 +1,12 @@
 import {DEBUG, isDev} from '@fndebrid/core';
 import {MagnetLink} from '@fndebrid/real-debrid';
+import {FnDispatcher, getDispatcher} from '@fndebrid/store';
 import {jobId} from '@fndebrid/store/real-debrid';
 import {app} from 'electron';
 // import debug from 'electron-debug';
 import Store from 'electron-store';
 import fs from 'fs';
 import path from 'path';
-import {Dispatcher, getDispatcher} from '../store/dispatcher';
 import {createAppIcon} from './app-icon';
 import configureStore from './configureStore';
 import {showAddMagnet, showTorrents} from './windows';
@@ -30,11 +30,11 @@ function appReady() {
     showTorrents();
   }
 }
-function appSecondInstance(dispatcher: Dispatcher) {
-  return function(_: any, argv: string[]) {
+function appSecondInstance(dispatcher: FnDispatcher) {
+  return (_: any, argv: string[]) => {
     const magnetLink = argv.filter(p => p.startsWith('magnet:'))[0] as MagnetLink;
     if (magnetLink) {
-      dispatcher.addMagnet.request([magnetLink, jobId(magnetLink)]);
+      dispatcher.realDebrid.addMagnet.request([magnetLink, jobId(magnetLink)]);
     }
   };
 }

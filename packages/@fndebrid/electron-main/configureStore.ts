@@ -1,11 +1,11 @@
-import {reducer, State, Store} from '@fndebrid/store';
+import {FnState, FnStore, reducer} from '@fndebrid/store';
 import {proxyEnhancer} from 'electron-redux-proxy';
 import {applyMiddleware, createStore} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {composeWithDevTools as compose, RemoteReduxDevToolsOptions} from 'remote-redux-devtools';
 import {saga} from './sagas';
 
-export default function configureStore(/*history: History,*/ initialState?: State): Store {
+export default function configureStore(/*history: History,*/ initialState?: FnState): FnStore {
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(

@@ -1,20 +1,26 @@
-import {combineReducers, Dispatch as ReduxDispatch, Store as ReduxStore} from 'redux';
+import {combineReducers, Dispatch, Store} from 'redux';
 import {ActionType} from 'typesafe-actions';
-import {Dispatcher, getDispatcher} from './dispatcher';
+import {ActionCreatorOrMap, Dispatched, getDispatcher as getDispatcherInternal} from './dispatcher';
 import * as preferences from './preferences';
 import * as realDebrid from './real-debrid';
 
-export {getDispatcher, Dispatcher};
-export interface State {
+export const actions = {
+  realDebrid: realDebrid.actions,
+  preferences: preferences.actions,
+};
+export interface FnState {
   realDebrid: realDebrid.State;
   preferences: preferences.State;
 }
-
-export type Action = ActionType<typeof import('./actions')>;
-export type TypeConstant = Action['type'];
-export type Dispatch = ReduxDispatch<Action>;
-export type Store = ReduxStore<State, Action>;
-export const reducer = combineReducers<State>({
+export type FnAction = ActionType<typeof actions>;
+export type FnDispatcher = Dispatched<typeof actions>;
+export function getDispatcher(dispatchOrStore: FnDispatch | FnStore): FnDispatcher {
+  return getDispatcherInternal(actions, dispatchOrStore);
+}
+export type TypeConstant = FnAction['type'];
+export type FnDispatch = Dispatch<FnAction>;
+export type FnStore = Store<FnState, FnAction>;
+export const reducer = combineReducers<FnState>({
   realDebrid: realDebrid.reducer,
   preferences: preferences.reducer,
 });

@@ -1,15 +1,16 @@
 import {assertNever, Unpack} from '@fndebrid/core';
-import {Authorizor, getInfoHash, getInfoHashAsync, RealDebrid, TorrentHash} from '@fndebrid/real-debrid';
+import {Authorizor, getInfoHashAsync, RealDebrid, TorrentHash} from '@fndebrid/real-debrid';
 import {
   addMagnet,
   addTorrentFile,
+  fetchActiveTorrents,
+  fetchAllTorrents,
   fetchTorrent,
-  fetchTorrents,
   getCaches,
   pollTorrents,
   selectFiles,
   setInfoHash,
-} from '@fndebrid/store/actions';
+} from '@fndebrid/store/real-debrid/actions';
 import {shell} from 'electron';
 import Store from 'electron-store';
 import {all, call, cancel, delay, fork, put, take, takeEvery, takeLatest} from 'redux-saga/effects';
@@ -29,55 +30,57 @@ const getErrorMsg = (err: any) =>
     : Object.assign(new Error('An unknown error has occured. See the data property for potential details'), {
         data: err,
       });
+function* pollTorrents_loop(interval: number) {
+  let errorCount = 0;
+  while (true) {
+    yield put(fetchActiveTorrents.request());
+    const {type, payload}: ActionType<typeof fetchActiveTorrents.success | typeof fetchActiveTorrents.failure> = yield take([
+      fetchActiveTorrents.success,
+      fetchActiveTorrents.failure,
+    ]);
+    switch (type) {
+      case getType(fetchActiveTorrents.success):
+        errorCount = 0;
+        break;
+      case getType(fetchActiveTorrents.failure):
+        if (errorCount++ >= 3) {
+          yield put(pollTorrents.failure(getErrorMsg(payload)));
+          yield cancel();
+          return;
+        }
+        break;
+      default:
+        assertNever(type);
+    }
+    yield delay(interval);
+  }
+}
 
 export function* saga() {
   yield all(
     [
-      function* pollTorrents_loop() {
-        while (true) {
-          const {
-            payload: {interval},
-          }: ActionType<typeof pollTorrents.request> = yield take(pollTorrents.request);
-          const task = yield fork(function*() {
-            let errorCount = 0;
-            while (true) {
-              yield put(fetchTorrents.request({activeOnly: true}));
-              const {
-                type,
-                payload,
-              }: ActionType<typeof fetchTorrents.success> | ActionType<typeof fetchTorrents.failure> = yield take([
-                fetchTorrents.success,
-                fetchTorrents.failure,
-              ]);
-              switch (type) {
-                case getType(fetchTorrents.success):
-                  errorCount = 0;
-                  break;
-                case getType(fetchTorrents.failure):
-                  if (errorCount++ >= 3) {
-                    yield put(pollTorrents.failure(getErrorMsg(payload)));
-                    yield cancel();
-                    return;
-                  }
-                  break;
-                default:
-                  assertNever(type);
-              }
-              yield delay(interval);
-            }
-          });
+      function* pollTorrents_request() {
+        yield takeLatest(pollTorrents.request, function*({payload: {interval}}) {
+          const task = yield fork(pollTorrents_loop, interval);
           yield take(pollTorrents.cancel);
           yield cancel(task);
-        }
+        });
       },
-      function* fetchTorrents_request() {
-        yield takeLatest(fetchTorrents.request, function*({payload: {activeOnly}}) {
+      function* fetchAllTorrents_request() {
+        yield takeLatest(fetchAllTorrents.request, function*({}) {
           try {
-            const torrents: Yield<typeof api.torrents> = yield api.torrents(activeOnly);
-
-            yield put(fetchTorrents.success(torrents));
+            yield put(fetchAllTorrents.success(yield api.torrents(false)));
           } catch (err) {
-            yield put(fetchTorrents.failure(getErrorMsg(err)));
+            yield put(fetchAllTorrents.failure(getErrorMsg(err)));
+          }
+        });
+      },
+      function* fetchActiveTorrents_request() {
+        yield takeLatest(fetchActiveTorrents.request, function*({}) {
+          try {
+            yield put(fetchActiveTorrents.success(yield api.torrents(true)));
+          } catch (err) {
+            yield put(fetchActiveTorrents.failure(getErrorMsg(err)));
           }
         });
       },

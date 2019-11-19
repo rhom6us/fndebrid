@@ -1,6 +1,6 @@
 import {assertNever} from '@fndebrid/core/utils';
 import {ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId} from '@fndebrid/real-debrid';
-import {getDispatcher, State} from '@fndebrid/store';
+import {FnState, getDispatcher} from '@fndebrid/store';
 import {JobId} from '@fndebrid/store/real-debrid';
 import React, {useEffect, useMemo, useState} from 'react';
 import {connect} from 'react-redux';
@@ -15,7 +15,7 @@ const intitialTorrentId = params.get('torrentid') as TorrentId;
 
 // tslint:disable-next-line: no-empty-interface
 interface IOwnProps {}
-function mapStateToProps(state: State, ownProps: IOwnProps) {
+function mapStateToProps(state: FnState, ownProps: IOwnProps) {
   return {
     jobs: state.realDebrid.jobs,
     torrents: state.realDebrid.entities.torrents,
@@ -26,12 +26,12 @@ function mapDispatchToProps(dispatch: any, ownProps: IOwnProps) {
   const dispatcher = getDispatcher(dispatch);
   return {
     addMagnet(magnet: MagnetLink, jobId: JobId) {
-      dispatcher.addMagnet.request([magnet, jobId]);
+      dispatcher.realDebrid.addMagnet.request([magnet, jobId]);
     },
-    cancelJob: dispatcher.cancelJob,
-    completeJob: dispatcher.completeJob,
-    selectFiles: dispatcher.selectFiles,
-    deleteTorrent: dispatcher.deleteTorrent.request,
+    cancelJob: dispatcher.realDebrid.cancelJob,
+    completeJob: dispatcher.realDebrid.completeJob,
+    selectFiles: dispatcher.realDebrid.selectFiles,
+    deleteTorrent: dispatcher.realDebrid.deleteTorrent.request,
   };
 }
 type IDispatchProps = ReturnType<typeof mapDispatchToProps>;
@@ -78,10 +78,7 @@ export const AddTorrent = connect(
     jobs,
     jobId,
   ]);
-  const torrent = useMemo(() => (torrentId && (torrents[torrentId] as ExtendedTorrent)) || undefined, [
-    torrents,
-    torrentId,
-  ]);
+  const torrent = useMemo(() => (torrentId && (torrents[torrentId] as ExtendedTorrent)) || undefined, [torrents, torrentId]);
   const caches = useMemo(() => (jobs[jobId] && jobs[jobId].caches) || undefined, [jobs, jobId]);
   useEffect(() => {
     // initially, torrentId is derived from jobId, but that job will go away at the end so we first remember it here
@@ -132,9 +129,7 @@ export const AddTorrent = connect(
           case 'fetching':
             return <h3>Fetching torrent details...</h3>;
           case 'waiting_files_selection':
-            return (
-              <FileSelect torrent={torrent!} caches={caches} onSubmit={submitFileSelection} onCancel={cancelDownload} />
-            );
+            return <FileSelect torrent={torrent!} caches={caches} onSubmit={submitFileSelection} onCancel={cancelDownload} />;
           case 'submitting_selection':
             return <h3>Submitting your file selection to real-debrid.com...</h3>;
           case 'complete':

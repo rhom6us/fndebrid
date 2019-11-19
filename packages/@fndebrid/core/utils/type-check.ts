@@ -66,6 +66,9 @@ export function tryParseUrl(value: string, out: [] | [URL]): out is [URL] {
     return false;
   }
 }
+export function isURL(value: any): value is URL {
+  return value instanceof URL;
+}
 export function parseUrl(value: string) {
   if (!value) throw new ArgumentFalsyError('value');
   if (!isString(value)) throw new ArgumentTypeError('value', 'string', value);

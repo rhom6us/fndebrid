@@ -1,6 +1,5 @@
 import {TorrentId} from '@fndebrid/real-debrid';
-import {State} from '@fndebrid/store';
-import * as actions from '@fndebrid/store/actions';
+import {actions, FnState} from '@fndebrid/store';
 import React, {useState} from 'react';
 import {connect, MapDispatchToPropsFunction, MapStateToProps, useStore} from 'react-redux';
 
@@ -43,7 +42,7 @@ const DemoInternal: React.FC<Props> = props => {
   );
 };
 
-const mapStateToProps: MapStateToProps<IStateProps, IOwnProps, State> = (state, ownProps) => {
+const mapStateToProps: MapStateToProps<IStateProps, IOwnProps, FnState> = (state, ownProps) => {
   return {
     downloadLocation: state.preferences.downloadLocation,
     torrents: state.realDebrid.torrents,
@@ -52,15 +51,12 @@ const mapStateToProps: MapStateToProps<IStateProps, IOwnProps, State> = (state, 
 const mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IOwnProps> = (dispatch, ownProps) => {
   return {
     loadTorrents() {
-      dispatch(actions.fetchTorrents.request({activeOnly: false}));
+      dispatch(actions.realDebrid.fetchAllTorrents.request());
     },
     setDownloadLocation(downloadLocation: string) {
-      dispatch(actions.setPreferences({downloadLocation}));
+      dispatch(actions.preferences.setPreferences({downloadLocation}));
     },
   };
 };
 
-export const Demo = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DemoInternal);
+export const Demo = connect(mapStateToProps, mapDispatchToProps)(DemoInternal);
