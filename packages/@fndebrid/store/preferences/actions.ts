@@ -1,4 +1,4 @@
-import {ActionType, createAction, createAsyncAction} from 'typesafe-actions';
+import { ActionType, createAction, createAsyncAction } from 'typesafe-actions';
 import State from './state';
 
 // import { createBetterAsyncAction as createAsyncAction } from "../better-async-creator";

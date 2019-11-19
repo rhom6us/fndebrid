@@ -1,8 +1,8 @@
-import {Classes, ITreeNode, Tree} from '@blueprintjs/core';
-import {File, FileId} from '@fndebrid/real-debrid';
-import {difference, union} from 'lodash';
-import React, {FC, useCallback, useMemo, useState} from 'react';
-import {buildTree, FnTreeNode, TreeNodeId} from './models';
+import { Classes, ITreeNode, Tree } from '@blueprintjs/core';
+import { File, FileId } from '@fndebrid/real-debrid';
+import { difference, union } from 'lodash';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { buildTree, FnTreeNode, TreeNodeId } from './models';
 
 export interface FileTreeProps {
   files: File[];
@@ -10,7 +10,7 @@ export interface FileTreeProps {
   onSelectionsChanged: (fileIds: FileId[]) => void;
 }
 
-export const FileTree: FC<FileTreeProps> = ({files, selections, onSelectionsChanged}) => {
+export const FileTree: FC<FileTreeProps> = ({ files, selections, onSelectionsChanged }) => {
   // tslint:disable-next-line: variable-name
   const [_expansions, setExpansions] = useState(new Set<TreeNodeId>());
 

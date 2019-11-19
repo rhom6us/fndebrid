@@ -1,5 +1,5 @@
-import {ApiError} from './ApiError';
-import {ArgumentError} from './ArgumentError';
+import { ApiError } from './ApiError';
+import { ArgumentError } from './ArgumentError';
 
 // tslint:disable: max-classes-per-file
 export class RealDebridError extends Error {}

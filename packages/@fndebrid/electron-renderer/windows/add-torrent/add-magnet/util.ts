@@ -1,4 +1,4 @@
-import {clipboard} from 'electron';
+import { clipboard } from 'electron';
 
 export function tryReadClipboard() {
   try {

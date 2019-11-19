@@ -1,5 +1,5 @@
-import {assertNever, Unpack} from '@fndebrid/core';
-import {Authorizor, getInfoHashAsync, RealDebrid, TorrentHash} from '@fndebrid/real-debrid';
+import { assertNever, Unpack } from '@fndebrid/core';
+import { Authorizor, getInfoHashAsync, RealDebrid, TorrentHash } from '@fndebrid/real-debrid';
 import {
   addMagnet,
   addTorrentFile,
@@ -11,10 +11,10 @@ import {
   selectFiles,
   setInfoHash,
 } from '@fndebrid/store/real-debrid/actions';
-import {shell} from 'electron';
+import { shell } from 'electron';
 import Store from 'electron-store';
-import {all, call, cancel, delay, fork, put, take, takeEvery, takeLatest} from 'redux-saga/effects';
-import {ActionType, getType} from 'typesafe-actions';
+import { all, call, cancel, delay, fork, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import { ActionType, getType } from 'typesafe-actions';
 
 const storage = new Store();
 type Yield<T> = Unpack<T>;
@@ -34,7 +34,7 @@ function* pollTorrents_loop(interval: number) {
   let errorCount = 0;
   while (true) {
     yield put(fetchActiveTorrents.request());
-    const {type, payload}: ActionType<typeof fetchActiveTorrents.success | typeof fetchActiveTorrents.failure> = yield take([
+    const { type, payload }: ActionType<typeof fetchActiveTorrents.success | typeof fetchActiveTorrents.failure> = yield take([
       fetchActiveTorrents.success,
       fetchActiveTorrents.failure,
     ]);
@@ -60,7 +60,7 @@ export function* saga() {
   yield all(
     [
       function* pollTorrents_request() {
-        yield takeLatest(pollTorrents.request, function*({payload: {interval}}) {
+        yield takeLatest(pollTorrents.request, function*({ payload: { interval } }) {
           const task = yield fork(pollTorrents_loop, interval);
           yield take(pollTorrents.cancel);
           yield cancel(task);
@@ -86,9 +86,9 @@ export function* saga() {
       },
 
       function* addMagnet_request() {
-        yield takeEvery(addMagnet.request, function*({payload: [magnetLink, jobId]}) {
+        yield takeEvery(addMagnet.request, function*({ payload: [magnetLink, jobId] }) {
           try {
-            const {id}: Yield<typeof api.addMagnet> = (yield call([api, api.addMagnet], magnetLink)) as any;
+            const { id }: Yield<typeof api.addMagnet> = (yield call([api, api.addMagnet], magnetLink)) as any;
             yield put(addMagnet.success([id, jobId]));
           } catch (err) {
             yield put(addMagnet.failure(getErrorMsg(err)));
@@ -96,9 +96,9 @@ export function* saga() {
         });
       },
       function* addTorrentFile_request() {
-        yield takeEvery(addTorrentFile.request, function*({payload: [filePath, jobId]}) {
+        yield takeEvery(addTorrentFile.request, function*({ payload: [filePath, jobId] }) {
           try {
-            const {id}: Yield<typeof api.addMagnet> = yield api.addTorrent(filePath);
+            const { id }: Yield<typeof api.addMagnet> = yield api.addTorrent(filePath);
             yield put(addTorrentFile.success([id, jobId]));
           } catch (err) {
             yield put(addTorrentFile.failure(getErrorMsg(err)));
@@ -107,14 +107,14 @@ export function* saga() {
       },
 
       function* addMagnet_addTorrentFile_request() {
-        yield takeEvery([addMagnet.request, addTorrentFile.request], function*({payload: [data, jobId]}) {
+        yield takeEvery([addMagnet.request, addTorrentFile.request], function*({ payload: [data, jobId] }) {
           const hash: TorrentHash = yield getInfoHashAsync(data);
           yield put(setInfoHash(jobId, hash));
           yield put(getCaches.request([hash, jobId]));
         });
       },
       function* getCaches_request() {
-        yield takeEvery(getCaches.request, function*({payload: [hash, jobId]}) {
+        yield takeEvery(getCaches.request, function*({ payload: [hash, jobId] }) {
           try {
             const caches: Yield<typeof api.instantAvailability> = yield api.instantAvailability(hash);
             yield put(getCaches.success([caches, jobId]));
@@ -125,13 +125,13 @@ export function* saga() {
       },
 
       function* addMagnet_addTorrent_success() {
-        yield takeEvery([addMagnet.success, addTorrentFile.success], function*({payload: [torrentId, jobId]}) {
+        yield takeEvery([addMagnet.success, addTorrentFile.success], function*({ payload: [torrentId, jobId] }) {
           yield put(fetchTorrent.request(torrentId));
         });
       },
 
       function* fetchTorrent_request() {
-        yield takeLatest(fetchTorrent.request, function*({payload: torrentId}) {
+        yield takeLatest(fetchTorrent.request, function*({ payload: torrentId }) {
           try {
             const torrent: Yield<typeof api.torrent> = yield call([api, api.torrent], torrentId);
 
@@ -142,7 +142,7 @@ export function* saga() {
         });
       },
       function* fetchTorrent_success() {
-        yield takeEvery(fetchTorrent.success, function*({payload: {id, status}}) {
+        yield takeEvery(fetchTorrent.success, function*({ payload: { id, status } }) {
           if (status === 'magnet_conversion') {
             yield delay(1500);
             yield put(fetchTorrent.request(id));
@@ -150,7 +150,7 @@ export function* saga() {
         });
       },
       function* selectFiles_request() {
-        yield takeEvery(selectFiles.request, function*({payload: [torrentId, fileIds]}) {
+        yield takeEvery(selectFiles.request, function*({ payload: [torrentId, fileIds] }) {
           try {
             yield api.selectFiles(torrentId, fileIds);
             yield put(selectFiles.success());

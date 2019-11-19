@@ -1,6 +1,6 @@
-import {app, Menu, Tray} from 'electron';
+import { app, Menu, Tray } from 'electron';
 import path from 'path';
-import {showAddMagnet, showMain, showPreferences, showTorrents} from './windows';
+import { showAddMagnet, showMain, showPreferences, showTorrents } from './windows';
 
 export let appIcon: Tray | undefined;
 
@@ -37,7 +37,9 @@ export function createAppIcon() {
     ]),
   );
   app.on('quit', () => {
-    appIcon && appIcon.destroy();
+    if (appIcon) {
+      appIcon.destroy();
+    }
     appIcon = undefined;
   });
   return appIcon;

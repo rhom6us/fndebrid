@@ -1,6 +1,6 @@
-import {combineReducers, Dispatch, Store} from 'redux';
-import {ActionType} from 'typesafe-actions';
-import {ActionCreatorOrMap, Dispatched, getDispatcher as getDispatcherInternal} from './dispatcher';
+import { combineReducers, Dispatch, Store } from 'redux';
+import { ActionType } from 'typesafe-actions';
+import { ActionCreatorOrMap, Dispatched, getDispatcher as getDispatcherInternal } from './dispatcher';
 import * as preferences from './preferences';
 import * as realDebrid from './real-debrid';
 

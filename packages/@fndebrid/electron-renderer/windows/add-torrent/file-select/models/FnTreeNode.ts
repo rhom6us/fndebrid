@@ -1,8 +1,8 @@
-import {ITreeNode} from '@blueprintjs/core';
-import {File} from '@fndebrid/real-debrid';
-import {createElement} from 'react';
-import {formatBytes} from '../util';
-import {TreeNodeId, TreeNodeLabel} from './types';
+import { ITreeNode } from '@blueprintjs/core';
+import { File } from '@fndebrid/real-debrid';
+import { createElement } from 'react';
+import { formatBytes } from '../util';
+import { TreeNodeId, TreeNodeLabel } from './types';
 
 // tslint:disable: max-classes-per-file
 export abstract class FnTreeNode implements ITreeNode<File>, Iterable<FnTreeNode> {

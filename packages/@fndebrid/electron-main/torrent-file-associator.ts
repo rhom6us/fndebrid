@@ -1,4 +1,4 @@
-import {RegistryHive as Registry} from '@fndebrid/core/registry';
+import { RegistryHive as Registry } from '@fndebrid/core/registry';
 // import Registry from 'winreg';
 import path from 'path';
 

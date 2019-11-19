@@ -1,6 +1,6 @@
-import {assertNever, isFunction} from '@fndebrid/core';
-import {isNullOrUndefined} from 'util';
-import {FnAction, FnDispatch, FnStore} from './';
+import { assertNever, isFunction } from '@fndebrid/core';
+import { isNullOrUndefined } from 'util';
+import { FnAction, FnDispatch, FnStore } from './';
 
 type ActionCreator = (...args: any[]) => FnAction;
 // type DispatchedActionCreator<TActionCreator extends AnyActionCreator> = (...args: Parameters<TActionCreator>) => void;
@@ -43,7 +43,7 @@ type Dispatcher<TActionCreator extends ActionCreator> = (...args: Parameters<TAc
 export type Dispatched<TActionCreatorOrMap extends ActionCreatorOrMap> = TActionCreatorOrMap extends ActionCreator
   ? (...args: Parameters<TActionCreatorOrMap>) => void
   : TActionCreatorOrMap extends Record<string, ActionCreatorOrMap>
-  ? {[K in keyof TActionCreatorOrMap]: Dispatched<TActionCreatorOrMap[K]>}
+  ? { [K in keyof TActionCreatorOrMap]: Dispatched<TActionCreatorOrMap[K]> }
   : never;
 
 function applyDispatch<TMap extends ActionCreatorOrMap>(dispatch: FnDispatch, map: TMap): Dispatched<TMap> {

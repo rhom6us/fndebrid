@@ -12,12 +12,12 @@ import {
   TagInput,
 } from '@blueprintjs/core';
 import styled from '@emotion/styled';
-import {FnDispatch, FnState, getDispatcher} from '@fndebrid/store';
-import {AutoDeleteTorrentFileOption} from '@fndebrid/store/preferences';
-import {remote} from 'electron';
-import React, {useEffect} from 'react';
-import {connect, MapDispatchToPropsFunction, MapStateToProps} from 'react-redux';
-import {handleBooleanChange, handleStringChange} from '../../helpers';
+import { FnDispatch, FnState, getDispatcher } from '@fndebrid/store';
+import { AutoDeleteTorrentFileOption } from '@fndebrid/store/preferences';
+import { remote } from 'electron';
+import React, { useEffect } from 'react';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
+import { handleBooleanChange, handleStringChange } from '../../helpers';
 
 const app = remote.app;
 // tslint:disable-next-line: no-empty-interface
@@ -30,20 +30,20 @@ function mapDispatchToProps(dispatch: FnDispatch, ownProps: IOwnProps) {
   const dispatcher = getDispatcher(dispatch);
   return {
     ...dispatcher.preferences,
-    setDefaultDownloadLocation: () => dispatcher.preferences.setPreferences({downloadLocation: app.getPath('downloads')}),
-    setWhiteList: (fileWhiteList: string[]) => dispatcher.preferences.setPreferences({fileWhiteList}),
-    setBlackList: (fileBlackList: string[]) => dispatcher.preferences.setPreferences({fileBlackList}),
-    setAutoDeleteServer: (autoDeleteServer: boolean) => dispatcher.preferences.setPreferences({autoDeleteServer}),
+    setDefaultDownloadLocation: () => dispatcher.preferences.setPreferences({ downloadLocation: app.getPath('downloads') }),
+    setWhiteList: (fileWhiteList: string[]) => dispatcher.preferences.setPreferences({ fileWhiteList }),
+    setBlackList: (fileBlackList: string[]) => dispatcher.preferences.setPreferences({ fileBlackList }),
+    setAutoDeleteServer: (autoDeleteServer: boolean) => dispatcher.preferences.setPreferences({ autoDeleteServer }),
     setAutoDeleteTorrentFile: (autoDeleteTorrentFile: AutoDeleteTorrentFileOption) =>
-      dispatcher.preferences.setPreferences({autoDeleteTorrentFile}),
-    setAutoDownloadTorrents: (autoDownloadTorrents: boolean) => dispatcher.preferences.setPreferences({autoDownloadTorrents}),
+      dispatcher.preferences.setPreferences({ autoDeleteTorrentFile }),
+    setAutoDownloadTorrents: (autoDownloadTorrents: boolean) => dispatcher.preferences.setPreferences({ autoDownloadTorrents }),
     setAutoSelectFiles(autoSelectFiles: 'none' | 'all_files' | 'largest_files' | 'pattern', pattern?: string) {
       if (autoSelectFiles === 'pattern') return dispatcher.preferences.setAutoSelectFilesPattern(pattern!);
 
       return dispatcher.preferences.setAutoSelectFiles(autoSelectFiles);
     },
     setAutoSubmitAutoSelectedFiles: (autoSubmitAutoSelectedFiles: boolean) =>
-      dispatcher.preferences.setPreferences({autoSubmitAutoSelectedFiles}),
+      dispatcher.preferences.setPreferences({ autoSubmitAutoSelectedFiles }),
   };
 }
 

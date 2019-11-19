@@ -1,12 +1,16 @@
-import webpack, {Compiler, Configuration, Stats, Watching} from 'webpack';
-import WebpackDevServer, {addDevServerEntrypoints} from 'webpack-dev-server';
+import webpack, { Compiler, Configuration, Stats, Watching } from 'webpack';
+import WebpackDevServer, { addDevServerEntrypoints } from 'webpack-dev-server';
 import cliLogger from './cliLogger';
 import * as configs from './configs';
-import {App, Command, Environment, staticSourceDir} from './configs/settings';
+import { App, Command, Environment, staticSourceDir } from './configs/settings';
 
 function validate(value: string[]): value is [Command, App, Environment] {
   const [command, app, mode] = value;
-  return ['fnbuild', 'fnwatch', 'fnserve'].includes(command) && ['main', 'renderer'].includes(app) && ['production', 'development'].includes(mode);
+  return (
+    ['fnbuild', 'fnwatch', 'fnserve'].includes(command) &&
+    ['main', 'renderer'].includes(app) &&
+    ['production', 'development'].includes(mode)
+  );
 }
 
 function getCompiler(config: Configuration) {
@@ -34,21 +38,21 @@ export default function fndosomething(...args: [Command, string, string]) {
     const [command, app, mode] = args;
     switch (command) {
       case 'fnbuild':
-        compile({...configs[app], mode, watch: false});
+        compile({ ...configs[app], mode, watch: false });
         break;
       case 'fnwatch':
-        compile({...configs[app], mode, watch: true});
+        compile({ ...configs[app], mode, watch: true });
         break;
       case 'fnserve':
-        serve({...configs[app], mode, watch: true});
+        serve({ ...configs[app], mode, watch: true });
         break;
     }
   } else {
     throw new Error(`invalid command "([${process.execPath}] ${process.execArgv.join(' ')}) -- ${process.argv.join(' ')}"`);
   }
 }
-export function compile(config: Configuration & {watch: false}): Compiler;
-export function compile(config: Configuration & {watch: true}): Watching;
+export function compile(config: Configuration & { watch: false }): Compiler;
+export function compile(config: Configuration & { watch: true }): Watching;
 export function compile(config: Configuration) {
   const compiler = getCompiler(config);
   const callback = (err: any, stats: Stats) => {
@@ -93,7 +97,7 @@ export function compile(config: Configuration) {
   return compiler;
 }
 
-export function serve(config: Configuration & {watch: true}) {
+export function serve(config: Configuration & { watch: true }) {
   const devServerConfig: WebpackDevServer.Configuration = {
     contentBase: [staticSourceDir],
     host: 'localhost',

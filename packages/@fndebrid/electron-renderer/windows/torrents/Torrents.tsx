@@ -1,7 +1,7 @@
-import {Torrent, TorrentStatus} from '@fndebrid/real-debrid';
-import {FnDispatch, FnState, getDispatcher} from '@fndebrid/store';
-import React, {FC, useEffect} from 'react';
-import {connect} from 'react-redux';
+import { Torrent, TorrentStatus } from '@fndebrid/real-debrid';
+import { FnDispatch, FnState, getDispatcher } from '@fndebrid/store';
+import React, { FC, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 // tslint:disable-next-line: no-empty-interface
 
@@ -42,7 +42,7 @@ type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 type StateProps = ReturnType<typeof mapStateToProps>;
 
 type Props = StateProps & DispatchProps & IOwnProps;
-const TorrentsInternal: FC<Props> = ({activeTorrents, doneTorrents, deadTorrents, fetchAll}) => {
+const TorrentsInternal: FC<Props> = ({ activeTorrents, doneTorrents, deadTorrents, fetchAll }) => {
   useEffect(() => {
     fetchAll();
   }, []);

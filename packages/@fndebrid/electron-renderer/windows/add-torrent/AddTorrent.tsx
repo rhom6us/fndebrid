@@ -1,11 +1,11 @@
-import {assertNever} from '@fndebrid/core/utils';
-import {ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId} from '@fndebrid/real-debrid';
-import {FnState, getDispatcher} from '@fndebrid/store';
-import {JobId} from '@fndebrid/store/real-debrid';
-import React, {useEffect, useMemo, useState} from 'react';
-import {connect} from 'react-redux';
+import { assertNever } from '@fndebrid/core/utils';
+import { ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId } from '@fndebrid/real-debrid';
+import { FnState, getDispatcher } from '@fndebrid/store';
+import { JobId } from '@fndebrid/store/real-debrid';
+import React, { useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
 import uuid5 from 'uuid/v5';
-import {Dialog} from '../../components';
+import { Dialog } from '../../components';
 import AddMagnet from './add-magnet';
 import FileSelect from './file-select';
 
@@ -70,7 +70,7 @@ function getBody(
 export const AddTorrent = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(({addMagnet, cancelJob, completeJob, deleteTorrent, selectFiles, jobs, torrents}: Props) => {
+)(({ addMagnet, cancelJob, completeJob, deleteTorrent, selectFiles, jobs, torrents }: Props) => {
   const [jobId, setJobId] = useState(initialJobId);
   const [aquiredTorrentId, setAquiredTorrentId] = useState(intitialTorrentId);
   const torrentId = useMemo(() => aquiredTorrentId || (jobs[jobId] && jobs[jobId].torrentId) || undefined, [

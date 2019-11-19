@@ -1,4 +1,4 @@
-import {Alignment, Button, Classes, Navbar} from '@blueprintjs/core';
+import { Alignment, Button, Classes, Navbar } from '@blueprintjs/core';
 import styled from '@emotion/styled';
 import React from 'react';
 
@@ -9,7 +9,7 @@ const DraggableNavBar = styled(Navbar)`
 const NoDragButton = styled(Button)`
   -webkit-app-region: no-drag;
 `;
-export const TitleBar: React.FC<{onClose?: () => void}> = ({onClose}) => {
+export const TitleBar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
   return (
     <DraggableNavBar>
       <Navbar.Group align={Alignment.LEFT}>

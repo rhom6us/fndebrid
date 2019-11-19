@@ -1,4 +1,4 @@
-import {RealDebridError} from './RealDebridError';
+import { RealDebridError } from './RealDebridError';
 
 // tslint:disable: max-classes-per-file
 export class ArgumentError extends RealDebridError {

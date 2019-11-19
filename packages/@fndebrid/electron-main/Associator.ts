@@ -1,4 +1,4 @@
-import {OperationFailedError} from '@fndebrid/core';
+import { OperationFailedError } from '@fndebrid/core';
 
 export abstract class Associator {
   abstract get isAssociated(): boolean;

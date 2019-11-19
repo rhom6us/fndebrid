@@ -1,4 +1,4 @@
-import {isEmpty, isObject, keys} from 'lodash';
+import { isEmpty, isObject, keys } from 'lodash';
 
 /*
   Takes the old and the new version of an immutable object and
@@ -29,5 +29,5 @@ export default function objectDifference(old: any, curr: any) {
 
   keys(old).forEach(key => curr[key] === undefined && (deleted[key] = true));
 
-  return {updated, deleted};
+  return { updated, deleted };
 }

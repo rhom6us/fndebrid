@@ -1,9 +1,9 @@
-import {URL} from 'url';
-import {types} from 'util';
-import {ArgumentFalsyError, ArgumentTypeError, ArgumentUndefinedError, InvalidArgumentError} from '../';
-import {Ctor} from '../utilTypes';
+import { URL } from 'url';
+import { types } from 'util';
+import { ArgumentFalsyError, ArgumentTypeError, ArgumentUndefinedError, InvalidArgumentError } from '../';
+import { Ctor } from '../utilTypes';
 
-export const {isDate, isMap, isPromise, isSet, isNativeError, isRegExp} = (types as unknown) as {
+export const { isDate, isMap, isPromise, isSet, isNativeError, isRegExp } = (types as unknown) as {
   isDate: (value: any) => value is Date;
   isMap: (value: any) => value is Map<any, any>;
   isPromise: (value: any) => value is Promise<any>;

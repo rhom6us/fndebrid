@@ -1,15 +1,15 @@
-import {ActionType, createReducer} from 'typesafe-actions';
+import { ActionType, createReducer } from 'typesafe-actions';
 import * as actions from './actions';
-import {defaultState, State} from './state';
+import { defaultState, State } from './state';
 
 export const reducer = createReducer<State, ActionType<typeof actions>>(defaultState)
-  .handleAction(actions.setPreferences, (state, {payload}) => ({...state, ...payload}))
-  .handleAction(actions.setAutoSelectFilesPattern, (state, {payload: autoSelectFilesPattern}) => ({
+  .handleAction(actions.setPreferences, (state, { payload }) => ({ ...state, ...payload }))
+  .handleAction(actions.setAutoSelectFilesPattern, (state, { payload: autoSelectFilesPattern }) => ({
     ...state,
     autoSelectFiles: 'pattern',
     autoSelectFilesPattern,
   }))
-  .handleAction(actions.setAutoSelectFiles, (state, {payload: autoSelectFiles}) => {
-    const {autoSelectFilesPattern, ...restProps} = {...state, autoSelectFiles};
+  .handleAction(actions.setAutoSelectFiles, (state, { payload: autoSelectFiles }) => {
+    const { autoSelectFilesPattern, ...restProps } = { ...state, autoSelectFiles };
     return restProps;
   });

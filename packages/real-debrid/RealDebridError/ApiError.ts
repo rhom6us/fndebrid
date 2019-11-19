@@ -1,5 +1,5 @@
 // tslint:disable: max-classes-per-file
-import {RealDebridError} from './RealDebridError';
+import { RealDebridError } from './RealDebridError';
 
 export abstract class ApiError extends RealDebridError {
   protected constructor(

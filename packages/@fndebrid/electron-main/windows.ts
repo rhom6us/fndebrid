@@ -1,17 +1,17 @@
-import {isDev} from '@fndebrid/core';
-import {FileId, TorrentId} from '@fndebrid/real-debrid';
-import {BrowserWindow, ipcMain, webFrame} from 'electron';
+import { isDev } from '@fndebrid/core';
+import { FileId, TorrentId } from '@fndebrid/real-debrid';
+import { BrowserWindow, ipcMain, webFrame } from 'electron';
 import path from 'path';
-import {format as formatUrl, URLSearchParams} from 'url';
+import { format as formatUrl, URLSearchParams } from 'url';
 import uuid5 from 'uuid/v5';
-import {showWindow} from './file-selection';
+import { showWindow } from './file-selection';
 
 type WindowName = 'Main' | 'Preferences' | 'AddTorrent' | 'Torrents';
-export const windows: {[K in WindowName]?: BrowserWindow} = {};
+export const windows: { [K in WindowName]?: BrowserWindow } = {};
 
 const dialogs = new Set<BrowserWindow>();
 
-ipcMain.on('please-resize', async (event, size: {width?: number; height?: number}) => {
+ipcMain.on('please-resize', async (event, size: { width?: number; height?: number }) => {
   const win = BrowserWindow.fromWebContents(event.sender);
 
   const zoom = event.sender.zoomFactor;
@@ -22,7 +22,7 @@ ipcMain.on('please-resize', async (event, size: {width?: number; height?: number
 });
 function showDialog<T>(
   route: WindowName,
-  options: Electron.BrowserWindowConstructorOptions & {devTools?: boolean} = {devTools: isDev},
+  options: Electron.BrowserWindowConstructorOptions & { devTools?: boolean } = { devTools: isDev },
   query: any,
 ) {
   return new Promise<T>((resolve, reject) => {
@@ -57,7 +57,7 @@ function showDialog<T>(
     }
 
     if (isDev) {
-      const search = new URLSearchParams({...query, route}).toString();
+      const search = new URLSearchParams({ ...query, route }).toString();
       window.loadURL(`http://localhost:9080/?${search}`);
     } else {
       console.log(__dirname);
@@ -65,7 +65,7 @@ function showDialog<T>(
         formatUrl({
           // __dirname will be dist/main
           pathname: path.join(__dirname, '..', 'renderer', 'index.html'),
-          query: {...query, route},
+          query: { ...query, route },
           protocol: 'file',
           slashes: true,
         }),
@@ -87,7 +87,7 @@ function showDialog<T>(
 }
 function createWindow(
   route: WindowName,
-  options: Electron.BrowserWindowConstructorOptions & {devTools?: boolean} = {devTools: isDev},
+  options: Electron.BrowserWindowConstructorOptions & { devTools?: boolean } = { devTools: isDev },
   query: Record<string, string | number | boolean> = {},
 ) {
   if (windows[route]) {
@@ -97,7 +97,7 @@ function createWindow(
 
   const window = new BrowserWindow({
     show: false,
-    webPreferences: {nodeIntegration: true},
+    webPreferences: { nodeIntegration: true },
     alwaysOnTop: true,
     ...options,
   });
@@ -111,8 +111,8 @@ function createWindow(
   }
 
   if (isDev) {
-    const search = new URLSearchParams({...query, route}).toString();
-    console.log({search});
+    const search = new URLSearchParams({ ...query, route }).toString();
+    console.log({ search });
     window.loadURL(`http://localhost:9080/?${search}`);
   } else {
     console.log(__dirname);
@@ -120,7 +120,7 @@ function createWindow(
       formatUrl({
         // __dirname will be dist/main
         pathname: path.join(__dirname, '..', 'renderer', 'index.html'),
-        query: {...query, route},
+        query: { ...query, route },
         protocol: 'file',
         slashes: true,
       }),
@@ -172,6 +172,6 @@ export const showFileSelect = (torrentId: TorrentId) => {
       height: 400,
       width: 400,
     },
-    {torrentId},
+    { torrentId },
   );
 };

@@ -25,7 +25,7 @@
   }
 */
 
-import {keys} from 'lodash';
+import { keys } from 'lodash';
 
 export default function fillShape(source: any, sink: any) {
   if (typeof sink === 'function') {

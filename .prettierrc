@@ -6,7 +6,7 @@ singleQuote: true
 quoteProps: as-needed
 jsxSingleQuote: true
 trailingComma: all
-bracketSpacing: false
+bracketSpacing: true
 jsxBracketSameLine: true
 arrowParens: avoid
 htmlWhitespaceSensitivity: css

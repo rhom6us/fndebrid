@@ -1,11 +1,11 @@
-import {Button, H5, InputGroup} from '@blueprintjs/core';
-import {isDev} from '@fndebrid/core';
-import {MagnetLink} from '@fndebrid/real-debrid';
-import React, {useEffect, useState} from 'react';
+import { Button, H5, InputGroup } from '@blueprintjs/core';
+import { isDev } from '@fndebrid/core';
+import { MagnetLink } from '@fndebrid/real-debrid';
+import React, { useEffect, useState } from 'react';
 import uuid5 from 'uuid/v5';
-import {Dialog} from '../../../components';
-import {handleStringChange} from '../../../helpers';
-import {isMagnetLink, tryReadClipboard} from './util';
+import { Dialog } from '../../../components';
+import { handleStringChange } from '../../../helpers';
+import { isMagnetLink, tryReadClipboard } from './util';
 
 const callbackId = uuid5(`http://fndebrid.butler.software/AddMagnet`, uuid5.URL);
 
@@ -14,7 +14,7 @@ interface IOwnProps {
   onCancel: () => void;
 }
 
-export const AddMagnet: React.FC<IOwnProps> = ({onSubmit, onCancel: cancel}) => {
+export const AddMagnet: React.FC<IOwnProps> = ({ onSubmit, onCancel: cancel }) => {
   const [magnet, setMagnet] = useState<string>(tryReadClipboard());
   const [validMagnet, setValidMagnet] = useState(isMagnetLink(magnet));
 

@@ -1,7 +1,7 @@
 // @flow
 
 import fs from 'fs';
-import {ByteProgressCallback, streamWithProgress} from './streamWithProgress';
+import { ByteProgressCallback, streamWithProgress } from './streamWithProgress';
 
 // Public: Download a file and store it on a file system using streaming with appropriate progress callback.
 //
@@ -20,7 +20,7 @@ export default async function downloadFile(
   progressCallback?: ByteProgressCallback,
 ): Promise<void> {
   const request = new Request(sourceUrl, {
-    headers: new Headers({'Content-Type': 'application/octet-stream'}),
+    headers: new Headers({ 'Content-Type': 'application/octet-stream' }),
   });
 
   const response = await fetch(request);

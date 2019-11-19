@@ -1,7 +1,7 @@
-import {isDev} from '@fndebrid/core';
-import {BrowserWindow} from 'electron';
+import { isDev } from '@fndebrid/core';
+import { BrowserWindow } from 'electron';
 import path from 'path';
-import {format as formatUrl} from 'url';
+import { format as formatUrl } from 'url';
 
 let window: BrowserWindow | undefined;
 const route = 'FileSelect';
@@ -33,7 +33,7 @@ export function showWindow() {
     window.loadURL(
       formatUrl({
         pathname: path.join(__dirname, 'index.html'),
-        query: {route},
+        query: { route },
         protocol: 'file',
         slashes: true,
       }),

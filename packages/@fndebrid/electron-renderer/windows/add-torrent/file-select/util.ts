@@ -1,6 +1,6 @@
-import {File, FileId} from '@fndebrid/real-debrid';
-import {includes} from 'lodash';
-import {FnTreeNode, TreeNodeId} from './models';
+import { File, FileId } from '@fndebrid/real-debrid';
+import { includes } from 'lodash';
+import { FnTreeNode, TreeNodeId } from './models';
 
 const prefixes = ['', 'K', 'M', 'G', 'T', 'P'];
 const denominators = prefixes.map((_, i) => Math.pow(1000, i));

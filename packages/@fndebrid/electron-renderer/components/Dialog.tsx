@@ -1,16 +1,16 @@
-import {Classes, Dialog as BpDialog} from '@blueprintjs/core';
+import { Classes, Dialog as BpDialog } from '@blueprintjs/core';
 import styled from '@emotion/styled';
-import React, {PropsWithChildren} from 'react';
+import React, { PropsWithChildren } from 'react';
 
 const HeightBpDialog = styled(BpDialog)`
   height: 100vh;
   margin: 0;
 `;
-export function Dialog({children, title, onClose}: PropsWithChildren<{title: string; onClose: Function}>) {
+export function Dialog({ children, title, onClose }: PropsWithChildren<{ title: string; onClose: Function }>) {
   return (
     <HeightBpDialog
       onClose={onClose as any}
-      backdropProps={{hidden: true}}
+      backdropProps={{ hidden: true }}
       autoFocus={true}
       usePortal={false}
       hasBackdrop={false}
@@ -23,14 +23,14 @@ export function Dialog({children, title, onClose}: PropsWithChildren<{title: str
 }
 
 export namespace Dialog {
-  export const Body: React.FC = ({children}) => {
+  export const Body: React.FC = ({ children }) => {
     return <div className={Classes.DIALOG_BODY}>{children}</div>;
   };
-  export function Footer({children}: PropsWithChildren<{}>) {
+  export function Footer({ children }: PropsWithChildren<{}>) {
     return <div className={Classes.DIALOG_FOOTER}>{children}</div>;
   }
   export namespace Footer {
-    export function Actions({children}: PropsWithChildren<{}>) {
+    export function Actions({ children }: PropsWithChildren<{}>) {
       return <div className={Classes.DIALOG_FOOTER_ACTIONS}>{children}</div>;
     }
   }

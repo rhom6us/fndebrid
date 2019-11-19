@@ -1,4 +1,4 @@
-import {Opaque} from '@fndebrid/core';
+import { Opaque } from '@fndebrid/core';
 
 export type TorrentId = Opaque<string, 'torrent_id'>;
 export function TorrentId(id: string) {

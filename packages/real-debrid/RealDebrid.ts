@@ -1,9 +1,9 @@
-import fs, {createReadStream, ReadStream, statSync, WriteStream} from 'fs';
+import fs, { createReadStream, ReadStream, statSync, WriteStream } from 'fs';
 import fetch from 'node-fetch';
 import path from 'path';
-import {URL, URLSearchParams} from 'url';
-import {Authorizor} from './Authorizor';
-import {getApiError} from './RealDebridError';
+import { URL, URLSearchParams } from 'url';
+import { Authorizor } from './Authorizor';
+import { getApiError } from './RealDebridError';
 import {
   ExtendedTorrent,
   FileId,
@@ -15,7 +15,7 @@ import {
   TorrentHash,
   TorrentId,
 } from './types';
-import {makeUrl} from './util';
+import { makeUrl } from './util';
 
 // tslint:disable-next-line: max-classes-per-file
 export class RealDebrid {
@@ -113,7 +113,7 @@ export class RealDebrid {
 
     const [data, headers] = await this._get<Torrent[]>(
       'torrents',
-      {page, limit: pageSize.toString(), ...(() => (activeOnly ? {filter: 'active'} : {}))()},
+      { page, limit: pageSize.toString(), ...(() => (activeOnly ? { filter: 'active' } : {}))() },
       true,
     );
     if (((headers['x-total-count'] && headers['x-total-count'][0]) || 0) > page * pageSize) {
@@ -121,7 +121,7 @@ export class RealDebrid {
     }
 
     return (data as ExtendedTorrent[]).map(torrent => {
-      const {files, ...result} = torrent;
+      const { files, ...result } = torrent;
       return result;
     }) as Torrent[];
   }
@@ -132,7 +132,7 @@ export class RealDebrid {
     return this._delete(`torrents/delete/${id}`);
   }
   public async addMagnet(magnet: MagnetLink) {
-    const result = await this._post<{id: TorrentId}>('torrents/addMagnet', {magnet});
+    const result = await this._post<{ id: TorrentId }>('torrents/addMagnet', { magnet });
     return result!;
   }
   public addTorrent(filePath: string) {
@@ -142,7 +142,7 @@ export class RealDebrid {
     const readStream = createReadStream(filePath);
     // var stringContent = fs.readFileSync('foo.txt', 'utf8');
     // var bufferContent = fs.readFileSync(filePath)
-    return this._put<{id: TorrentId}>('torrents/addTorrent', readStream, {
+    return this._put<{ id: TorrentId }>('torrents/addTorrent', readStream, {
       'Content-length': fileSizeInBytes.toString(),
     })!;
   }
@@ -150,15 +150,15 @@ export class RealDebrid {
     if (!files.length) {
       return Promise.resolve();
     }
-    return this._post(`torrents/selectFiles/${torrentId}`, {files: files instanceof Array ? files.join(',') : files});
+    return this._post(`torrents/selectFiles/${torrentId}`, { files: files instanceof Array ? files.join(',') : files });
   }
   public unrestrictLink(link: Link) {
-    return this._post<LinkInfo & {crc: number}>('unrestrict/link', {link});
+    return this._post<LinkInfo & { crc: number }>('unrestrict/link', { link });
   }
   public downloads() {
     // TODO: pagination params
     // TODO: X-Total-Count response header
-    return this._get<Array<LinkInfo & {generated: Date}>>('downloads');
+    return this._get<Array<LinkInfo & { generated: Date }>>('downloads');
   }
 
   public async instantAvailability(hash: TorrentHash) {

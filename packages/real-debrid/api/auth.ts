@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
-import {URL, URLSearchParams} from 'url';
-import {ArgumentFalsyError} from '../RealDebridError';
-import {ClientId, CodeInfo, Credentials, DeviceCode, RefreshToken, TokenInfo} from '../types';
-import {makeUrl} from '../util';
+import { URL, URLSearchParams } from 'url';
+import { ArgumentFalsyError } from '../RealDebridError';
+import { ClientId, CodeInfo, Credentials, DeviceCode, RefreshToken, TokenInfo } from '../types';
+import { makeUrl } from '../util';
 
 const base = new URL('https://api.real-debrid.com/oauth/v2/');
 // tslint:disable-next-line: variable-name
@@ -11,7 +11,7 @@ const public_client_id = 'X245A4XAIBGVM' as ClientId;
 export async function code(client_id: ClientId = public_client_id): Promise<CodeInfo> {
   if (!client_id) throw new ArgumentFalsyError('client_id');
 
-  const response = await fetch(makeUrl(base, 'device/code', {client_id, new_credentials: 'yes'}));
+  const response = await fetch(makeUrl(base, 'device/code', { client_id, new_credentials: 'yes' }));
 
   const json = await response.json();
 
@@ -42,7 +42,7 @@ export function credentials({
       if (Date.now() > expires) {
         reject('expired');
       }
-      const r = await fetch(makeUrl(base, 'device/credentials', {client_id: 'X245A4XAIBGVM', code: device_code}));
+      const r = await fetch(makeUrl(base, 'device/credentials', { client_id: 'X245A4XAIBGVM', code: device_code }));
       if (r.ok) {
         clearInterval(timer);
         resolve(r.json());
@@ -55,15 +55,15 @@ export async function token({
   client_secret,
   // tslint:disable-next-line: no-shadowed-variable
   code,
-}: Credentials & {code: DeviceCode | RefreshToken}): Promise<TokenInfo> {
+}: Credentials & { code: DeviceCode | RefreshToken }): Promise<TokenInfo> {
   if (!client_id) throw new ArgumentFalsyError('client_id');
   if (!client_secret) throw new ArgumentFalsyError('client_secret');
   if (!code) throw new ArgumentFalsyError('code');
 
   const response = await fetch(makeUrl(base, 'token'), {
     method: 'POST',
-    headers: {'Content-type': 'application/x-www-form-urlencoded'},
-    body: new URLSearchParams({client_id, client_secret, code, grant_type: 'http://oauth.net/grant_type/device/1.0'}),
+    headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ client_id, client_secret, code, grant_type: 'http://oauth.net/grant_type/device/1.0' }),
   });
   const json = await response.json();
   return {

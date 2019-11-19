@@ -1,6 +1,6 @@
-import {ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentHash, TorrentId} from '@fndebrid/real-debrid';
-import {createAction, createAsyncAction} from 'typesafe-actions';
-import {JobId} from './state';
+import { ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentHash, TorrentId } from '@fndebrid/real-debrid';
+import { createAction, createAsyncAction } from 'typesafe-actions';
+import { JobId } from './state';
 
 export const completeJob = createAction('real-debrid/completeJob')<JobId>();
 export const cancelJob = createAction('real-debrid/cancelJob')<JobId>();
@@ -56,7 +56,7 @@ export const pollTorrents = createAsyncAction(
   'real-debrid/pollTorrents/success [NEVER]',
   'real-debrid/pollTorrents/error [NEVER]',
   'real-debrid/pollTorrents/cancel',
-)<{interval: number}, never, Error, undefined>();
+)<{ interval: number }, never, Error, undefined>();
 export const setInfoHash = createAction('real-debrid/set-info-hash', (jobId: JobId, infoHash: TorrentHash) => ({
   jobId,
   infoHash,

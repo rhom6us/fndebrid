@@ -1,5 +1,5 @@
 import webpack from 'webpack';
-import {typescriptRule} from './rules';
+import { typescriptRule } from './rules';
 import config from './webpack.config.common';
 
 export default {

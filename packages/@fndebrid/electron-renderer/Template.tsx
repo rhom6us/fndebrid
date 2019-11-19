@@ -1,6 +1,6 @@
-import {FnDispatch, FnState, getDispatcher} from '@fndebrid/store';
+import { FnDispatch, FnState, getDispatcher } from '@fndebrid/store';
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 // tslint:disable-next-line: no-empty-interface
 interface IOwnProps {}

@@ -1,6 +1,6 @@
-import {isString} from 'util';
-import {getInstanceTypeName} from './utils/type-check';
-import {Ctor} from './utilTypes';
+import { isString } from 'util';
+import { getInstanceTypeName } from './utils/type-check';
+import { Ctor } from './utilTypes';
 
 export class FnError extends Error {
   constructor(message?: string, public readonly data?: any) {
@@ -23,10 +23,7 @@ export class ArgumentError extends FnError {
   }
 }
 export class ArgumentFalsyError extends ArgumentError {
-  constructor(
-    public readonly name: string,
-    message: string = `The value passed for "${name}" did not have a truthy value.`,
-  ) {
+  constructor(public readonly name: string, message: string = `The value passed for "${name}" did not have a truthy value.`) {
     super(name, message);
   }
 }

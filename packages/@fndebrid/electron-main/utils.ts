@@ -1,4 +1,4 @@
-import {dialog} from 'electron';
+import { dialog } from 'electron';
 // import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import fs from 'fs';
 // import shell from 'node-powershell';
@@ -8,9 +8,9 @@ import util from 'util';
 
 export function alert(message: any): void {
   if (typeof message !== 'string') {
-    dialog.showMessageBox({message: JSON.stringify(message)});
+    dialog.showMessageBox({ message: JSON.stringify(message) });
   } else {
-    dialog.showMessageBox({message});
+    dialog.showMessageBox({ message });
   }
 }
 

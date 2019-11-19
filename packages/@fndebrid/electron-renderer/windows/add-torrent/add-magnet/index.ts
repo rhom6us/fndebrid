@@ -1,3 +1,3 @@
-import {AddMagnet} from './AddMagnet';
+import { AddMagnet } from './AddMagnet';
 
 export default AddMagnet;

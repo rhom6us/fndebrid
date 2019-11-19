@@ -1,10 +1,10 @@
-import {Button, H1} from '@blueprintjs/core';
-import {ExtendedTorrent, FileId} from '@fndebrid/real-debrid';
-import {intersection} from 'lodash';
-import React, {useCallback, useMemo, useState} from 'react';
-import {Dialog} from '../../../components';
-import {FileTree} from './FileTree';
-import {formatBytes} from './util';
+import { Button, H1 } from '@blueprintjs/core';
+import { ExtendedTorrent, FileId } from '@fndebrid/real-debrid';
+import { intersection } from 'lodash';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Dialog } from '../../../components';
+import { FileTree } from './FileTree';
+import { formatBytes } from './util';
 
 interface IOwnProps {
   torrent: ExtendedTorrent;
@@ -12,13 +12,10 @@ interface IOwnProps {
   onSubmit: (files: FileId[]) => void;
   onCancel: () => void;
 }
-export const FileSelect: React.FC<IOwnProps> = ({torrent, caches, onSubmit, onCancel}) => {
+export const FileSelect: React.FC<IOwnProps> = ({ torrent, caches, onSubmit, onCancel }) => {
   const [selections, setSelections] = useState<FileId[]>([]);
   const totalSize = useMemo(
-    () =>
-      formatBytes(
-        torrent.files.filter(file => selections.includes(file.id)).reduce((sum, file) => sum + file.bytes, 0),
-      ),
+    () => formatBytes(torrent.files.filter(file => selections.includes(file.id)).reduce((sum, file) => sum + file.bytes, 0)),
     [selections, torrent.files],
   );
   const submit = useCallback(() => {
@@ -46,7 +43,7 @@ export const FileSelect: React.FC<IOwnProps> = ({torrent, caches, onSubmit, onCa
         {caches && caches.length && (
           <ul>
             {caches.map((cache, index) => (
-              <li style={{display: 'inline'}}>
+              <li style={{ display: 'inline' }}>
                 {index === selectedCacheIndex ? (
                   <span>Cache {index}&nbsp;</span>
                 ) : (

@@ -1,8 +1,8 @@
-import {ExtendedTorrent, MaybeExtendedTorrent, Torrent, TorrentId, TorrentStatus} from '@fndebrid/real-debrid';
-import {groupBy, union} from 'lodash';
-import {ActionType, createReducer} from 'typesafe-actions';
+import { ExtendedTorrent, MaybeExtendedTorrent, Torrent, TorrentId, TorrentStatus } from '@fndebrid/real-debrid';
+import { groupBy, union } from 'lodash';
+import { ActionType, createReducer } from 'typesafe-actions';
 import * as actions from './actions';
-import {defaultState, State} from './state';
+import { defaultState, State } from './state';
 
 declare global {
   interface Array<T> {
@@ -50,19 +50,21 @@ function mergeTorrents(stateTorrent: MaybeExtendedTorrent, fetchedTorrent: Torre
 }
 
 export const reducer = createReducer<State, ActionType<typeof actions>>(defaultState)
-  .handleAction([actions.cancelJob, actions.completeJob], (state, {payload: jobId}) => {
-    const {[jobId]: _, ...jobs} = state.jobs;
+  .handleAction([actions.cancelJob, actions.completeJob], (state, { payload: jobId }) => {
+    const { [jobId]: _, ...jobs } = state.jobs;
     return f({
       ...state,
       jobs: f(jobs),
     });
   })
-  .handleAction([actions.fetchAllTorrents.request, actions.fetchActiveTorrents.request], state => f({...state, loading: true}))
-  .handleAction([actions.fetchAllTorrents.failure, actions.fetchActiveTorrents.failure], (state, {payload: errors}) =>
-    f({...state, loading: false, errors}),
+  .handleAction([actions.fetchAllTorrents.request, actions.fetchActiveTorrents.request], state =>
+    f({ ...state, loading: true }),
+  )
+  .handleAction([actions.fetchAllTorrents.failure, actions.fetchActiveTorrents.failure], (state, { payload: errors }) =>
+    f({ ...state, loading: false, errors }),
   )
 
-  .handleAction(actions.fetchAllTorrents.success, (state, {payload: torrents}) => {
+  .handleAction(actions.fetchAllTorrents.success, (state, { payload: torrents }) => {
     return f({
       ...state,
       loading: false,
@@ -72,12 +74,12 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
         torrents: f(
           torrents
             .map(torrent => f(mergeTorrents(state.entities.torrents[torrent.id], torrent)))
-            .reduce((map, torrent) => f({...map, [torrent.id]: torrent}), {}),
+            .reduce((map, torrent) => f({ ...map, [torrent.id]: torrent }), {}),
         ),
       }),
     });
   })
-  .handleAction(actions.fetchActiveTorrents.success, (state, {payload: torrents}) => {
+  .handleAction(actions.fetchActiveTorrents.success, (state, { payload: torrents }) => {
     const newTorrents = torrents.reduce(
       (map, torrent) =>
         f({
@@ -97,7 +99,7 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
       }),
     });
   })
-  .handleAction(actions.setInfoHash, (state, {payload: {jobId, infoHash}}) =>
+  .handleAction(actions.setInfoHash, (state, { payload: { jobId, infoHash } }) =>
     f({
       ...state,
       jobs: f({
@@ -109,7 +111,7 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
       }),
     }),
   )
-  .handleAction(actions.getCaches.success, (state, {payload: [caches, jobId]}) =>
+  .handleAction(actions.getCaches.success, (state, { payload: [caches, jobId] }) =>
     f({
       ...state,
       jobs: f({
@@ -121,7 +123,7 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
       }),
     }),
   )
-  .handleAction([actions.addMagnet.success, actions.addTorrentFile.success], (state, {payload: [torrentId, jobId]}) =>
+  .handleAction([actions.addMagnet.success, actions.addTorrentFile.success], (state, { payload: [torrentId, jobId] }) =>
     f({
       ...state,
       jobs: f({
@@ -133,14 +135,14 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
       }),
     }),
   )
-  .handleAction([actions.addMagnet.failure, actions.addTorrentFile.failure], (state, {payload: errors}) =>
+  .handleAction([actions.addMagnet.failure, actions.addTorrentFile.failure], (state, { payload: errors }) =>
     f({
       ...state,
       errors,
     }),
   )
 
-  .handleAction(actions.fetchTorrent.success, (state, {payload: torrent}) =>
+  .handleAction(actions.fetchTorrent.success, (state, { payload: torrent }) =>
     f({
       ...state,
       entities: f({
@@ -156,9 +158,9 @@ export const reducer = createReducer<State, ActionType<typeof actions>>(defaultS
       }),
     }),
   )
-  .handleAction(actions.deleteTorrent.success, (state, {payload: torrentId}) => {
-    const {[torrentId]: deletedTorrent, ...torrents} = state.entities.torrents;
-    const {[torrentId]: deletedFiles, ...files} = state.entities.files;
+  .handleAction(actions.deleteTorrent.success, (state, { payload: torrentId }) => {
+    const { [torrentId]: deletedTorrent, ...torrents } = state.entities.torrents;
+    const { [torrentId]: deletedFiles, ...files } = state.entities.files;
     return f({
       ...state,
       torrents: f(state.torrents.filter(p => p !== torrentId)),

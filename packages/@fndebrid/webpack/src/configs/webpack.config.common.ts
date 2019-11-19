@@ -1,10 +1,10 @@
-import {CleanWebpackPlugin} from 'clean-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
 import WebpackBar from 'webpackbar';
-import {typescriptRule} from './rules';
-import {isDev, outDir, sourceDir, staticSourceDir} from './settings';
+import { typescriptRule } from './rules';
+import { isDev, outDir, sourceDir, staticSourceDir } from './settings';
 
 export default {
   devtool: isDev ? 'cheap-module-eval-source-map' : undefined, // 'eval-source-map',
@@ -64,7 +64,7 @@ export default {
     new webpack.DefinePlugin({
       __static: JSON.stringify(staticSourceDir),
     }),
-    new webpack.EnvironmentPlugin({NODE_ENV: 'development'}),
+    new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
   ],
   module: {
     rules: [

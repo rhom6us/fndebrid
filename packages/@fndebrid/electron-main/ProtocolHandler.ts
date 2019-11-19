@@ -1,13 +1,13 @@
-import {InvalidOperationError} from '@fndebrid/core';
-import {app} from 'electron';
+import { InvalidOperationError } from '@fndebrid/core';
+import { app } from 'electron';
 import path from 'path';
-import {Associator} from './Associator';
+import { Associator } from './Associator';
 
 export class ProtocolHandler extends Associator {
   constructor(private protocol: string = 'magnet') {
     super();
   }
-  private appArgs(): [string, (string | undefined), (string[] | undefined)] {
+  private appArgs(): [string, string | undefined, string[] | undefined] {
     if (process.defaultApp && process.argv.length >= 2) {
       const switches = process.argv.filter(p => p.startsWith('-'));
       const pathArgs = process.argv

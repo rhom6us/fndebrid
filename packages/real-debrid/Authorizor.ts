@@ -1,6 +1,6 @@
 import * as api from './api/auth';
-import {ArgumentFalsyError, InvalidArgumentError, InvalidOperationError} from './RealDebridError';
-import {AccessToken, ClientId, ClientSecret, RefreshToken} from './types';
+import { ArgumentFalsyError, InvalidArgumentError, InvalidOperationError } from './RealDebridError';
+import { AccessToken, ClientId, ClientSecret, RefreshToken } from './types';
 
 export interface AuthInfo {
   access_token: AccessToken;
@@ -62,14 +62,14 @@ export class Authorizor {
     if (Date.now() > code.expires) {
       return;
     }
-    const token = await api.token({...credentials, code: code.device_code});
-    this.authInfo = {...credentials, ...token};
+    const token = await api.token({ ...credentials, code: code.device_code });
+    this.authInfo = { ...credentials, ...token };
   }
   private async _refresh() {
     if (!this.authInfo) {
       throw new InvalidOperationError('authInfo has not been setup');
     }
-    const token = await api.token({...this.authInfo, code: this.authInfo.refresh_token});
-    this.authInfo = {...this.authInfo, ...token};
+    const token = await api.token({ ...this.authInfo, code: this.authInfo.refresh_token });
+    this.authInfo = { ...this.authInfo, ...token };
   }
 }

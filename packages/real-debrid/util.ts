@@ -1,9 +1,9 @@
-import {InvalidArgumentError, OperationFailedError} from '@fndebrid/core';
-import {PathLike} from 'fs';
+import { InvalidArgumentError, OperationFailedError } from '@fndebrid/core';
+import { PathLike } from 'fs';
 import parseTorrent from 'parse-torrent';
-import {URL, URLSearchParams} from 'url';
-import {promisify} from 'util';
-import {MagnetLink, Torrent, TorrentHash} from './types';
+import { URL, URLSearchParams } from 'url';
+import { promisify } from 'util';
+import { MagnetLink, Torrent, TorrentHash } from './types';
 
 export function makeUrl(base: URL, path: string, params: Record<string, any> = {}) {
   const url = new URL(path, base);

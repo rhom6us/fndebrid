@@ -1,7 +1,7 @@
-import {TorrentId} from '@fndebrid/real-debrid';
-import {actions, FnState} from '@fndebrid/store';
-import React, {useState} from 'react';
-import {connect, MapDispatchToPropsFunction, MapStateToProps, useStore} from 'react-redux';
+import { TorrentId } from '@fndebrid/real-debrid';
+import { actions, FnState } from '@fndebrid/store';
+import React, { useState } from 'react';
+import { connect, MapDispatchToPropsFunction, MapStateToProps, useStore } from 'react-redux';
 
 // tslint:disable-next-line: no-empty-interface
 interface IOwnProps {}
@@ -54,7 +54,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<IDispatchProps, IOwnProps> 
       dispatch(actions.realDebrid.fetchAllTorrents.request());
     },
     setDownloadLocation(downloadLocation: string) {
-      dispatch(actions.preferences.setPreferences({downloadLocation}));
+      dispatch(actions.preferences.setPreferences({ downloadLocation }));
     },
   };
 };
