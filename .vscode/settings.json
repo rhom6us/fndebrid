@@ -38,5 +38,6 @@
     }
   ],
   "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 180,
-  "explorerExclude.backup": null
+  "explorerExclude.backup": null,
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
