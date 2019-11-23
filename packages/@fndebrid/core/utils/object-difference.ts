@@ -10,8 +10,12 @@ import { isEmpty, isObject, keys } from 'lodash';
 */
 
 const isShallow = (val: any) => Array.isArray(val) || !isObject(val);
+export interface ObjectDifference<T> {
+  updated: Partial<T>;
+  delted: Partial<T>;
+}
 
-export default function objectDifference(old: any, curr: any) {
+export default function objectDifference<T extends Record<string, any>>(old: T, curr: T) {
   const updated: any = {};
   const deleted: any = {};
 

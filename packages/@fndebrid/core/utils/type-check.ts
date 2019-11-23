@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import { types } from 'util';
 import { ArgumentFalsyError, ArgumentTypeError, ArgumentUndefinedError, InvalidArgumentError } from '../';
-import { Ctor } from '../utilTypes';
+import { Ctor } from '../UtilTypes';
 
 export const { isDate, isMap, isPromise, isSet, isNativeError, isRegExp } = (types as unknown) as {
   isDate: (value: any) => value is Date;
@@ -11,7 +11,9 @@ export const { isDate, isMap, isPromise, isSet, isNativeError, isRegExp } = (typ
   isNativeError: (value: any) => value is Error;
   isRegExp: (value: any) => value is RegExp;
 };
-
+export function keys<TSource extends Record<string, any>>(source: TSource): Array<keyof TSource> {
+  return Object.keys(source);
+}
 export function getInstanceTypeName(value: any) {
   if (isUndefined(value)) throw new ArgumentUndefinedError('value');
   if (isObject(value) && !isFunction(value)) {
