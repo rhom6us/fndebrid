@@ -1,6 +1,6 @@
-type Fn<TArgs extends Array<any>, TReturn> = (...args: TArgs) => TReturn;
+type Fn<TArgs extends any[], TReturn> = (...args: TArgs) => TReturn;
 
-type Unpackable<T> = Array<T> | Fn<any, PromiseLike<T> | T> | PromiseLike<T>;
+type Unpackable<T> = T[] | Fn<any, PromiseLike<T> | T> | PromiseLike<T>;
 export type Unpack<T> = T extends Unpackable<infer R> ? R : T;
 type UnpackableMap =
   | Unpackable<any>

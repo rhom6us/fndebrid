@@ -35,7 +35,7 @@ export type PartialDeep<T> = T extends Primitive
   ? PartialReadonlyMapDeep<KeyType, ValueType>
   : T extends ReadonlySet<infer ItemType>
   ? PartialReadonlySetDeep<ItemType>
-  : T extends (...arguments: any[]) => unknown
+  : T extends (...args: any[]) => unknown
   ? T | undefined
   : T extends object
   ? PartialObjectDeep<T>

@@ -1,7 +1,11 @@
-export * from './Ctor';
+import { Ctor } from './Ctor';
+import { KeysByValue, KeysByValueExact } from './keys';
 
+export * from './Ctor';
 export * from './PartialDeep';
 export * from './primitive';
+export * from './opaque';
+export * from './unpack';
 
 export type InstanceType<T extends Ctor> = T extends Ctor<infer TInstance> ? TInstance : never;
 
