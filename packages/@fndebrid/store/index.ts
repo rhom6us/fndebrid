@@ -1,26 +1,30 @@
-import { combineReducers, Dispatch, Store } from 'redux';
-import { ActionType } from 'typesafe-actions';
-import { ActionCreatorOrMap, Dispatched, getDispatcher as getDispatcherInternal } from './dispatcher';
+import { Dispatch, Store } from 'redux';
+import { createCommandHandler as _createCommandHandler, createReducer, getCommandCreator as _getCommandCreator, getEventCreator, StandardAction } from 'redux-command-pattern';
 import * as preferences from './preferences';
 import * as realDebrid from './real-debrid';
 
-export const actions = {
-  realDebrid: realDebrid.actions,
-  preferences: preferences.actions,
-};
+// export const actions = {
+//   realDebrid: realDebrid.actions,
+//   preferences: preferences.actions,
+// };
 export interface FnState {
-  realDebrid: realDebrid.State;
-  preferences: preferences.State;
+  readonly realDebrid: realDebrid.State;
+  readonly preferences: preferences.State;
 }
-export type FnAction = ActionType<typeof actions>;
-export type FnDispatcher = Dispatched<typeof actions>;
-export function getDispatcher(dispatchOrStore: FnDispatch | FnStore): FnDispatcher {
-  return getDispatcherInternal(actions, dispatchOrStore);
+// tslint:disable-next-line: interface-over-type-literal
+export type Commands = {
+  realDebrid: realDebrid.Commands,
+  preferences: preferences.Commands,
 }
-export type TypeConstant = FnAction['type'];
-export type FnDispatch = Dispatch<FnAction>;
-export type FnStore = Store<FnState, FnAction>;
-export const reducer = combineReducers<FnState>({
-  realDebrid: realDebrid.reducer,
-  preferences: preferences.reducer,
-});
+export const getCommandCreator = (invoker: Parameters<typeof _getCommandCreator>[0] ) => _getCommandCreator<Commands>(invoker);;
+
+export type FnStore = Store<FnState, StandardAction>;
+const reducerFns = {
+  realDebrid: realDebrid.reducers,
+  preferences: preferences.reducers,
+}
+export const reducer = createReducer(reducerFns);
+export const events = getEventCreator<typeof reducerFns>();
+export function createCommandHandler(store: FnStore, implementation: Parameters<typeof _createCommandHandler>[1]) {
+  return _createCommandHandler(store, implementation);
+}

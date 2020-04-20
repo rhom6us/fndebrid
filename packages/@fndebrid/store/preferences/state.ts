@@ -1,26 +1,34 @@
 // import {app} from 'electron';
 
 export type AutoDeleteTorrentFileOption = 'never' | 'torrent_added' | 'torrent_completed' | 'download_completed';
-export type State = ({
+export type FileGlob = string;
+
+interface AutoSelectFilesOption<Type>  {
+  readonly type: Type;
+}
+interface PositiveAutoSelectFilesOption<Type> extends AutoSelectFilesOption<Type>{
+  readonly autoSubmitAutoSelectedFiles: boolean;
+}
+interface AutoSelectFilesUsingPattern<Type> extends PositiveAutoSelectFilesOption<Type>{
+  readonly pattern: readonly FileGlob[];
+}
+
+export interface State {
   readonly torrentFilesAssociated: boolean;
   readonly magnetLinksAssociated: boolean;
   readonly autoDeleteServer: boolean;
   readonly autoDeleteTorrentFile: AutoDeleteTorrentFileOption;
-  readonly fileWhiteList: readonly string[];
-  readonly fileBlackList: readonly string[];
+  readonly fileWhiteList: readonly FileGlob[];
+  readonly fileBlackList: readonly FileGlob[];
   readonly autoDownloadTorrents: boolean;
   readonly downloadLocation: string;
-  readonly autoSubmitAutoSelectedFiles: boolean;
-}) &
-  (
-    | {
-        readonly autoSelectFiles: 'none' | 'all_files' | 'largest_files';
-      }
-    | {
-        readonly autoSelectFiles: 'pattern';
-        readonly autoSelectFilesPattern: string;
-      }
-    | {});
+  readonly autoSelectFiles:
+  | AutoSelectFilesOption<'none'>
+  | PositiveAutoSelectFilesOption<'all'>
+  | PositiveAutoSelectFilesOption<'largest'>
+  | AutoSelectFilesUsingPattern<'pattern+'>
+  | AutoSelectFilesUsingPattern<'pattern-'>;
+}
 
 export const defaultState: State = {
   downloadLocation: '', // app.getPath('downloads'),
@@ -29,8 +37,10 @@ export const defaultState: State = {
   autoDownloadTorrents: true,
   autoDeleteServer: true,
   autoDeleteTorrentFile: 'torrent_added',
-  autoSelectFiles: 'all_files',
-  autoSubmitAutoSelectedFiles: false,
+  autoSelectFiles: {
+    type: 'all',
+    autoSubmitAutoSelectedFiles: false,
+  },
   fileWhiteList: [],
   fileBlackList: [],
 };

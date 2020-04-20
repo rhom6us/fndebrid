@@ -1,5 +1,6 @@
 import { assertNever, InvalidArgumentError, isString, isUndefined, isURL, Opaque, tryParseUrl } from '@fndebrid/core';
 import { File, FileId, MaybeExtendedTorrent, TorrentHash, TorrentId } from '@fndebrid/real-debrid';
+import { TypeConstant } from 'typesafe-actions';
 import { URL } from 'url';
 import uuid4 from 'uuid/v4';
 import uuid5 from 'uuid/v5';

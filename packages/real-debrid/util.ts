@@ -19,7 +19,7 @@ export async function getInfoHashAsync(torrent: MagnetLink | PathLike) {
     if (!result) {
       throw new OperationFailedError('Could not parse the specified torrent file path.');
     }
-    return result.infoHash;
+    return result.infoHash as TorrentHash;
   } catch (e) {
     if (e instanceof Error) {
       if (e.message === 'Invalid torrent identifier') {

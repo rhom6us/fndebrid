@@ -1,5 +1,6 @@
-export * from './state';
-export * from './reducer';
-import * as actions from './actions';
+import * as reducers from './reducer';
 
-export {actions};
+export { reducers };
+
+export * from './commands';
+export * from './state';

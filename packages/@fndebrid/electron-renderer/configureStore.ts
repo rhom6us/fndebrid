@@ -1,3 +1,4 @@
+import { getCommandCreator } from '@fndebrid/store';
 import { createStore } from 'electron-redux-proxy';
 import { Store } from 'redux';
 

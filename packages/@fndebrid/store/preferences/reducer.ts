@@ -1,15 +1,36 @@
-import { ActionType, createReducer } from 'typesafe-actions';
-import * as actions from './actions';
-import { defaultState, State } from './state';
+import { DeepPartial } from '@fndebrid/core';
+import { ReducerFn } from 'redux-command-pattern';
+import { FnState } from '../';
+import State, { FileGlob } from './state';
 
-export const reducer = createReducer<State, ActionType<typeof actions>>(defaultState)
-  .handleAction(actions.setPreferences, (state, { payload }) => ({ ...state, ...payload }))
-  .handleAction(actions.setAutoSelectFilesPattern, (state, { payload: autoSelectFilesPattern }) => ({
-    ...state,
-    autoSelectFiles: 'pattern',
-    autoSelectFilesPattern,
-  }))
-  .handleAction(actions.setAutoSelectFiles, (state, { payload: autoSelectFiles }) => {
-    const { autoSelectFilesPattern, ...restProps } = { ...state, autoSelectFiles };
-    return restProps;
-  });
+type FnReducer<T extends any> = ReducerFn<FnState, T>;
+export const preferencesUpdated: FnReducer<Partial<State>> = (state, payload) => ({
+  ...state,
+  preferences: {
+    ...state.preferences,
+    ...(payload as any),
+  },
+});
+export const autoSelectFilesPatternUpdated: ReducerFn<FnState, FileGlob[]> = (state, pattern) => preferencesUpdated(state, {
+  autoSelectFiles: {
+    ...state.preferences.autoSelectFiles as any,
+    type: 'pattern+',
+    pattern,
+  }
+});
+
+// export const autoSelectFilesSet: FnReducer<['none' | 'all_files' | 'largest_files']> = (state, autoSelectFiles) => {
+//   const { autoSelectFilesPattern, ...preferences } = { ...state.preferences, autoSelectFiles };
+//   return {
+//     ...state,
+//     preferences: without('autoSelectFilesPattern', {
+//       ...state.preferences,
+//       autoSelectFiles
+//     })
+//   };
+// };
+
+function without<TSource, TProp extends keyof TSource>(prop: TProp, source: TSource): Omit<TSource, TProp>{
+  const { [prop]: deleted, ...result } = source;
+  return result;
+}

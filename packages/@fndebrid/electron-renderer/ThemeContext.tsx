@@ -12,7 +12,8 @@ import theme, { Theme } from './theme';
 export const ThemeContext = React.createContext({ dark: true, toggle: () => {} });
 export const useTheme = () => React.useContext(ThemeContext);
 
-function useThemeState() {
+
+export const ThemeProvider: React.FC = ({ children }) => {
   const [themeState, setThemeState] = React.useState({ isDark: true, hasThemeMounted: false });
 
   React.useEffect(() => {
@@ -21,12 +22,6 @@ function useThemeState() {
       hasThemeMounted: true,
     });
   }, []);
-
-  return [themeState, setThemeState] as [typeof themeState, typeof setThemeState];
-}
-
-export const ThemeProvider: React.FC = ({ children }) => {
-  const [themeState, setThemeState] = useThemeState();
 
   if (!themeState.hasThemeMounted) {
     return <div />;

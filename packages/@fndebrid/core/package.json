@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "index.ts",
   "dependencies": {
-    "@types/lodash": "^4.14.144",
+    "@types/lodash": "^4.14.150",
     "@types/winreg": "^1.2.30",
     "@types/winston": "^2.4.4",
     "lodash": "^4.17.15",

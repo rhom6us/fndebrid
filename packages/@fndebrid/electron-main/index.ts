@@ -1,15 +1,17 @@
-import { DEBUG, isDev } from '@fndebrid/core';
+import { DEBUG, isDev, tuple } from '@fndebrid/core';
 import { MagnetLink } from '@fndebrid/real-debrid';
-import { FnDispatcher, getDispatcher } from '@fndebrid/store';
+import { createCommandHandler, getCommandCreator } from '@fndebrid/store';
 import { jobId } from '@fndebrid/store/real-debrid';
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 // import debug from 'electron-debug';
 import Store from 'electron-store';
 import fs from 'fs';
 import path from 'path';
+import { setTimeout } from 'timers';
 import { createAppIcon } from './app-icon';
+import { commands as cmdImpl } from './commands';
 import configureStore from './configureStore';
-import { showAddMagnet, showTorrents } from './windows';
+import { showTorrents } from './windows';
 
 if (isDev || DEBUG) {
   const programPath = path.resolve(process.argv.filter(p => p.endsWith('main.js'))[0]);
@@ -24,17 +26,18 @@ if (isDev || DEBUG) {
 const storage = new Store();
 
 function appReady() {
+  ipcMain.on('command', (event, cmd) => commandHandler(cmd));
   createAppIcon();
 
   if (isDev) {
     showTorrents();
   }
 }
-function appSecondInstance(dispatcher: FnDispatcher) {
+function appSecondInstance(cmd: typeof commands) {
   return (_: any, argv: string[]) => {
     const magnetLink = argv.filter(p => p.startsWith('magnet:'))[0] as MagnetLink;
     if (magnetLink) {
-      dispatcher.realDebrid.addMagnet.request([magnetLink, jobId(magnetLink)]);
+      cmd.realDebrid.addMagnet(magnetLink, jobId(magnetLink));
     }
   };
 }
@@ -48,7 +51,7 @@ function appWillQuit() {}
 function appBeforeQuit() {}
 function appQuit() {}
 // tslint:enable: no-empty
-const [store, dispatcher] = setupRedux();
+const [store, commandHandler, commands] = setupRedux();
 function initializeApp(app: Electron.App) {
   if (!app.requestSingleInstanceLock()) {
     app.exit();
@@ -56,7 +59,7 @@ function initializeApp(app: Electron.App) {
   }
 
   app.on('ready', appReady);
-  app.on('second-instance', appSecondInstance(dispatcher));
+  app.on('second-instance', appSecondInstance(commands));
   app.on('window-all-closed', appWindowAllClosed);
   app.on('activate', createAppIcon);
   app.on('will-quit', appWillQuit);
@@ -89,14 +92,21 @@ function initializeApp(app: Electron.App) {
 function setupRedux() {
   const initialState = storage.get('state');
   const store = configureStore(initialState);
+  let token: NodeJS.Timeout | undefined;
   store.subscribe(() => {
-    setImmediate(state => storage.set('state', state), store.getState());
+    token = token || setTimeout(() => {
+      storage.set('state', store.getState())
+      token = undefined;
+    }, 5000);
+
+    // setImmediate(state => storage.set('state', state), store.getState());
   });
-  // app.on('quit', () => {
-  //   storage.set('state', store.getState());
-  // });
-  const dispatcher = getDispatcher(store);
-  return [store, dispatcher] as [typeof store, typeof dispatcher];
+  app.on('quit', () => {
+    storage.set('state', store.getState());
+  });
+  const commandHandler = createCommandHandler(store, cmdImpl);
+  const commandInvoker = getCommandCreator(commandHandler);
+  return tuple(store, commandHandler, commandInvoker);
 }
 
 initializeApp(app);

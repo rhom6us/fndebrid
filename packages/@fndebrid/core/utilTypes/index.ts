@@ -6,7 +6,8 @@ export * from './PartialDeep';
 export * from './primitive';
 export * from './opaque';
 export * from './unpack';
-
+export * from './tuple';
+export * from './deep-partial';
 export type InstanceType<T extends Ctor> = T extends Ctor<infer TInstance> ? TInstance : never;
 
 export type OmitByValue<T, ValueType> = Omit<T, KeysByValue<T, ValueType>>;

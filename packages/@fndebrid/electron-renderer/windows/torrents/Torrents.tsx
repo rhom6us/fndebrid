@@ -1,7 +1,8 @@
 import { Torrent, TorrentStatus } from '@fndebrid/real-debrid';
-import { FnDispatch, FnState, getDispatcher } from '@fndebrid/store';
+import { FnState } from '@fndebrid/store';
 import React, { FC, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useCommand, useEventSource } from '../../hooks';
 
 // tslint:disable-next-line: no-empty-interface
 
@@ -23,26 +24,39 @@ function isDead(status: TorrentStatus): status is DeadStatus {
   }
 }
 // tslint:disable-next-line: no-empty-interface
-interface IOwnProps {}
-const mapStateToProps = (state: FnState, ownProps: IOwnProps) => {
-  const torrents = objToArray(state.realDebrid.entities.torrents);
-  return {
-    activeTorrents: torrents.filter(p => !isDead(p.status)),
-    doneTorrents: torrents.filter(p => p.status === 'downloaded'),
-    deadTorrents: torrents.filter(p => isDead(p.status)),
-  };
-};
-const mapDispatchToProps = (dispatch: FnDispatch, ownProps: IOwnProps) => {
-  const dispatcher = getDispatcher(dispatch);
-  return {
-    fetchAll: () => dispatcher.realDebrid.fetchAllTorrents.request(),
-  };
-};
-type DispatchProps = ReturnType<typeof mapDispatchToProps>;
-type StateProps = ReturnType<typeof mapStateToProps>;
+// interface IOwnProps {}
+// const mapStateToProps = (state: FnState, ownProps: IOwnProps) => {
+//   const torrents = objToArray(state.realDebrid.entities.torrents);
+//   return {
+//     activeTorrents: torrents.filter(p => !isDead(p.status)),
+//     doneTorrents: torrents.filter(p => p.status === 'downloaded'),
+//     deadTorrents: torrents.filter(p => isDead(p.status)),
+//   };
+// };
+// const mapDispatchToProps = (dispatch: FnDispatch, ownProps: IOwnProps) => {
+//   const dispatcher = getDispatcher(dispatch);
+//   return {
+//     fetchAll: () => dispatcher.realDebrid.fetchAllTorrents.request(),
+//   };
+// };
+// type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+// type StateProps = ReturnType<typeof mapStateToProps>;
 
-type Props = StateProps & DispatchProps & IOwnProps;
-const TorrentsInternal: FC<Props> = ({ activeTorrents, doneTorrents, deadTorrents, fetchAll }) => {
+// type Props = StateProps & DispatchProps & IOwnProps;
+export default Torrents;
+export const Torrents: FC = ({ }) => {
+  const { fetchAll } = useCommand(cmds => ({
+    fetchAll: cmds.realDebrid.fetchAllTorrents
+  }));
+  const { activeTorrents, doneTorrents, deadTorrents } = useEventSource(state => {
+    const torrents = objToArray(state.realDebrid.entities.torrents);
+    return {
+      activeTorrents: torrents.filter(p => !isDead(p.status)),
+      doneTorrents: torrents.filter(p => p.status === 'downloaded'),
+      deadTorrents: torrents.filter(p => isDead(p.status)),
+    };
+  });
+
   useEffect(() => {
     fetchAll();
   }, []);
@@ -68,4 +82,3 @@ const TorrentsInternal: FC<Props> = ({ activeTorrents, doneTorrents, deadTorrent
     </section>
   );
 };
-export const Torrents = connect(mapStateToProps, mapDispatchToProps)(TorrentsInternal);

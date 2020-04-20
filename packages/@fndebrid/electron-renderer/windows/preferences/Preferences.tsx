@@ -1,51 +1,33 @@
-import {
-  Button,
-  Callout,
-  Classes,
-  ControlGroup,
-  FormGroup,
-  H1,
-  InputGroup,
-  Radio,
-  RadioGroup,
-  Switch,
-  TagInput,
-} from '@blueprintjs/core';
+import { Button, Callout, Classes, ControlGroup, FormGroup, H1, InputGroup, Radio, RadioGroup, Switch, TagInput } from '@blueprintjs/core';
 import styled from '@emotion/styled';
-import { FnDispatch, FnState, getDispatcher } from '@fndebrid/store';
 import { AutoDeleteTorrentFileOption } from '@fndebrid/store/preferences';
 import { remote } from 'electron';
 import React, { useEffect } from 'react';
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { handleBooleanChange, handleStringChange } from '../../helpers';
+import { useCommand, useEventSource } from '../../hooks';
 
 const app = remote.app;
 // tslint:disable-next-line: no-empty-interface
-interface IOwnProps {}
+// function mapDispatchToProps(dispatch: FnDispatch, ownProps: IOwnProps) {
+//   const dispatcher = getDispatcher(dispatch);
+//   return {
+//     ...dispatcher.preferences,
+//     setDefaultDownloadLocation: () => dispatcher.preferences.setPreferences({ downloadLocation: app.getPath('downloads') }),
+//     setWhiteList: (fileWhiteList: string[]) => dispatcher.preferences.setPreferences({ fileWhiteList }),
+//     setBlackList: (fileBlackList: string[]) => dispatcher.preferences.setPreferences({ fileBlackList }),
+//     setAutoDeleteServer: (autoDeleteServer: boolean) => dispatcher.preferences.setPreferences({ autoDeleteServer }),
+//     setAutoDeleteTorrentFile: (autoDeleteTorrentFile: AutoDeleteTorrentFileOption) =>
+//       dispatcher.preferences.setPreferences({ autoDeleteTorrentFile }),
+//     setAutoDownloadTorrents: (autoDownloadTorrents: boolean) => dispatcher.preferences.setPreferences({ autoDownloadTorrents }),
+//     setAutoSelectFiles(autoSelectFiles: 'none' | 'all_files' | 'largest_files' | 'pattern', pattern?: string) {
+//       if (autoSelectFiles === 'pattern') return dispatcher.preferences.setAutoSelectFilesPattern(pattern!);
 
-function mapStateToProps(state: FnState, ownProps: IOwnProps) {
-  return state.preferences;
-}
-function mapDispatchToProps(dispatch: FnDispatch, ownProps: IOwnProps) {
-  const dispatcher = getDispatcher(dispatch);
-  return {
-    ...dispatcher.preferences,
-    setDefaultDownloadLocation: () => dispatcher.preferences.setPreferences({ downloadLocation: app.getPath('downloads') }),
-    setWhiteList: (fileWhiteList: string[]) => dispatcher.preferences.setPreferences({ fileWhiteList }),
-    setBlackList: (fileBlackList: string[]) => dispatcher.preferences.setPreferences({ fileBlackList }),
-    setAutoDeleteServer: (autoDeleteServer: boolean) => dispatcher.preferences.setPreferences({ autoDeleteServer }),
-    setAutoDeleteTorrentFile: (autoDeleteTorrentFile: AutoDeleteTorrentFileOption) =>
-      dispatcher.preferences.setPreferences({ autoDeleteTorrentFile }),
-    setAutoDownloadTorrents: (autoDownloadTorrents: boolean) => dispatcher.preferences.setPreferences({ autoDownloadTorrents }),
-    setAutoSelectFiles(autoSelectFiles: 'none' | 'all_files' | 'largest_files' | 'pattern', pattern?: string) {
-      if (autoSelectFiles === 'pattern') return dispatcher.preferences.setAutoSelectFilesPattern(pattern!);
-
-      return dispatcher.preferences.setAutoSelectFiles(autoSelectFiles);
-    },
-    setAutoSubmitAutoSelectedFiles: (autoSubmitAutoSelectedFiles: boolean) =>
-      dispatcher.preferences.setPreferences({ autoSubmitAutoSelectedFiles }),
-  };
-}
+//       return dispatcher.preferences.setAutoSelectFiles(autoSelectFiles);
+//     },
+//     setAutoSubmitAutoSelectedFiles: (autoSubmitAutoSelectedFiles: boolean) =>
+//       dispatcher.preferences.setPreferences({ autoSubmitAutoSelectedFiles }),
+//   };
+// }
 
 const SubRadioGroup = styled(RadioGroup)`
   padding-left: 20px;
@@ -68,16 +50,30 @@ const ListItem = styled(FormGroup)({
   flexBasis: '40%',
   margin: '0 20px',
 });
-export type StateProps = ReturnType<typeof mapStateToProps>;
-export type DispatchProps = ReturnType<typeof mapDispatchToProps>;
-export type Props = IOwnProps & StateProps & DispatchProps;
-export const Preferences = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)((props => {
+
+export const Preferences: React.FC = () => {
+  const { downloadLocation, magnetLinksAssociated, torrentFilesAssociated, autoDownloadTorrents, autoDeleteTorrentFile, autoDeleteServer, fileWhiteList, fileBlackList } = useEventSource(state => state.preferences);
+  const { chooseDownloadLocation, setAutoDownloadTorrents, setAutoDeleteServer, associateMagnetLinks, associateTorrentFiles, setAutoDeleteTorrentFile, setWhiteList, setBlackList } = useCommand(({ preferences: { chooseDownloadLocation, updatePreferences, associateTorrentFiles, associateMagnetLinks } }) => ({
+    chooseDownloadLocation: (downloadLocation: string = app.getPath('downloads')) => updatePreferences({ downloadLocation }),
+    setAutoDownloadTorrents: (autoDownloadTorrents: boolean) => updatePreferences({ autoDownloadTorrents }),
+    setAutoDeleteServer: (autoDeleteServer: boolean) => updatePreferences({ autoDeleteServer }),
+    associateTorrentFiles: (associated: boolean) => associateTorrentFiles({ associated }),
+    associateMagnetLinks: (associated: boolean) => associateMagnetLinks({ associated }),
+    setAutoDeleteTorrentFile: (autoDeleteTorrentFile: AutoDeleteTorrentFileOption) => updatePreferences({ autoDeleteTorrentFile }),
+    setWhiteList: (fileWhiteList: readonly string[]) => updatePreferences({ fileWhiteList }),
+    setBlackList: (fileBlackList: readonly string[]) => updatePreferences({ fileBlackList }),
+    // setAutoSubmitAutoSelectedFiles:  (autoSubmitAutoSelectedFiles: boolean) =>   updatePreferences({ autoSubmitAutoSelectedFiles }),
+    // setAutoSelectFiles(autoSelectFiles: 'none' | 'all_files' | 'largest_files' | 'pattern', pattern?: string) {
+    //   if (autoSelectFiles === 'pattern') return preferences.setAutoSelectFilesPattern(pattern!);
+
+    //   return dispatcher.preferences.setAutoSelectFiles(autoSelectFiles);
+    // },
+  }));
+
   useEffect(() => {
-    if (!props.downloadLocation) {
-      props.setDefaultDownloadLocation();
+    if (!downloadLocation) {
+      chooseDownloadLocation();
+
     }
   });
   return (
@@ -86,49 +82,49 @@ export const Preferences = connect(
       <Callout title='Downloads'>
         <FormGroup label='Download Location'>
           <ControlGroup fill={true} vertical={false}>
-            <InputGroup readOnly value={props.downloadLocation} fill={true} />
-            <Button icon='filter' onClick={props.chooseDownloadLocation}>
+            <InputGroup readOnly value={downloadLocation} fill={true} />
+            <Button icon='filter' onClick={() => chooseDownloadLocation()}>
               Choose
             </Button>
           </ControlGroup>
         </FormGroup>
         <Switch
-          checked={props.autoDownloadTorrents}
+          checked={autoDownloadTorrents}
           label='Automatically download torrents as soon as they are complete'
-          onChange={handleBooleanChange(props.setAutoDownloadTorrents)}
+          onChange={handleBooleanChange(setAutoDownloadTorrents)}
         />
         <Switch
-          checked={props.autoDeleteServer}
+          checked={autoDeleteServer}
           label='Delete torrent from real-debrid.com after download is complete'
-          onChange={handleBooleanChange(props.setAutoDeleteServer)}
+          onChange={handleBooleanChange(setAutoDeleteServer)}
         />
       </Callout>
       <br />
       <Callout title='Files'>
         <Switch
-          checked={props.magnetLinksAssociated}
+          checked={magnetLinksAssociated}
           label='Associate Magnet Links'
-          onChange={handleBooleanChange(props.associateMagnetLinks)}
+          onChange={handleBooleanChange(associateMagnetLinks)}
         />
         <Switch
-          checked={props.torrentFilesAssociated}
+          checked={torrentFilesAssociated}
           label='Associate Torrent Files'
-          onChange={handleBooleanChange(props.associateTorrentFiles)}
+          onChange={handleBooleanChange(associateTorrentFiles)}
         />
         <Switch
           label='Automatically delete torrent files...'
-          checked={props.autoDeleteTorrentFile !== 'never'}
-          onChange={handleBooleanChange(value => props.setAutoDeleteTorrentFile(value ? 'torrent_added' : 'never'))}
+          checked={autoDeleteTorrentFile !== 'never'}
+          onChange={handleBooleanChange(value => setAutoDeleteTorrentFile(value ? 'torrent_added' : 'never'))}
         />
-        {props.autoDeleteTorrentFile !== 'never' && (
+        {autoDeleteTorrentFile !== 'never' && (
           <SubRadioGroup
-            onChange={handleStringChange(props.setAutoDeleteTorrentFile as any)}
-            selectedValue={props.autoDeleteTorrentFile}>
+            onChange={handleStringChange(setAutoDeleteTorrentFile as any)}
+            selectedValue={autoDeleteTorrentFile}>
             <Radio label='...after the torrent has been added to real-debrid' value='torrent_added' />
             <Radio label='...after the torrent download is complete on real-debrid' value='torrent_completed' />
             <Radio label='...after the torrent has downloaded to this computer' value='download_completed' />
           </SubRadioGroup>
-        )}
+        )}}
       </Callout>
       <br />
 
@@ -141,8 +137,8 @@ export const Preferences = connect(
               addOnBlur={true}
               addOnPaste={true}
               rightElement={<Button icon='cross' minimal={true} />}
-              values={[...props.fileWhiteList]}
-              onChange={((values: string[]) => props.setWhiteList(values)) as any}
+              values={[...fileWhiteList]}
+              onChange={((values: string[]) => setWhiteList(values)) as any}
             />
           </ListItem>
 
@@ -152,12 +148,12 @@ export const Preferences = connect(
               addOnBlur={true}
               addOnPaste={true}
               rightElement={<Button icon='cross' minimal={true} />}
-              values={[...props.fileBlackList]}
-              onChange={props.setBlackList as any}
+              values={[...fileBlackList]}
+              onChange={setBlackList as any}
             />
           </ListItem>
         </ListContainer>
       </Callout>
     </RootElement>
   );
-}) as React.FC<Props>);
+}

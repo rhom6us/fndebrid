@@ -1,11 +1,11 @@
 import { assertNever } from '@fndebrid/core/utils';
 import { ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId } from '@fndebrid/real-debrid';
-import { FnState, getDispatcher } from '@fndebrid/store';
 import { JobId } from '@fndebrid/store/real-debrid';
 import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import uuid5 from 'uuid/v5';
 import { Dialog } from '../../components';
+import { Commands, useCommand, useEventSource } from '../../hooks';
 import AddMagnet from './add-magnet';
 import FileSelect from './file-select';
 
@@ -14,30 +14,29 @@ const initialJobId = params.get('jobid') as JobId;
 const intitialTorrentId = params.get('torrentid') as TorrentId;
 
 // tslint:disable-next-line: no-empty-interface
-interface IOwnProps {}
-function mapStateToProps(state: FnState, ownProps: IOwnProps) {
-  return {
-    jobs: state.realDebrid.jobs,
-    torrents: state.realDebrid.entities.torrents,
-  };
-}
+// interface IOwnProps {}
+// function mapStateToProps(state: FnState, ownProps: IOwnProps) {
+//   return {
+//     jobs: state.realDebrid.jobs,
+//     torrents: state.realDebrid.entities.torrents,
+//   };
+// }
 
-function mapDispatchToProps(dispatch: any, ownProps: IOwnProps) {
-  const dispatcher = getDispatcher(dispatch);
-  return {
-    addMagnet(magnet: MagnetLink, jobId: JobId) {
-      dispatcher.realDebrid.addMagnet.request([magnet, jobId]);
-    },
-    cancelJob: dispatcher.realDebrid.cancelJob,
-    completeJob: dispatcher.realDebrid.completeJob,
-    selectFiles: dispatcher.realDebrid.selectFiles,
-    deleteTorrent: dispatcher.realDebrid.deleteTorrent.request,
-  };
-}
-type IDispatchProps = ReturnType<typeof mapDispatchToProps>;
-type IStateProps = ReturnType<typeof mapStateToProps>;
+// function mapDispatchToProps(dispatcher:Commands) {
+//   return {
+//     addMagnet(magnet: MagnetLink, jobId: JobId) {
+//       dispatcher.realDebrid.addMagnet(magnet, jobId);
+//     },
+//     cancelJob: dispatcher.realDebrid.closeJob,
+//     completeJob: dispatcher.realDebrid.completeJob,
+//     selectFiles: dispatcher.realDebrid.selectFiles,
+//     deleteTorrent: dispatcher.realDebrid.deleteTorrent,
+//   };
+// }
+// type IDispatchProps = ReturnType<typeof mapDispatchToProps>;
+// type IStateProps = ReturnType<typeof mapStateToProps>;
 
-type Props = IStateProps & IDispatchProps & IOwnProps;
+// type Props = IStateProps & IDispatchProps & IOwnProps;
 
 function getBody(
   jobs: Record<JobId, TorrentId>,
@@ -67,10 +66,20 @@ function getBody(
       return 'complete';
   }
 }
-export const AddTorrent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(({ addMagnet, cancelJob, completeJob, deleteTorrent, selectFiles, jobs, torrents }: Props) => {
+export const AddTorrent = (() => {
+  const { jobs, torrents } = useEventSource(state => ({
+    jobs: state.realDebrid.jobs,
+    torrents: state.realDebrid.entities.torrents,
+  }));
+  const { addMagnet, cancelJob, completeJob, deleteTorrent, selectFiles } = useCommand(cmds => ({
+    addMagnet(magnet: MagnetLink, jobId: JobId) {
+      cmds.realDebrid.addMagnet(magnet, jobId);
+    },
+    cancelJob: cmds.realDebrid.cancelJob,
+    completeJob: cmds.realDebrid.completeJob,
+    selectFiles: cmds.realDebrid.selectFiles,
+    deleteTorrent: cmds.realDebrid.deleteTorrent,
+  }));
   const [jobId, setJobId] = useState(initialJobId);
   const [aquiredTorrentId, setAquiredTorrentId] = useState(intitialTorrentId);
   const torrentId = useMemo(() => aquiredTorrentId || (jobs[jobId] && jobs[jobId].torrentId) || undefined, [
@@ -97,7 +106,7 @@ export const AddTorrent = connect(
     setJobId(jobId);
   }
   function submitFileSelection(files: FileId[]) {
-    selectFiles.request([torrentId!, files]);
+    selectFiles(torrentId!, files);
     completeJob(jobId);
   }
   function cancelDownload() {
