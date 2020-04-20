@@ -15,8 +15,9 @@
     ]
   },
   "scripts": {
+    "doc": "typedoc --out docs/real-debrid packages/real-debrid --ignoreCompilerErrors --excludePrivate --excludeProtected --excludeNotExported --excludeExternals --mode modules ",
     "fnwebpack:watch": "yarn workspace @fndebrid/webpack watch",
-    "lint-staged": "lint-staged",
+    "lint-staged": "",
     "main:build": "yarn workspace @fndebrid/electron-main compile",
     "main:serve": "yarn workspace @fndebrid/electron-main watch",
     "pull:proxy": "git subtree pull --prefix packages/electron-redux-proxy electron-redux-proxy dev",
@@ -25,11 +26,7 @@
     "renderer:serve": "yarn workspace @fndebrid/electron-renderer serve",
     "typecheck": "lerna exec --parallel -- tsc --noemit"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
+
   "lint-staged": {
     "*.{ts,tsx,css,scss,json,md,html,yml,yaml}": [
       "prettier --write",
@@ -37,19 +34,21 @@
     ]
   },
   "dependencies": {
-    "react-hot-loader": "^4.12.15"
+    "react-hot-loader": "^4.12.20"
   },
   "devDependencies": {
     "husky": "^3.0.9",
     "lerna": "^3.18.3",
-    "lint-staged": "^9.4.2",
+    "lint-staged": "^10.1.6",
     "npm-run-all": "^4.1.5",
-    "prettier": "^1.18.2",
+    "prettier": "^2.0.4",
     "prettier-plugin-packagejson": "^2.0.1",
-    "tslint": "^5.20.0",
+    "tslint": "^6.1.1",
     "tslint-config-prettier": "^1.18.0",
-    "tslint-react-hooks": "^2.2.1",
-    "typescript": "^3.6.4",
+    "tslint-react-hooks": "^2.2.2",
+    "typedoc": "0.17.4",
+    "typedoc-plugin-markdown": "2.2.17",
+    "typescript": "^3.8.3",
     "yarn": "^1.19.1"
   },
   "build": {
