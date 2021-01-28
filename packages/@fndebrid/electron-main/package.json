@@ -16,7 +16,7 @@
     "@fndebrid/real-debrid": "*",
     "@fndebrid/store": "*",
     "@fndebrid/webpack": "*",
-    "electron": "^7.0.0",
+    "electron": "^9.4.0",
     "electron-redux-proxy": "*",
     "electron-store": "^5.0.0",
     "redux": "^4.0.4",
