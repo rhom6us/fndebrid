@@ -19,7 +19,7 @@ export class OperationFailedError extends FnError {}
 export class InvalidOperationError extends FnError {}
 export class UnexpectedStateError extends FnError {}
 export class ArgumentError extends FnError {
-  constructor(public readonly name: string, message?: string) {
+  constructor(public readonly name: string, message?: string, public readonly innerError?:any) {
     super(message);
   }
 }
@@ -46,8 +46,8 @@ export class ArgumentNullError extends ArgumentNullOrUndefinedError {
 }
 
 export class InvalidArgumentError extends ArgumentError {
-  constructor(public readonly name: string, message: string = `The value passed for ${name} was not valid.`) {
-    super(name, message);
+  constructor(public readonly name: string, message: string = `The value passed for ${name} was not valid.`, innerError?:any) {
+    super(name, message, innerError);
   }
 }
 
@@ -58,7 +58,7 @@ export class ArgumentTypeError extends InvalidArgumentError {
     public readonly actualValue: any,
     message: string = `The value passed for ${name} was not of the expected type "${
       isString(expectedType) ? expectedType : getInstanceTypeName(expectedType)
-    }".`,
+    }".`
   ) {
     super(name, message);
   }
