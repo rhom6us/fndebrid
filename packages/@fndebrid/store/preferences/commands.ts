@@ -1,9 +1,9 @@
 import { DeepPartial } from '@fndebrid/core';
-import { CommandFn } from 'redux-command-pattern';
+import { CommandFn, StandardEventAny } from 'redux-command-pattern';
 import { FnState } from '../';
 import State from './state';
 
-type FnCommand<T = undefined> = CommandFn<FnState, T>;
+type FnCommand<T = undefined> = CommandFn<FnState, T, StandardEventAny>;
 export type Commands = {
   updatePreferences: FnCommand<Partial<State>>;
   chooseDownloadLocation: FnCommand;

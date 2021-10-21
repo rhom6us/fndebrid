@@ -1,9 +1,9 @@
 import { FileId, MagnetLink, TorrentHash, TorrentId } from '@fndebrid/real-debrid';
-import { CommandFn } from 'redux-command-pattern';
-import { FnState } from '../';
-import { JobId } from './';
+import { CommandFn, StandardEventAny } from 'redux-command-pattern';
+import type { FnState } from '../index';
+import type { JobId } from './state';
 
-type FnCommand<T = undefined> = CommandFn<FnState, T>;
+type FnCommand<T = undefined> = CommandFn<FnState, T, StandardEventAny>;
 export type Commands = {
   startPollingTorrents: FnCommand<number>
   stopPollingTorrents: FnCommand

@@ -4,7 +4,7 @@ import { ReducerFn } from 'redux-command-pattern';
 import { URL } from 'url';
 import { FnState } from '../';
 import { State } from '../preferences';
-import { JobId } from './state';
+import { JobId } from "./JobId";
 
 declare global {
   interface Array<T> {
@@ -46,7 +46,8 @@ function mergeTorrents(stateTorrent: MaybeExtendedTorrent, fetchedTorrent: Torre
   };
 }
 
-export const jobEnded: ReducerFn<FnState, [JobId]> = (state, jobId) => {
+type FnReducer<T = undefined> = ReducerFn<FnState, T>;
+export const jobEnded: FnReducer<JobId> = (state, jobId) => {
   const { [jobId]: _, ...jobs } = state.realDebrid.jobs;
   return {
     ...state,
@@ -57,7 +58,7 @@ export const jobEnded: ReducerFn<FnState, [JobId]> = (state, jobId) => {
   };
 };
 
-export const allTorrentsFetched: ReducerFn<FnState, [Torrent[]]> = (state, torrents) => ({
+export const allTorrentsFetched: FnReducer<Torrent[]> = (state, torrents) => ({
   ...state,
   realDebrid: {
     ...state.realDebrid,
@@ -72,7 +73,7 @@ export const allTorrentsFetched: ReducerFn<FnState, [Torrent[]]> = (state, torre
   },
 });
 
-export const fetchFailed: ReducerFn<FnState, [Error]> = (state, error) => ({
+export const fetchFailed: FnReducer< [Error]> = (state, error) => ({
   ...state,
   realDebrid: {
     ...state.realDebrid,
@@ -102,7 +103,7 @@ export const activeTorrentsFetched: ReducerFn<FnState, Torrent[]> = (state, torr
   };
 };
 
-export const infoHashSet: ReducerFn<FnState, [JobId, TorrentHash]> = (state, jobId, infoHash) => ({
+export const infoHashSet: FnReducer<[JobId, TorrentHash]> = (state, jobId, infoHash) => ({
   ...state,
   realDebrid: {
     ...state.realDebrid,
