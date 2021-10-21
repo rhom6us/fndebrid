@@ -5,7 +5,7 @@ export type Unpack<T> = T extends Unpackable<infer R> ? R : T;
 type UnpackableMap =
   | Unpackable<any>
   | {
-      [key: any]: UnpackableMap;
+      [key: string]: UnpackableMap;
     };
 
 export type UnpackMap<T extends UnpackableMap> = T extends Unpackable<infer R>
