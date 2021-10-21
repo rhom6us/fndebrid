@@ -1,6 +1,6 @@
 import { assertNever } from '@fndebrid/core/utils';
 import { ExtendedTorrent, FileId, MagnetLink, Torrent, TorrentId } from '@fndebrid/real-debrid';
-import { JobId } from '@fndebrid/store/real-debrid';
+import { Job, JobId } from '@fndebrid/store/real-debrid';
 import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import uuid5 from 'uuid/v5';
@@ -39,7 +39,7 @@ const intitialTorrentId = params.get('torrentid') as TorrentId;
 // type Props = IStateProps & IDispatchProps & IOwnProps;
 
 function getBody(
-  jobs: Record<JobId, TorrentId>,
+  jobs: Record<JobId, Job>,
   jobId: JobId | undefined,
   torrentId: TorrentId | undefined,
   torrent: Torrent | undefined,
@@ -82,13 +82,13 @@ export const AddTorrent = (() => {
   }));
   const [jobId, setJobId] = useState(initialJobId);
   const [aquiredTorrentId, setAquiredTorrentId] = useState(intitialTorrentId);
-  const torrentId = useMemo(() => aquiredTorrentId || (jobs[jobId] && jobs[jobId].torrentId) || undefined, [
+  const torrentId = useMemo(() => aquiredTorrentId ?? jobs?.[jobId]?.torrentId ?? undefined, [
     aquiredTorrentId,
     jobs,
     jobId,
   ]);
   const torrent = useMemo(() => (torrentId && (torrents[torrentId] as ExtendedTorrent)) || undefined, [torrents, torrentId]);
-  const caches = useMemo(() => (jobs[jobId] && jobs[jobId].caches) || undefined, [jobs, jobId]);
+  const caches = useMemo(() => jobs[jobId]?.caches ?? undefined, [jobs, jobId]);
   useEffect(() => {
     // initially, torrentId is derived from jobId, but that job will go away at the end so we first remember it here
     if (torrentId && !aquiredTorrentId) {
