@@ -40,7 +40,7 @@ export function isFunction(value: any): value is Function {
   return typeof value === 'function';
 }
 export function isNullOrUndefined(value: any): value is null | undefined {
-  return isNull(value) || isNullOrUndefined(value);
+  return isNull(value) || isUndefined(value);
 }
 export function isNull(value: any): value is null {
   return value === null;
@@ -51,15 +51,26 @@ export function isArray(value: any): value is any[] {
 export function isUndefined(value: any): value is undefined {
   return value === undefined;
 }
-
+export function hasValue<T>(value: T | null | undefined): value is T {
+  return !isNullOrUndefined(value);
+}
 export function isObject(value: any): value is object {
-  return value !== null && typeof value === 'object';
+  return !isNull(value) && typeof value === 'object';
 }
 
 export function isString(value: any): value is string {
   return typeof value === 'string';
 }
-export function tryParseUrl(value: string, out: [] | [URL]): out is [URL] {
+export function parseUrl(value: string) {
+  if (!value) throw new ArgumentFalsyError('value');
+  if (!isString(value)) throw new ArgumentTypeError('value', 'string', value);
+  try {
+    return new URL(value);
+  } catch (error) {
+    throw new InvalidArgumentError('url', 'The given value is not a proper url', error);
+  }
+}
+export function tryParseUrl(value: string, out: [URL | undefined]): out is [URL] {
   try {
     out[0] = parseUrl(value);
     return true;
@@ -71,24 +82,7 @@ export function tryParseUrl(value: string, out: [] | [URL]): out is [URL] {
 export function isURL(value: any): value is URL {
   return value instanceof URL;
 }
-export function parseUrl(value: string) {
-  if (!value) throw new ArgumentFalsyError('value');
-  if (!isString(value)) throw new ArgumentTypeError('value', 'string', value);
-  try {
-    return new URL(value);
-  } catch (error) {
-    throw new InvalidArgumentError('url', 'The given value is not a proper url');
-  }
-}
-export function validUrl(value: string) {
-  try {
-    const out: [] | [URL] = [];
-    if (tryParseUrl(value, out)) {
-      return out[0].href === value;
-    }
-  } catch (error) {}
-  return false;
-}
+
 export function assertString(value: any): value is string {
   if (!isString(value))
     throw new TypeError(`Expected a string, got a ${(value && value.constructor && value.constructor.name) || typeof value}`);
