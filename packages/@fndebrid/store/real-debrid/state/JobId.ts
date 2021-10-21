@@ -1,4 +1,4 @@
-import { assertNever, InvalidArgumentError, isString, isUndefined, isURL, Opaque, parseUrl, tryParseUrl } from '@fndebrid/core';
+import { assertNever, isString, isUndefined, isURL, Opaque, parseUrl } from '@fndebrid/core';
 import { URL } from 'url';
 import uuid4 from 'uuid/v4';
 import uuid5 from 'uuid/v5';
