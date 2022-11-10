@@ -22,7 +22,7 @@
     "cross-env": "^6.0.3",
     "css-hot-loader": "^1.4.4",
     "css-loader": "^3.2.0",
-    "electron": "^7.0.0",
+    "electron": "^18.3.7",
     "electron-builder": "^22.1.0",
     "enhanced-resolve": "^4.1.1",
     "file-loader": "^4.2.0",
