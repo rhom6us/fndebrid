@@ -85,3 +85,4 @@ common/autoinstallers/*/.npmrc
 # Heft temporary files
 .heft
 **/desktop.ini
+package_nope.json
