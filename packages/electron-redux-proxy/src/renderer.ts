@@ -1,5 +1,5 @@
-import { ipcRenderer } from 'electron';
-import { Action, AnyAction, Observable, Observer, Reducer, Store, Unsubscribe } from 'redux';
+import {ipcRenderer} from 'electron';
+import {Action, AnyAction, Observable, Observer, Reducer, Store, Unsubscribe} from 'redux';
 
 type Listener = () => void;
 
@@ -8,7 +8,7 @@ type Logger = (...args: any[]) => void;
 interface IOptions {
   logger?: Logger;
 }
-export function createStore<S = any, A extends Action = AnyAction>({ logger }: IOptions = {}): Store<S, A> {
+export function createStore<S = any, A extends Action = AnyAction>({logger}: IOptions = {}): Store<S, A> {
   function log(...args: any) {
     if (logger) {
       logger(...args);
@@ -24,22 +24,22 @@ export function createStore<S = any, A extends Action = AnyAction>({ logger }: I
 
   return {
     dispatch<T extends A>(action: T): T {
-      log({ dispatch: action });
-      return ipcRenderer.sendSync('dispatch', { action });
+      log({dispatch: action});
+      return ipcRenderer.sendSync('dispatch', {action});
     },
     getState(): S {
       const result = ipcRenderer.sendSync('getState');
-      log({ getState: result });
+      log({getState: result});
       return result;
     },
     replaceReducer(nextReducer: Reducer<S, A>): void {
       throw new Error('Method not supported.');
     },
     subscribe(listener: Listener): Unsubscribe {
-      log({ subscribe: listener });
+      log({subscribe: listener});
       listeners.add(listener);
       return () => {
-        log({ unsubscribe: listener });
+        log({unsubscribe: listener});
         listeners.delete(listener);
       };
     },

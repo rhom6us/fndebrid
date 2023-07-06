@@ -43,7 +43,13 @@ export const globalStylesheetRule = {
 export const stylesheetRule = {
   test: /\.s?css$/i,
   exclude: /\b(global|vars)\.s?css$/i,
-  use: [...(isDev ? [cssHotModuleLoader] : []), MiniCssExtractPlugin.loader, cssModuleLoader, postcssLoader, sassLoader],
+  use: [
+    ...(isDev ? [cssHotModuleLoader] : []),
+    MiniCssExtractPlugin.loader,
+    cssModuleLoader,
+    postcssLoader,
+    sassLoader,
+  ],
 };
 //#endregion
 

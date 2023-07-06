@@ -48,7 +48,9 @@ export default function fndosomething(...args: [Command, string, string]) {
         break;
     }
   } else {
-    throw new Error(`invalid command "([${process.execPath}] ${process.execArgv.join(' ')}) -- ${process.argv.join(' ')}"`);
+    throw new Error(
+      `invalid command "([${process.execPath}] ${process.execArgv.join(' ')}) -- ${process.argv.join(' ')}"`,
+    );
   }
 }
 export function compile(config: Configuration & { watch: false }): Compiler;

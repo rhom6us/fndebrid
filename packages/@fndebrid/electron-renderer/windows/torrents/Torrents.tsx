@@ -44,9 +44,9 @@ function isDead(status: TorrentStatus): status is DeadStatus {
 
 // type Props = StateProps & DispatchProps & IOwnProps;
 export default Torrents;
-export const Torrents: FC = ({ }) => {
+export const Torrents: FC = ({}) => {
   const { fetchAll } = useCommand(cmds => ({
-    fetchAll: cmds.realDebrid.fetchAllTorrents
+    fetchAll: cmds.realDebrid.fetchAllTorrents,
   }));
   const { activeTorrents, doneTorrents, deadTorrents } = useEventSource(state => {
     const torrents = objToArray(state.realDebrid.entities.torrents);

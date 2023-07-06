@@ -5,7 +5,6 @@ import { useCommand, useEventSource } from '../../hooks';
 // tslint:disable-next-line: no-empty-interface
 interface Props {}
 
-
 export const Demo: React.FC<Props> = () => {
   const { downloadLocation, torrents } = useEventSource(state => ({
     downloadLocation: state.preferences.downloadLocation,
@@ -14,7 +13,7 @@ export const Demo: React.FC<Props> = () => {
   const [pendingValue, setPendingValue] = useState(downloadLocation);
   const { loadTorrents, setDownloadLocation } = useCommand(cmd => ({
     loadTorrents: cmd.realDebrid.fetchAllTorrents,
-    setDownloadLocation: cmd.preferences.chooseDownloadLocation
+    setDownloadLocation: cmd.preferences.chooseDownloadLocation,
   }));
   const submitChange = () => {
     setDownloadLocation();
@@ -23,7 +22,7 @@ export const Demo: React.FC<Props> = () => {
     <div>
       <h2>download location is {downloadLocation}</h2>
       <hr />
-      <input type='text' value={pendingValue} onChange={event => setPendingValue(event.target.value)} />
+      <input type="text" value={pendingValue} onChange={event => setPendingValue(event.target.value)} />
       <button disabled={pendingValue === downloadLocation} onClick={submitChange}>
         {' '}
         submit{' '}

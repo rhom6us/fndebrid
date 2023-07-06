@@ -33,7 +33,11 @@ class _RegistryKey implements RegistryKey {
       this.winreg.remove(this.name, error => (error ? reject(error) : resolve(this.parent)));
     });
   }
-  constructor(private winreg: WinReg.Registry, public readonly parent: RegistryPath, public readonly name: string) {}
+  constructor(
+    private winreg: WinReg.Registry,
+    public readonly parent: RegistryPath,
+    public readonly name: string,
+  ) {}
   get(): Promise<[KeyType, string]> {
     return new Promise((resolve, reject) => {
       this.winreg.get(this.name, (error, result) =>
@@ -60,7 +64,7 @@ export class RegistryPath {
   public get parent() {
     return new RegistryPath(this.winreg.parent);
   }
-  protected constructor(options: {hive: Hive; path: string} | WinReg.Registry) {
+  protected constructor(options: { hive: Hive; path: string } | WinReg.Registry) {
     if (options instanceof WinReg) {
       this.winreg = options;
     } else {
@@ -76,7 +80,7 @@ export class RegistryPath {
   public withPath(path: string) {
     if (!path) return this;
 
-    return new RegistryPath({hive: this.hive, path: [this.path, cleanPath(path)].join('')});
+    return new RegistryPath({ hive: this.hive, path: [this.path, cleanPath(path)].join('') });
   }
   exists(): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -116,6 +120,6 @@ export class RegistryPath {
 export class RegistryHive extends RegistryPath {
   public static HKCU = new RegistryHive('HKCU');
   private constructor(hive: Hive) {
-    super({hive, path: ''});
+    super({ hive, path: '' });
   }
 }

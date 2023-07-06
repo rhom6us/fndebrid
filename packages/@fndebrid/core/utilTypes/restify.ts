@@ -18,7 +18,7 @@ export type UnRestify<T extends any[]> = T extends []
   : never;
 export function unrestify<T extends any[]>(arg: T): UnRestify<T> {
   if (!Array.isArray(arg)) {
-    throw new TypeError("Value must be an array");
+    throw new TypeError('Value must be an array');
   }
   switch (arg.length) {
     case 0:

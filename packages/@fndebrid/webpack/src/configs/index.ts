@@ -5,4 +5,4 @@ import renderer from './webpack.config.renderer';
 // import webpack = require('webpack');
 // const {default: config} = require(`./webpack.config.${app}`) as {default: webpack.Configuration};
 // export default config;
-export {main, renderer};
+export { main, renderer };

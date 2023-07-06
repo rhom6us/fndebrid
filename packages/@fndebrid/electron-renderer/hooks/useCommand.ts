@@ -7,7 +7,7 @@ const commands = getCommandCreator(ipcRenderer.send.bind(ipcRenderer, 'command')
 export type Commands = typeof commands;
 
 // export const CommandContext = createContext<Commands>(commands);
-export function useCommand<TCommands>(selector:(cmds:Commands)=>TCommands = identity):TCommands {
+export function useCommand<TCommands>(selector: (cmds: Commands) => TCommands = identity): TCommands {
   return useMemo(() => selector(commands), []);
 }
 // export const CommandProvider: FC = ({ children }) => {
@@ -15,4 +15,4 @@ export function useCommand<TCommands>(selector:(cmds:Commands)=>TCommands = iden
 //     {children}
 //   </CommandContext.Provider>
 // }
-``
+``;

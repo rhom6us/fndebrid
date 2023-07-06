@@ -34,4 +34,7 @@ type FooWithoutA = Except<Foo, 'a' | 'c'>;
  * //=> {b: string};
  *
  */
-export type Except<ObjectType, KeysType extends keyof ObjectType> = Pick<ObjectType, Exclude<keyof ObjectType, KeysType>>;
+export type Except<ObjectType, KeysType extends keyof ObjectType> = Pick<
+  ObjectType,
+  Exclude<keyof ObjectType, KeysType>
+>;

@@ -25,14 +25,20 @@ import { Primitive } from './primitive';
  *
  * settings = applySavedSettings({textEditor: {fontWeight: 500}});
  */
-export type DeepPartial<T> =
-  T extends Primitive ? Partial<T>
-  : T extends Map<infer KeyType, infer ValueType> ? DeepPartialMap<KeyType, ValueType>
-  : T extends Set<infer ItemType> ? DeepPartialSet<ItemType>
-  : T extends ReadonlyMap<infer KeyType, infer ValueType> ? DeepPartialReadonlyMap<KeyType, ValueType>
-  : T extends ReadonlySet<infer ItemType> ? DeepPartialReadonlySet<ItemType>
-  : T extends (...args: any[]) => unknown ? T | undefined
-  : T extends object ? DeepPartialObject<T>
+export type DeepPartial<T> = T extends Primitive
+  ? Partial<T>
+  : T extends Map<infer KeyType, infer ValueType>
+  ? DeepPartialMap<KeyType, ValueType>
+  : T extends Set<infer ItemType>
+  ? DeepPartialSet<ItemType>
+  : T extends ReadonlyMap<infer KeyType, infer ValueType>
+  ? DeepPartialReadonlyMap<KeyType, ValueType>
+  : T extends ReadonlySet<infer ItemType>
+  ? DeepPartialReadonlySet<ItemType>
+  : T extends (...args: any[]) => unknown
+  ? T | undefined
+  : T extends object
+  ? DeepPartialObject<T>
   : unknown;
 
 /**
@@ -48,7 +54,8 @@ interface DeepPartialSet<T> extends Set<DeepPartial<T>> {}
 /**
  * Same as `DeepPartial`, but accepts only `ReadonlyMap`s as inputs. Internal helper for `DeepPartial`.
  */
-interface DeepPartialReadonlyMap<KeyType, ValueType> extends ReadonlyMap<DeepPartial<KeyType>, DeepPartial<ValueType>> {}
+interface DeepPartialReadonlyMap<KeyType, ValueType>
+  extends ReadonlyMap<DeepPartial<KeyType>, DeepPartial<ValueType>> {}
 
 /**
  * Same as `DeepPartial`, but accepts only `ReadonlySet`s as inputs. Internal helper for `DeepPartial`.

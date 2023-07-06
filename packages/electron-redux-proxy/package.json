@@ -30,13 +30,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json",
-    // "prepare": "yarn build",
-    // "prepublishOnly": "yarn test && yarn lint",
-    // "test": "jest --config jestconfig.json",
-    // "preversion": "yarn lint",
-    // "version": "yarn format && git add -A src",
-    // "postversion": "git push && git push --tags"
+    "lint": "tslint -p tsconfig.json"
   },
   "dependencies": {},
   "devDependencies": {

@@ -2,7 +2,15 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import webpack from 'webpack';
-import { fontRule, globalStylesheetRule, htmlRule, imageRule, nodeRule, reactTypescriptRule, stylesheetRule } from './rules';
+import {
+  fontRule,
+  globalStylesheetRule,
+  htmlRule,
+  imageRule,
+  nodeRule,
+  reactTypescriptRule,
+  stylesheetRule,
+} from './rules';
 import config from './webpack.config.common';
 
 export default {

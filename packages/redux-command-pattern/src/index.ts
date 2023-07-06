@@ -1,4 +1,4 @@
-import { DeepDictionary, DeepDictionaryItem } from "@rhombus-toolkit/type-helpers";
+import { DeepDictionary, DeepDictionaryItem } from '@rhombus-toolkit/type-helpers';
 import { CommandFn, createCommandHandler } from './create-command-handler';
 import { createReducer } from './createReducer';
 import { EventTypes, getEventCreator } from './event-creator';
@@ -13,16 +13,18 @@ export type { ReducerFn, CommandFn };
 export { createCommandHandler, getCommands };
 
 export function parseReducers<TReducers extends DeepDictionary<ReducerFnAny>>(reducers: TReducers) {
-    const reducer = createReducer(reducers);
-     const events = getEventCreator(reducers);;
-    return [reducer, events] as const;
+  const reducer = createReducer(reducers);
+  const events = getEventCreator(reducers);
+  return [reducer, events] as const;
 }
-export function parseCommands<TReducers extends DeepDictionaryItem<ReducerFnAny>, TCommands extends DeepDictionary<CommandFn</*InferState<TReducers>*/any, any, EventTypes<TReducers>>>>(implementation: TCommands, store: Store, reducers?: TReducers) {
-    const handler = createCommandHandler(store, implementation);
-    const commands = getCommands<TCommands>(handler);
-    return commands;
+export function parseCommands<
+  TReducers extends DeepDictionaryItem<ReducerFnAny>,
+  TCommands extends DeepDictionary<CommandFn</*InferState<TReducers>*/ any, any, EventTypes<TReducers>>>,
+>(implementation: TCommands, store: Store, reducers?: TReducers) {
+  const handler = createCommandHandler(store, implementation);
+  const commands = getCommands<TCommands>(handler);
+  return commands;
 }
-
 
 // export function getCommandParsers<Commands extends DeepDictionary<CommandFnAny>>(implementation:Commands){
 //     const getHandler = (store: InferStore<Commands>) => createCommandHandler(store, implementation);

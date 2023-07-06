@@ -11,13 +11,14 @@ export const preferencesUpdated: FnReducer<Partial<State>> = (state, payload) =>
     ...(payload as any),
   },
 });
-export const autoSelectFilesPatternUpdated: ReducerFn<FnState, FileGlob[]> = (state, pattern) => preferencesUpdated(state, {
-  autoSelectFiles: {
-    ...state.preferences.autoSelectFiles as any,
-    type: 'pattern+',
-    pattern,
-  }
-});
+export const autoSelectFilesPatternUpdated: ReducerFn<FnState, FileGlob[]> = (state, pattern) =>
+  preferencesUpdated(state, {
+    autoSelectFiles: {
+      ...(state.preferences.autoSelectFiles as any),
+      type: 'pattern+',
+      pattern,
+    },
+  });
 
 // export const autoSelectFilesSet: FnReducer<['none' | 'all_files' | 'largest_files']> = (state, autoSelectFiles) => {
 //   const { autoSelectFilesPattern, ...preferences } = { ...state.preferences, autoSelectFiles };
@@ -30,7 +31,7 @@ export const autoSelectFilesPatternUpdated: ReducerFn<FnState, FileGlob[]> = (st
 //   };
 // };
 
-function without<TSource, TProp extends keyof TSource>(prop: TProp, source: TSource): Omit<TSource, TProp>{
+function without<TSource, TProp extends keyof TSource>(prop: TProp, source: TSource): Omit<TSource, TProp> {
   const { [prop]: deleted, ...result } = source;
   return result;
 }

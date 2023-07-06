@@ -40,14 +40,18 @@ export const AddMagnet: React.FC<IOwnProps> = ({ onSubmit, onCancel: cancel }) =
     <>
       <Dialog.Body>
         <H5>Add magnet link</H5>
-        <InputGroup placeholder='Paste magnet link heere' value={magnet} onChange={handleStringChange(updateMagnet)} />
+        <InputGroup
+          placeholder="Paste magnet link heere"
+          value={magnet}
+          onChange={handleStringChange(updateMagnet)}
+        />
       </Dialog.Body>
       <Dialog.Footer>
         <Dialog.Footer.Actions>
-          <Button rightIcon='upload' intent='primary' disabled={!validMagnet} onClick={submit}>
+          <Button rightIcon="upload" intent="primary" disabled={!validMagnet} onClick={submit}>
             Upload
           </Button>
-          <Button rightIcon='small-cross' text='Cancel' onClick={cancel} />
+          <Button rightIcon="small-cross" text="Cancel" onClick={cancel} />
         </Dialog.Footer.Actions>
       </Dialog.Footer>
     </>

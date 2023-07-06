@@ -7,7 +7,9 @@ async function setAssReg(ns: string, ext: string, execPath: string) {
   const appPath = await nsPath.withPath('Application').ensure();
   await appPath.withKey('ApplicationCompany').set('REG_SZ', 'Butler Software');
   await appPath.withKey('ApplicationDescription').set('REG_SZ', 'Butler Software');
-  await appPath.withKey('ApplicationIcon').set('REG_SZ', path.resolve(__static, 'android-chrome-192x192.png'));
+  await appPath
+    .withKey('ApplicationIcon')
+    .set('REG_SZ', path.resolve(__static, 'android-chrome-192x192.png'));
   await appPath.withKey('ApplicationName').set('REG_SZ', 'fnDebrid');
   // await app.withKey('AppUserModelID').set('REG_SZ', 'Microsoft.SkypeApp_kzf8qxf38zg5c!App');
   const iconPath = await nsPath.withPath('DefaultIcon').ensure();
@@ -23,25 +25,21 @@ async function setAssReg(ns: string, ext: string, execPath: string) {
   // await setReg(`/Software/Classes/.${ext.replace(/^\./, '')}`, Registry.DEFAULT_VALUE, ns);
 }
 async function removeAssReg(ns: string, ext: string) {
-  await Registry.HKCU.withPath('Software/Classes')
-    .withPath(ext)
-    .clear();
+  await Registry.HKCU.withPath('Software/Classes').withPath(ext).clear();
 }
 async function isAssReg(ns: string, ext: string) {
-  const exists = await Registry.HKCU.withPath('Software/Classes')
-    .withPath(ext)
-    .exists();
+  const exists = await Registry.HKCU.withPath('Software/Classes').withPath(ext).exists();
   if (!exists) return false;
-  const [type, value] = await Registry.HKCU.withPath('Software/Classes')
-    .withPath(ext)
-    .withDefault()
-    .get();
+  const [type, value] = await Registry.HKCU.withPath('Software/Classes').withPath(ext).withDefault().get();
   return value == ns;
 }
 
 export class TorrentFileHandler {
   private readonly ext: string;
-  constructor(private readonly ns: string = `fnDebrid`, ext: string = '.torrent') {
+  constructor(
+    private readonly ns: string = `fnDebrid`,
+    ext: string = '.torrent',
+  ) {
     this.ext = `.${ext.replace(/^\./, '')}`;
   }
 

@@ -54,7 +54,8 @@ interface PartialSetDeep<T> extends Set<PartialDeep<T>> {}
 /**
  * Same as `PartialDeep`, but accepts only `ReadonlyMap`s as inputs. Internal helper for `PartialDeep`.
  */
-interface PartialReadonlyMapDeep<KeyType, ValueType> extends ReadonlyMap<PartialDeep<KeyType>, PartialDeep<ValueType>> {}
+interface PartialReadonlyMapDeep<KeyType, ValueType>
+  extends ReadonlyMap<PartialDeep<KeyType>, PartialDeep<ValueType>> {}
 
 /**
  * Same as `PartialDeep`, but accepts only `ReadonlySet`s as inputs. Internal helper for `PartialDeep`.

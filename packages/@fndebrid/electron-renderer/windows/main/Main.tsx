@@ -21,7 +21,9 @@ export const Main = ({}) => {
         <pre>{JSON.stringify(store.getState())}</pre>
       </section>
       <footer>
-        <button onClick={() => themeState.toggle()}>{themeState.dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}</button>
+        <button onClick={() => themeState.toggle()}>
+          {themeState.dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        </button>
       </footer>
     </Wrapper>
   );

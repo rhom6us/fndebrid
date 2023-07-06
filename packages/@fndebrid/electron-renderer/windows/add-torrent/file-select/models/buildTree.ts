@@ -8,15 +8,13 @@ export function buildTree(fnFiles: File[], selections: FileId[], expansions: Set
   const rootNode = FnTreeNode.createRoot();
 
   for (const fnFile of fnFiles) {
-    const [file, ...folders] = fnFile.path
-      .split('/')
-      .filter(Boolean)
-      .reverse();
+    const [file, ...folders] = fnFile.path.split('/').filter(Boolean).reverse();
     let currentFolder = rootNode;
     while (folders.length) {
       const proposedFolderName = folders.pop()!;
       currentFolder =
-        currentFolder.find(proposedFolderName) || currentFolder.addFolder(++id, proposedFolderName, expansions.has(id));
+        currentFolder.find(proposedFolderName) ||
+        currentFolder.addFolder(++id, proposedFolderName, expansions.has(id));
     }
 
     currentFolder.addFile(++id, file, includes(selections, fnFile.id), fnFile);

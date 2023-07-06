@@ -9,33 +9,39 @@
   "projectFolderMinDepth": 2,
   "projectFolderMaxDepth": 3,
   "allowMostlyStandardPackageNames": false,
-  "approvedPackagesPolicy": { // recorded in the files  "common/config/rush/browser-approved-packages.json" and "nonbrowser-approved-packages.json" which are automatically generated during "rush update".
+  "approvedPackagesPolicy": {
+    // recorded in the files  "common/config/rush/browser-approved-packages.json" and "nonbrowser-approved-packages.json" which are automatically generated during "rush update".
     "reviewCategories": [
       "production", // projects that ship to production
       "tools", // non-shipping projects that are part of the developer toolchain
       "prototypes", // experiments that should mostly be ignored by the review process
       "typings" // typescript @types/* projects
     ],
-    "ignoredNpmScopes": [ // We recommend to exclude TypeScript typings (the "@types" scope), because if the underlying package was already approved, this would imply that the typings are also approved.
+    "ignoredNpmScopes": [
+      // We recommend to exclude TypeScript typings (the "@types" scope), because if the underlying package was already approved, this would imply that the typings are also approved.
       "@types"
     ]
   },
   "gitPolicy": {
-    "allowedEmailRegExps": [ // RegExp escapes need two backslashes, and ordinary periods should be "\\.".
+    "allowedEmailRegExps": [
+      // RegExp escapes need two backslashes, and ordinary periods should be "\\.".
       "[^@]+@users\\.noreply\\.github\\.com"
     ],
     "sampleEmail": "example@users.noreply.github.com",
     "versionBumpCommitMessage": "Bump versions [skip ci]", // 'rush publish'
-    "changeLogUpdateCommitMessage": "Update changelogs [skip ci]",// 'rush version'
-    "changefilesCommitMessage": "Rush change"// 'rush change --commit'
+    "changeLogUpdateCommitMessage": "Update changelogs [skip ci]", // 'rush version'
+    "changefilesCommitMessage": "Rush change" // 'rush change --commit'
   },
-  "repository": { // used for "rush change"
+  "repository": {
+    // used for "rush change"
     "url": "https://github.com/rhom6us/fndebrid",
     "defaultBranch": "master",
     "defaultRemote": "origin"
   },
   "eventHooks": {
-    "preRushInstall": [ /* "common/scripts/pre-rush-install.js" */],
+    "preRushInstall": [
+      /* "common/scripts/pre-rush-install.js" */
+    ],
     "postRushInstall": [],
     "preRushBuild": [],
     "postRushBuild": []
@@ -43,11 +49,7 @@
   "variants": [], // https://rushjs.io/pages/advanced/installation_variants/
   "telemetryEnabled": false, // written into JSON files in the common/temp folder
   "hotfixChangeEnabled": false,
-  "allowedProjectTags": [
-    "tools",
-    "frontend-team",
-    "1.0.0-release"
-  ],
+  "allowedProjectTags": ["tools", "frontend-team", "1.0.0-release"],
   "projects": [
     // {
     //   "packageName": "my-app",

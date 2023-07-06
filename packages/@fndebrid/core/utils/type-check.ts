@@ -3,7 +3,7 @@ import { types } from 'util';
 import { ArgumentFalsyError, ArgumentTypeError, ArgumentUndefinedError, InvalidArgumentError } from '../';
 import { Ctor } from '../UtilTypes';
 
-export const { isDate, isMap, isPromise, isSet, isNativeError, isRegExp } = (types as unknown) as {
+export const { isDate, isMap, isPromise, isSet, isNativeError, isRegExp } = types as unknown as {
   isDate: (value: any) => value is Date;
   isMap: (value: any) => value is Map<any, any>;
   isPromise: (value: any) => value is Promise<any>;
@@ -85,7 +85,9 @@ export function isURL(value: any): value is URL {
 
 export function assertString(value: any): value is string {
   if (!isString(value))
-    throw new TypeError(`Expected a string, got a ${(value && value.constructor && value.constructor.name) || typeof value}`);
+    throw new TypeError(
+      `Expected a string, got a ${(value && value.constructor && value.constructor.name) || typeof value}`,
+    );
   return true;
 }
 export function assertNever(x: never): never {

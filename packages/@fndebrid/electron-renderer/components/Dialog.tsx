@@ -6,7 +6,11 @@ const HeightBpDialog = styled(BpDialog)`
   height: 100vh;
   margin: 0;
 `;
-export function Dialog({ children, title, onClose }: PropsWithChildren<{ title: string; onClose: Function }>) {
+export function Dialog({
+  children,
+  title,
+  onClose,
+}: PropsWithChildren<{ title: string; onClose: Function }>) {
   return (
     <HeightBpDialog
       onClose={onClose as any}
@@ -16,7 +20,8 @@ export function Dialog({ children, title, onClose }: PropsWithChildren<{ title: 
       hasBackdrop={false}
       isOpen={true}
       isCloseButtonShown={true}
-      title={title}>
+      title={title}
+    >
       {children}
     </HeightBpDialog>
   );

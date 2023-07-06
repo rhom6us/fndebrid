@@ -16,7 +16,7 @@ export const TitleBar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
         <Navbar.Heading>fn Debrid</Navbar.Heading>
       </Navbar.Group>
       <Navbar.Group align={Alignment.RIGHT}>
-        <NoDragButton icon='cross' minimal onClick={onClose} />
+        <NoDragButton icon="cross" minimal onClick={onClose} />
       </Navbar.Group>
     </DraggableNavBar>
   );

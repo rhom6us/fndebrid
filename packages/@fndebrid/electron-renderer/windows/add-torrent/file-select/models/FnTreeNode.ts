@@ -16,12 +16,15 @@ export abstract class FnTreeNode implements ITreeNode<File>, Iterable<FnTreeNode
   public abstract readonly isExpanded: boolean;
   public abstract readonly isSelected: boolean;
   public abstract label: TreeNodeLabel;
-  protected constructor(public readonly id: TreeNodeId, protected readonly name: string) {}
+  protected constructor(
+    public readonly id: TreeNodeId,
+    protected readonly name: string,
+  ) {}
   public get files() {
     return Array.from(this._files);
   }
   private get _files(): Iterable<FnFileNode> {
-    return function*(this: FnTreeNode) {
+    return function* (this: FnTreeNode) {
       for (const child of this) {
         if (child instanceof FnFileNode) {
           yield child;
@@ -44,9 +47,19 @@ export class FnFileNode extends FnTreeNode {
   public readonly hasCaret = false;
   public readonly isExpanded = false;
   public readonly label: JSX.Element;
-  constructor(id: TreeNodeId, name: string, public readonly isSelected: boolean, public readonly nodeData: File) {
+  constructor(
+    id: TreeNodeId,
+    name: string,
+    public readonly isSelected: boolean,
+    public readonly nodeData: File,
+  ) {
     super(id, name);
-    this.label = createElement('div', null, name, createElement('small', null, `(${formatBytes(nodeData.bytes)})`));
+    this.label = createElement(
+      'div',
+      null,
+      name,
+      createElement('small', null, `(${formatBytes(nodeData.bytes)})`),
+    );
   }
 }
 
@@ -72,14 +85,19 @@ export class FnFolderNode extends FnTreeNode {
       }
     });
     const size = this.files.map(file => file.nodeData.bytes).reduce((sum, size) => sum + size, 0);
-    this.label = createElement('div', null, this.name, createElement('small', null, `(${formatBytes(size)})`));
+    this.label = createElement(
+      'div',
+      null,
+      this.name,
+      createElement('small', null, `(${formatBytes(size)})`),
+    );
     return this;
   }
   public get folders() {
     return Array.from(this._folders);
   }
   private get _folders(): Generator<FnFolderNode> {
-    return function*(this: FnFolderNode) {
+    return function* (this: FnFolderNode) {
       for (const child of this) {
         if (child instanceof FnFolderNode) {
           yield child;

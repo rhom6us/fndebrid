@@ -1,4 +1,3 @@
-
 import { isFunction, isString } from 'lodash';
 import type { Action as ReduxAction } from './external/redux';
 

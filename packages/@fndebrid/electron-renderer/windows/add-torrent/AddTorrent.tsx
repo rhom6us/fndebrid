@@ -66,7 +66,7 @@ function getBody(
       return 'complete';
   }
 }
-export const AddTorrent = (() => {
+export const AddTorrent = () => {
   const { jobs, torrents } = useEventSource(state => ({
     jobs: state.realDebrid.jobs,
     torrents: state.realDebrid.entities.torrents,
@@ -82,12 +82,14 @@ export const AddTorrent = (() => {
   }));
   const [jobId, setJobId] = useState(initialJobId);
   const [aquiredTorrentId, setAquiredTorrentId] = useState(intitialTorrentId);
-  const torrentId = useMemo(() => aquiredTorrentId ?? jobs?.[jobId]?.torrentId ?? undefined, [
-    aquiredTorrentId,
-    jobs,
-    jobId,
-  ]);
-  const torrent = useMemo(() => (torrentId && (torrents[torrentId] as ExtendedTorrent)) || undefined, [torrents, torrentId]);
+  const torrentId = useMemo(
+    () => aquiredTorrentId ?? jobs?.[jobId]?.torrentId ?? undefined,
+    [aquiredTorrentId, jobs, jobId],
+  );
+  const torrent = useMemo(
+    () => (torrentId && (torrents[torrentId] as ExtendedTorrent)) || undefined,
+    [torrents, torrentId],
+  );
   const caches = useMemo(() => jobs[jobId]?.caches ?? undefined, [jobs, jobId]);
   useEffect(() => {
     // initially, torrentId is derived from jobId, but that job will go away at the end so we first remember it here
@@ -122,9 +124,12 @@ export const AddTorrent = (() => {
     window.close();
   }
 
-  const displayMode = useMemo(() => getBody(jobs, jobId, torrentId, torrent), [jobs, jobId, torrentId, torrent]);
+  const displayMode = useMemo(
+    () => getBody(jobs, jobId, torrentId, torrent),
+    [jobs, jobId, torrentId, torrent],
+  );
   return (
-    <Dialog title='fn Debrid' onClose={cancelSetup}>
+    <Dialog title="fn Debrid" onClose={cancelSetup}>
       {(() => {
         switch (displayMode) {
           case 'add_magnet':
@@ -138,7 +143,14 @@ export const AddTorrent = (() => {
           case 'fetching':
             return <h3>Fetching torrent details...</h3>;
           case 'waiting_files_selection':
-            return <FileSelect torrent={torrent!} caches={caches} onSubmit={submitFileSelection} onCancel={cancelDownload} />;
+            return (
+              <FileSelect
+                torrent={torrent!}
+                caches={caches}
+                onSubmit={submitFileSelection}
+                onCancel={cancelDownload}
+              />
+            );
           case 'submitting_selection':
             return <h3>Submitting your file selection to real-debrid.com...</h3>;
           case 'complete':
@@ -149,4 +161,4 @@ export const AddTorrent = (() => {
       })()}
     </Dialog>
   );
-});
+};

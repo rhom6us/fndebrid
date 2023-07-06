@@ -64,7 +64,7 @@ export const commands: Commands = {
       const { id } = await api.addMagnet(magnetLink);
       yield events.realDebrid.magnetAdded(id, jobId);
 
-      yield* this.fetchTorrent(state, id);// as AsyncIterable<StandardAction>;
+      yield* this.fetchTorrent(state, id); // as AsyncIterable<StandardAction>;
     } catch (err) {
       yield events.realDebrid.addMagnetFailed(getErrorMsg(err));
     }
@@ -77,7 +77,7 @@ export const commands: Commands = {
       const { id } = await api.addTorrent(filePath);
       yield events.realDebrid.torrentFileAdded(id, jobId);
 
-      yield* this.fetchTorrent(state, id);// as AsyncIterable<StandardAction>;
+      yield* this.fetchTorrent(state, id); // as AsyncIterable<StandardAction>;
     } catch (err) {
       yield events.realDebrid.addTorrentFileFailed(getErrorMsg(err));
     }
@@ -106,7 +106,7 @@ export const commands: Commands = {
   async *selectFiles(state, torrentId, fileIds) {
     try {
       await api.selectFiles(torrentId, fileIds);
-      yield* this.fetchTorrent(state, torrentId);// as AsyncIterable<StandardAction>;
+      yield* this.fetchTorrent(state, torrentId); // as AsyncIterable<StandardAction>;
     } catch (err) {
       yield events.realDebrid.selectFilesFailed(getErrorMsg(err));
     }
@@ -119,5 +119,5 @@ export const commands: Commands = {
   },
   completeJob(state, jobId) {
     return events.realDebrid.jobEnded(jobId);
-  }
+  },
 };

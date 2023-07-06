@@ -94,10 +94,12 @@ function setupRedux() {
   const store = configureStore(initialState);
   let token: NodeJS.Timeout | undefined;
   store.subscribe(() => {
-    token = token || setTimeout(() => {
-      storage.set('state', store.getState())
-      token = undefined;
-    }, 5000);
+    token =
+      token ||
+      setTimeout(() => {
+        storage.set('state', store.getState());
+        token = undefined;
+      }, 5000);
 
     // setImmediate(state => storage.set('state', state), store.getState());
   });

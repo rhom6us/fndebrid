@@ -1,0 +1,75 @@
+#-------------------------------------------------------------------------------------------------------------------
+# Keep this section in sync with .gitignore
+#-------------------------------------------------------------------------------------------------------------------
+.DS_Store
+/dist/
+node_modules/
+thumbs.db
+.idea/
+yarn-error.log
+.vs/slnx.sqlite
+*.log.json
+.tmp.driveupload/277373
+packages/*/lib
+packages/*/lib-commonjs
+**/.rush
+**/*.log
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
+lib-cov
+coverage
+.nyc_output
+.lock-wscript
+build/Release
+node_modules/
+jspm_packages/
+.npm
+.eslintcache
+.node_repl_history
+*.tgz
+.yarn-integrity
+.env
+.DS_Store
+.idea/
+*.iml
+# Rush temporary files
+common/deploy/
+common/temp/
+common/autoinstallers/*/.npmrc
+**/.rush/temp/
+# Heft temporary files
+.heft
+**/desktop.ini
+
+#-------------------------------------------------------------------------------------------------------------------
+# Prettier-specific overrides
+#-------------------------------------------------------------------------------------------------------------------
+
+# Rush files
+common/changes/
+common/scripts/
+common/config/
+CHANGELOG.*
+
+# Package manager files
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+shrinkwrap.json
+
+# Build outputs
+dist
+lib
+
+# Prettier reformats code blocks inside Markdown, which affects rendered output
+*.md

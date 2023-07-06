@@ -1,5 +1,5 @@
-import { BrowserWindow, ipcMain, WebContents } from 'electron';
-import { StoreEnhancer } from 'redux';
+import {BrowserWindow, ipcMain, WebContents} from 'electron';
+import {StoreEnhancer} from 'redux';
 
 export const proxyEnhancer: StoreEnhancer = createStore => {
   return (reducer, preloadedState) => {
@@ -10,7 +10,7 @@ export const proxyEnhancer: StoreEnhancer = createStore => {
       Array.from(subscribers).forEach(webContents => webContents.send('store-update'));
     });
 
-    ipcMain.on('dispatch', (event, { action }) => {
+    ipcMain.on('dispatch', (event, {action}) => {
       event.returnValue = store.dispatch(action);
     });
     ipcMain.on('getState', event => {

@@ -17,6 +17,6 @@ const themeDark = {
   body: white,
 };
 
-export default function(mode: 'dark' | 'light'): Theme {
+export default function (mode: 'dark' | 'light'): Theme {
   return mode === 'dark' ? themeDark : themeLight;
 }

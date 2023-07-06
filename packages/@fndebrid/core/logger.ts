@@ -3,14 +3,14 @@ import winston from 'winston';
 export const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
-  defaultMeta: {service: 'user-service'},
+  defaultMeta: { service: 'user-service' },
   transports: [
     //
     // - Write to all logs with level `info` and below to `combined.log`
     // - Write all logs error (and below) to `error.log`.
     //
-    new winston.transports.File({filename: 'error.log.json', level: 'error'}),
-    new winston.transports.File({filename: 'combined.log.json'}),
+    new winston.transports.File({ filename: 'error.log.json', level: 'error' }),
+    new winston.transports.File({ filename: 'combined.log.json' }),
   ],
 });
 

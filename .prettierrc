@@ -1,14 +1,25 @@
-printWidth: 150
+printWidth: 110
 tabWidth: 2
 useTabs: false
 semi: true
 singleQuote: true
-quoteProps: as-needed
-jsxSingleQuote: true
+quoteProps: consistent
+jsxSingleQuote: false
 trailingComma: all
 bracketSpacing: true
 jsxBracketSameLine: true
 arrowParens: avoid
 htmlWhitespaceSensitivity: css
-proseWrap: preserve
-trailingComma: ttur
+proseWrap: always
+endOfLine: auto
+embeddedLanguageFormatting: auto
+singleAttributePerLine: false
+overrides:
+  - files: '*.test.js'
+    options:
+      semi: true
+  - files:
+      - '*.html'
+      - 'legacy/**/*.js'
+    options:
+      tabWidth: 4

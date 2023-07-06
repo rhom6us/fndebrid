@@ -12,7 +12,6 @@ import theme, { Theme } from './theme';
 export const ThemeContext = React.createContext({ dark: true, toggle: () => {} });
 export const useTheme = () => React.useContext(ThemeContext);
 
-
 export const ThemeProvider: React.FC = ({ children }) => {
   const [themeState, setThemeState] = React.useState({ isDark: true, hasThemeMounted: false });
 
@@ -54,7 +53,7 @@ export const ThemeProvider: React.FC = ({ children }) => {
   };
   return (
     // <EmotionThemeProvider theme={computedTheme}>
-    <TheRoot id='root' {...{ className }}>
+    <TheRoot id="root" {...{ className }}>
       <ThemeContext.Provider value={{ dark: themeState.isDark, toggle }}>{children}</ThemeContext.Provider>
       <ResizeDetector {...resizeDetectorProps} />
     </TheRoot>

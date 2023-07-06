@@ -3,7 +3,6 @@ import { URL } from 'url';
 import uuid4 from 'uuid/v4';
 import uuid5 from 'uuid/v5';
 
-
 export type JobId = Opaque<string, 'jobId'>;
 
 export function JobId(jobId: string) {

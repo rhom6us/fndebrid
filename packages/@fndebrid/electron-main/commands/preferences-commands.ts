@@ -7,10 +7,9 @@ import torrentFileHandler from '../torrent-file-associator';
 
 // import { protocolHandler, torrentFileHandler } from '../../Application';
 
-
 export const commands: Commands = {
   updatePreferences: (state, prefs) => events.preferences.preferencesUpdated(prefs),
-  chooseDownloadLocation: async (state) => {
+  chooseDownloadLocation: async state => {
     const defaultPath = state.preferences.downloadLocation;
     const result = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow()!, {
       defaultPath,
@@ -26,7 +25,9 @@ export const commands: Commands = {
     } else if (!associateTorrentFiles && state.preferences.torrentFilesAssociated) {
       await torrentFileHandler.disassociate();
     }
-    return events.preferences.preferencesUpdated({ torrentFilesAssociated: await torrentFileHandler.isAssociated() });
+    return events.preferences.preferencesUpdated({
+      torrentFilesAssociated: await torrentFileHandler.isAssociated(),
+    });
   },
   associateMagnetLinks: async (state, associateMagnetLinks) => {
     const protocolHandler = new ProtocolHandler();

@@ -15,7 +15,10 @@ interface IOwnProps {
 export const FileSelect: React.FC<IOwnProps> = ({ torrent, caches, onSubmit, onCancel }) => {
   const [selections, setSelections] = useState<FileId[]>([]);
   const totalSize = useMemo(
-    () => formatBytes(torrent.files.filter(file => selections.includes(file.id)).reduce((sum, file) => sum + file.bytes, 0)),
+    () =>
+      formatBytes(
+        torrent.files.filter(file => selections.includes(file.id)).reduce((sum, file) => sum + file.bytes, 0),
+      ),
     [selections, torrent.files],
   );
   const submit = useCallback(() => {
@@ -58,10 +61,10 @@ export const FileSelect: React.FC<IOwnProps> = ({ torrent, caches, onSubmit, onC
       </Dialog.Body>
       <Dialog.Footer>
         <Dialog.Footer.Actions>
-          <Button rightIcon='upload' intent='primary' disabled={!selections.length} onClick={submit}>
+          <Button rightIcon="upload" intent="primary" disabled={!selections.length} onClick={submit}>
             Submit
           </Button>
-          <Button rightIcon='small-cross' text='Cancel' onClick={onCancel} />
+          <Button rightIcon="small-cross" text="Cancel" onClick={onCancel} />
         </Dialog.Footer.Actions>
       </Dialog.Footer>
     </>

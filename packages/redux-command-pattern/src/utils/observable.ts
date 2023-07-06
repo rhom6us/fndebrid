@@ -1,4 +1,4 @@
-import { Action, Func } from "@rhombus-toolkit/func";
+import { Action, Func } from '@rhombus-toolkit/func';
 
 declare global {
   interface SymbolConstructor {
@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-export type Observer<T> = { next: Action<[T]>; error?: Action<[any]>, complete?: Action<[]>; } 
+export type Observer<T> = { next: Action<[T]>; error?: Action<[any]>; complete?: Action<[]> };
 export type Unsubscribe = Action<[]>;
 
 /**
@@ -23,10 +23,10 @@ export interface Observable<T> {
    * be used to unsubscribe the observable from the store, and prevent further
    * emission of values from the observable.
    */
-  subscribe: Func<[Observer<T>], {unsubscribe: Unsubscribe}>;
+  subscribe: Func<[Observer<T>], { unsubscribe: Unsubscribe }>;
   [Symbol.observable](): Observable<T>;
-};
+}
 
-export function isObservable(value: any): value is Observable<any>{
+export function isObservable(value: any): value is Observable<any> {
   return Symbol.observable in value;
 }

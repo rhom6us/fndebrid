@@ -1,10 +1,17 @@
-import { ExtendedTorrent, FileId, MaybeExtendedTorrent, Torrent, TorrentHash, TorrentId } from '@fndebrid/real-debrid';
+import {
+  ExtendedTorrent,
+  FileId,
+  MaybeExtendedTorrent,
+  Torrent,
+  TorrentHash,
+  TorrentId,
+} from '@fndebrid/real-debrid';
 import { fromPairs, groupBy, toPairs } from 'lodash';
 import { ReducerFn } from 'redux-command-pattern';
 import { URL } from 'url';
 import { FnState } from '../';
 import { State } from '../preferences';
-import { JobId } from "./JobId";
+import { JobId } from './JobId';
 
 declare global {
   interface Array<T> {
@@ -26,10 +33,9 @@ Array.prototype.toLookup = function toLookup<T, K extends string | number | symb
   keySelector: (item: T) => K,
   valueSelector: (item: T) => V,
 ): Record<K, V[]> {
-  return fromPairs(toPairs(groupBy(this, keySelector)).map(([key, value]) => [key, value.map(valueSelector)])) as Record<
-    K,
-    V[]
-  >;
+  return fromPairs(
+    toPairs(groupBy(this, keySelector)).map(([key, value]) => [key, value.map(valueSelector)]),
+  ) as Record<K, V[]>;
 };
 
 function mergeTorrents(stateTorrent: MaybeExtendedTorrent, fetchedTorrent: Torrent): MaybeExtendedTorrent {
@@ -73,7 +79,7 @@ export const allTorrentsFetched: FnReducer<Torrent[]> = (state, torrents) => ({
   },
 });
 
-export const fetchFailed: FnReducer< [Error]> = (state, error) => ({
+export const fetchFailed: FnReducer<[Error]> = (state, error) => ({
   ...state,
   realDebrid: {
     ...state.realDebrid,

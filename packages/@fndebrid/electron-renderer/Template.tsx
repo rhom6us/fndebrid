@@ -6,12 +6,11 @@ import { Commands, useCommand, useEventSource } from './hooks';
 interface IOwnProps {}
 const mapStateToProps = (state: FnState) => ({});
 const mapDispatchToProps = (dispatch: Commands) => {
-  return {
-  };
+  return {};
 };
 
-export const Template = ({ }: IOwnProps) => {
+export const Template = ({}: IOwnProps) => {
   const state = useEventSource(mapStateToProps);
-  const cmds = useCommand(mapDispatchToProps)
-  return <div />;;
+  const cmds = useCommand(mapDispatchToProps);
+  return <div />;
 };

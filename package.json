@@ -26,7 +26,6 @@
     "renderer:serve": "yarn workspace @fndebrid/electron-renderer serve",
     "typecheck": "lerna exec --parallel -- tsc --noemit"
   },
-
   "lint-staged": {
     "*.{ts,tsx,css,scss,json,md,html,yml,yaml}": [
       "prettier --write",

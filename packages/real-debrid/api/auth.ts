@@ -42,7 +42,9 @@ export function credentials({
       if (Date.now() > expires) {
         reject('expired');
       }
-      const r = await fetch(makeUrl(base, 'device/credentials', { client_id: 'X245A4XAIBGVM', code: device_code }));
+      const r = await fetch(
+        makeUrl(base, 'device/credentials', { client_id: 'X245A4XAIBGVM', code: device_code }),
+      );
       if (r.ok) {
         clearInterval(timer);
         resolve(r.json());
@@ -63,7 +65,12 @@ export async function token({
   const response = await fetch(makeUrl(base, 'token'), {
     method: 'POST',
     headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ client_id, client_secret, code, grant_type: 'http://oauth.net/grant_type/device/1.0' }),
+    body: new URLSearchParams({
+      client_id,
+      client_secret,
+      code,
+      grant_type: 'http://oauth.net/grant_type/device/1.0',
+    }),
   });
   const json = await response.json();
   return {

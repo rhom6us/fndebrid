@@ -1,5 +1,11 @@
 import { Dispatch, Store } from 'redux';
-import { createCommandHandler as _createCommandHandler, createReducer, getCommandCreator as _getCommandCreator, getEventCreator, StandardEvent } from 'redux-command-pattern';
+import {
+  createCommandHandler as _createCommandHandler,
+  createReducer,
+  getCommandCreator as _getCommandCreator,
+  getEventCreator,
+  StandardEvent,
+} from 'redux-command-pattern';
 import * as preferences from './preferences';
 import * as realDebrid from './real-debrid';
 
@@ -12,18 +18,19 @@ export interface FnState {
   readonly preferences: preferences.State;
 }
 // tslint:disable-next-line: interface-over-type-literal
-export type Commands =  {
-  realDebrid: realDebrid.Commands,
-  preferences: preferences.Commands,
-}
+export type Commands = {
+  realDebrid: realDebrid.Commands;
+  preferences: preferences.Commands;
+};
 
-export const getCommandCreator = (...args:Parameters<typeof _getCommandCreator>) => _getCommandCreator<Commands>(...args);;
+export const getCommandCreator = (...args: Parameters<typeof _getCommandCreator>) =>
+  _getCommandCreator<Commands>(...args);
 
 export type FnStore = Store<FnState, StandardEvent>;
 const reducerFns = {
   realDebrid: realDebrid.reducers,
   preferences: preferences.reducers,
-}
+};
 export const reducer = createReducer(reducerFns);
 
 /**
@@ -36,6 +43,9 @@ export const events = getEventCreator<typeof reducerFns>();
  * @param implementation CommandFn map that returns events
  * @returns standard-command => store.reducers(implementation(standard-command))
  */
-export function createCommandHandler(store: FnStore, implementation: Parameters<typeof _createCommandHandler>[1]) {
+export function createCommandHandler(
+  store: FnStore,
+  implementation: Parameters<typeof _createCommandHandler>[1],
+) {
   return _createCommandHandler(store, implementation);
 }

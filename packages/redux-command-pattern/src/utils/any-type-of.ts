@@ -10,5 +10,4 @@ export type AnyTypeOf<T, TYield> =
   | Generator<AnyTypeOf<T, TYield>, AnyTypeOf<T, TYield>, TYield>
   | AsyncGenerator<AnyTypeOf<T, TYield>, AnyTypeOf<T, TYield>, TYield>
   | Iterable<AnyTypeOf<T, TYield>>
-  | AsyncIterable<AnyTypeOf<T, TYield>>
-  ;
+  | AsyncIterable<AnyTypeOf<T, TYield>>;

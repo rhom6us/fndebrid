@@ -1,4 +1,3 @@
-
 /** @deprecated use Extract<TValue, TType> */
 export type Always<TValue, TType> = Extract<TValue, TType>;
 

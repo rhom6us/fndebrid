@@ -23,7 +23,7 @@ export class TorrentPoller {
       () => {
         started = false;
       },
-      async function*(this: TorrentPoller) {
+      async function* (this: TorrentPoller) {
         while (started) {
           yield await this.api.torrents(true);
           await setTimeoutAsync(interval);
