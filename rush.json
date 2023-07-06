@@ -1,0 +1,112 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+  "rushVersion": "5.100.1",
+  "pnpmVersion": "8.6.5",
+  "nodeSupportedVersionRange": ">=14.15.0 <15.0.0 || >=16.13.0 <17.0.0 || >=18.15.0 <19.0.0 || >=20.3.0 < 21.0.0",
+  // "nodeSupportedVersionInstructions": "Run 'nvs use' to switch to the expected node version.",
+  "suppressNodeLtsWarning": false,
+  "ensureConsistentVersions": true,
+  "projectFolderMinDepth": 2,
+  "projectFolderMaxDepth": 3,
+  "allowMostlyStandardPackageNames": false,
+  "approvedPackagesPolicy": { // recorded in the files  "common/config/rush/browser-approved-packages.json" and "nonbrowser-approved-packages.json" which are automatically generated during "rush update".
+    "reviewCategories": [
+      "production", // projects that ship to production
+      "tools", // non-shipping projects that are part of the developer toolchain
+      "prototypes", // experiments that should mostly be ignored by the review process
+      "typings" // typescript @types/* projects
+    ],
+    "ignoredNpmScopes": [ // We recommend to exclude TypeScript typings (the "@types" scope), because if the underlying package was already approved, this would imply that the typings are also approved.
+      "@types"
+    ]
+  },
+  "gitPolicy": {
+    "allowedEmailRegExps": [ // RegExp escapes need two backslashes, and ordinary periods should be "\\.".
+      "[^@]+@users\\.noreply\\.github\\.com"
+    ],
+    "sampleEmail": "example@users.noreply.github.com",
+    "versionBumpCommitMessage": "Bump versions [skip ci]", // 'rush publish'
+    "changeLogUpdateCommitMessage": "Update changelogs [skip ci]",// 'rush version'
+    "changefilesCommitMessage": "Rush change"// 'rush change --commit'
+  },
+  "repository": { // used for "rush change"
+    "url": "https://github.com/rhom6us/fndebrid",
+    "defaultBranch": "master",
+    "defaultRemote": "origin"
+  },
+  "eventHooks": {
+    "preRushInstall": [ /* "common/scripts/pre-rush-install.js" */],
+    "postRushInstall": [],
+    "preRushBuild": [],
+    "postRushBuild": []
+  },
+  "variants": [], // https://rushjs.io/pages/advanced/installation_variants/
+  "telemetryEnabled": false, // written into JSON files in the common/temp folder
+  "hotfixChangeEnabled": false,
+  "allowedProjectTags": [
+    "tools",
+    "frontend-team",
+    "1.0.0-release"
+  ],
+  "projects": [
+    // {
+    //   "packageName": "my-app",
+    //   "projectFolder": "apps/my-app",
+    //   "reviewCategory": "production",
+    //   "decoupledLocalDependencies": [ /* "projects-that-should-be-installed-from-npm-not-workspace" */ ],
+    //   "skipRushCheck": false,
+    //   // "publishFolder": "temp/publish",
+    //   "shouldPublish": false, /* //mutually exclusive with 'versionPolicyName'
+    //    "versionPolicyName": "", //defined in 'version-policies.json'. see "rush publish" dics */
+    //   "tags": [ "1.0.0-release", "frontend-team" ] // used for e.g. "rush list --only tag:my-custom-tag"
+    // },
+    {
+      "packageName": "@fndebrid/core",
+      "projectFolder": "packages/@fndebrid/core",
+      "reviewCategory": "production",
+      "tags": []
+    },
+    {
+      "packageName": "@fndebrid/electron-main",
+      "projectFolder": "packages/@fndebrid/electron-main",
+      "reviewCategory": "production",
+      "tags": []
+    },
+    {
+      "packageName": "@fndebrid/electron-renderer",
+      "projectFolder": "packages/@fndebrid/electron-renderer",
+      "reviewCategory": "production",
+      "tags": []
+    },
+    {
+      "packageName": "@fndebrid/store",
+      "projectFolder": "packages/@fndebrid/store",
+      "reviewCategory": "production",
+      "tags": []
+    },
+    {
+      "packageName": "@fndebrid/webpack",
+      "projectFolder": "packages/@fndebrid/webpack",
+      "reviewCategory": "production",
+      "tags": []
+    },
+    {
+      "packageName": "electron-redux-proxy",
+      "projectFolder": "packages/electron-redux-proxy",
+      "reviewCategory": "production",
+      "tags": []
+    },
+    {
+      "packageName": "@fndebrid/real-debrid",
+      "projectFolder": "packages/real-debrid",
+      "reviewCategory": "production",
+      "tags": []
+    },
+    {
+      "packageName": "@rhombus/redux-command-pattern",
+      "projectFolder": "packages/redux-command-pattern",
+      "reviewCategory": "production",
+      "tags": []
+    }
+  ]
+}

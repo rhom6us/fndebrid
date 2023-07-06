@@ -5,12 +5,12 @@
   "license": "MIT",
   "main": "index.ts",
   "dependencies": {
-    "@types/lodash": "^4.14.150",
-    "@types/winreg": "^1.2.30",
+    "@types/lodash": "^4.14.195",
+    "@types/winreg": "^1.2.32",
     "@types/winston": "^2.4.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "winreg": "^1.2.4",
-    "winston": "^3.2.1"
+    "winston": "^3.9.0"
   },
   "devDependencies": {}
 }

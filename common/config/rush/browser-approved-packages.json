@@ -1,0 +1,338 @@
+// DO NOT ADD COMMENTS IN THIS FILE.  They will be lost when the Rush tool resaves it.
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/approved-packages.schema.json",
+  "packages": [
+    {
+      "name": "@blueprintjs/core",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@emotion/core",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@emotion/styled",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@fndebrid/core",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@fndebrid/real-debrid",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@fndebrid/store",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@fndebrid/webpack",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@fndj/heft-web-rig",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@hot-loader/react-dom",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rhombus-toolkit/async-timers",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rhombus-toolkit/defer",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rhombus-toolkit/func",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rhombus-toolkit/logger",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rhombus-toolkit/type-guards",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rhombus-toolkit/type-helpers",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rhombus/redux-command-pattern",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rushstack/eslint-config",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rushstack/heft",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "@rushstack/heft-web-rig",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "axios",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "chalk",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "classnames",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "clean-webpack-plugin",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "cli-logger",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "cli-table3",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "cross-env",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "css-hot-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "css-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "electron",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "electron-builder",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "electron-redux-proxy",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "electron-store",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "emotion-theming",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "enhanced-resolve",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "file-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "fork-ts-checker-webpack-plugin",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "html-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "html-webpack-plugin",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "jest",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "loader-utils",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "lodash",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "mini-css-extract-plugin",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "node-fetch",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "node-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "node-sass",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "normalize.css",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "parse-torrent",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "postcss-import",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "postcss-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "postcss-preset-env",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "prettier",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "react",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "react-dom",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "react-hot-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "react-redux",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "react-resize-detector",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "react-router-static",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "redux",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "redux-command-pattern",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "redux-saga",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "remote-redux-devtools",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "sass",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "sass-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "style-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "ts-jest",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "ts-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "ts-node",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "tsconfig-paths",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "tslint",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "tslint-config-prettier",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "typesafe-actions",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "typescript",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "url-loader",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "uuid",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "webpack",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "webpack-cli",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "webpack-dev-server",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "webpack-log",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "webpack-merge",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "webpackbar",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "winreg",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "winston",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "yarn",
+      "allowedCategories": [ "production" ]
+    }
+  ]
+}

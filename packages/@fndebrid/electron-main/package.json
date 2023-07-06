@@ -12,24 +12,24 @@
     "node 12.8"
   ],
   "dependencies": {
-    "@fndebrid/core": "*",
-    "@fndebrid/real-debrid": "*",
-    "@fndebrid/store": "*",
-    "@fndebrid/webpack": "*",
-    "electron": "^7.0.0",
-    "electron-redux-proxy": "*",
-    "electron-store": "^5.0.0",
-    "redux": "^4.0.4",
-    "redux-saga": "^1.1.1",
+    "@fndebrid/core": "workspace:*",
+    "@fndebrid/real-debrid": "workspace:*",
+    "@fndebrid/store": "workspace:*",
+    "@fndebrid/webpack": "workspace:*",
+    "electron": "^25.2.0",
+    "electron-redux-proxy": "workspace:*",
+    "electron-store": "^8.1.0",
+    "redux": "~4.2.1",
+    "redux-saga": "^1.2.3",
     "remote-redux-devtools": "^0.5.16",
     "typesafe-actions": "^5.1.0",
-    "uuid": "^3.3.3"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@fndebrid/webpack": "*",
-    "@types/node": "^12.11.5",
-    "@types/remote-redux-devtools": "^0.5.4",
-    "@types/uuid": "^3.4.5",
+    "@fndebrid/webpack": "workspace:*",
+    "@types/node": "^20.3.2",
+    "@types/remote-redux-devtools": "^0.5.5",
+    "@types/uuid": "^9.0.2",
     "typesafe-actions": "^5.1.0"
   }
 }
